@@ -1,0 +1,95 @@
+﻿@model ProductViewModel
+
+<p> @Model.Hello </p>
+
+<form method="post" class="align-le">
+    <div class="mb-3 row w-25">
+        <div class="input-group input-group-sm m-2">
+            <label class="form-check-inline m-2" for="@Model.Product.Name">Search by name: </label>
+            <input asp-for="@Model.Product.Name" class="form-control" />
+        </div>
+        <div class="input-group input-group-sm m-2">
+            <label class="form-check-inline m-2" for="Model.Product.CategoryId">Select category: </label>
+            @Html.DropDownListFor(m => m.Product.CategoryId,
+            new SelectList(Model.Categories, "Id", "Name"),
+            "Select category")
+        </div>
+        <div class="input-group input-group-sm m-2">
+            <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Minimum calories: </label>
+            <input asp-for="@Model.CaloryRangeMin" class="form-control" />
+        </div>
+        <div class="input-group input-group-sm m-2">
+            <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Maximum calories: </label>
+            <input asp-for="@Model.CaloryRangeMax" class="form-control" />
+        </div>
+
+        <div class="input-group input-group-sm">
+            @Html.CheckBoxFor(x => x.Green)
+            <label class="form-check-inline m-2" for="@Model.Green">Green</label>
+        </div>
+        <div class="input-group input-group-sm">
+            @Html.CheckBoxFor(x => x.Orange)
+            <label class="form-check-inline m-2" for="@Model.Orange">Orange</label>
+        </div>
+        <div class="input-group input-group-sm">
+            @Html.CheckBoxFor(x => x.Red)
+            <label class="form-check-inline m-2" for="@Model.Red">Red</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+
+
+<div class="mt-5">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">@nameof(Model.Product.Name)</th>
+                <th scope="col">@nameof(Model.Product.KcalPer100g)</th>
+                <th scope="col">@nameof(Model.Product.GI)</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Product task in Model.Products)
+            {
+                <tr>
+                    <th scope="row">
+                        @task.Id
+                    </th>
+                    <td>
+                        @(char.ToUpper(task.Name[0]) + task.Name.Substring(1))
+                    </td>
+                    <td>
+                        @task.KcalPer100g
+                    </td>
+                    @if (Model.IsGreen(task.GI))
+                    {
+                        <text>
+                            <td class="table-success"> @task.GI </td>
+                        </text>
+                    }
+                    @if (Model.IsOrange(task.GI))
+                    {
+                        <text>
+                             <td class="table-warning"> @task.GI </td>
+                        </text>
+                    }
+                    @if (Model.IsRed(task.GI))
+                    {
+                        <text>
+                            <td class="table-danger"> @task.GI </td>
+                        </text>
+                    }
+                    <td class="col col-lg-3">
+                        <a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id" class="btn btn-warning">Details</a>
+                        <a asp-controller="Task" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Task" asp-action="Remove" asp-route-id="@task.Id" class="btn btn-warning">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
