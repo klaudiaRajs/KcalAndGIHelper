@@ -1,0 +1,52 @@
+﻿@model DayDietViewModel
+
+<div class="container">
+    <div>
+        <a class="btn btn-outline-success text-light" asp-area="" asp-controller="DietDay" asp-action="Create">Stwórz nowy</a>
+    </div>
+    <div class="mt-5">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Breakfast</th>
+                    <th scope="col">Lunch</th>
+                    <th scope="col">Dinner</th>
+                    <th scope="col">Snack</th>
+                    <th scope="col">Supper</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DayDietDTO day in Model.Days)
+                {
+                    <tr>
+                        <th scope="row">
+                            @day.Id
+                        </th>
+                        <td>
+                            @day.Breakfast.Name
+                        </td>
+                        <td>
+                            @day.Lunch.Name
+                        </td>
+                        <td>
+                            @day.Dinner.Name
+                        </td>
+                        <td>
+                            @day.Snack?.Name
+                        </td>
+                        <td>
+                            @day.Supper.Name
+                        </td>
+                        <td class="col col-lg-3">
+                            <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>
+                            <a asp-controller="DietDay" asp-action="Edit" asp-route-id="@day.Id" class="btn btn-warning">Edit</a>
+                            <a asp-controller="DietDay" asp-action="Remove" asp-route-id="@day.Id" class="btn btn-warning">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

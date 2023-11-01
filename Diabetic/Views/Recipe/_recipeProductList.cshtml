@@ -1,0 +1,27 @@
+﻿@model RecipeViewModel
+
+<div class="m-2"><h3>Warzywa</h3></div>
+<div class="row">
+    @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
+    {
+        if (Model.SelectedCheckboxes[i].CategoryId == 1)
+        {
+            var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
+            <text>
+                <div class="col-auto">
+                    <div>
+                        <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
+                        <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
+                    </div>
+                    <div id="@boxId" style="display: none">
+                        <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
+                        <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
+                    </div>
+                    <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
+                    <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
+                </div>
+            </text>
+        }
+    }
+</div>
+

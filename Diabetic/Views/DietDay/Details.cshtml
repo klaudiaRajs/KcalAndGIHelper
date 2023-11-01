@@ -1,0 +1,13 @@
+﻿@model DayDietViewModel
+
+<h2>Śniadanie: @Model.RecipesForDay.Breakfast.Name (@Model.RecipesForDay.Breakfast.TotalKcal)</h2>
+@await Html.PartialAsync("_recipe.cshtml", Model.RecipesForDay.Breakfast)
+
+<h2>Lunch: @Model.RecipesForDay.Lunch.Name (@Model.RecipesForDay.Lunch.TotalKcal)</h2>
+@await Html.PartialAsync("_recipe.cshtml", Model.RecipesForDay.Lunch)
+
+<h2>Obiad: @Model.RecipesForDay.Dinner.Name (@Model.RecipesForDay.Dinner.TotalKcal)</h2>
+@await Html.PartialAsync("_recipe.cshtml", Model.RecipesForDay.Dinner)
+
+<h2>Kolacja: @Model.RecipesForDay.Supper.Name (@Model.RecipesForDay.Supper.TotalKcal)</h2>
+@await Html.PartialAsync("_recipe.cshtml", Model.RecipesForDay.Supper)

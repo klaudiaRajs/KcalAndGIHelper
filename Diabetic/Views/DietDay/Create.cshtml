@@ -1,0 +1,42 @@
+﻿@model DayDietViewModel
+
+
+
+<form method="post" action="@Url.Action("Create", "DietDay")">
+    
+    <div class="input-group input-group-sm m-2">
+        <label class="form-check-inline m-2" for="Model.SelectedKcals">Selected kcals: </label>
+        <input class="text-light" asp-for="@Model.SelectedKcals" value="@Model.SelectedKcals" disabled />
+    </div>
+    <div class="input-group input-group-sm m-2">
+        <label class="form-check-inline m-2" for="Model.RecipesForDay.BreakfastId">Select Breakfast: </label>
+        @Html.DropDownListFor(m => m.RecipesForDay.BreakfastId,
+        new SelectList(Model.Recipes, "Id", "Name"),
+        "Select Breakfast")
+    </div>
+    <div class="input-group input-group-sm m-2">
+        <label class="form-check-inline m-2" for="Model.RecipesForDay.LunchId">Select Lunch: </label>
+        @Html.DropDownListFor(m => m.RecipesForDay.LunchId,
+        new SelectList(Model.Recipes, "Id", "Name"),
+        "Select Lunch")
+    </div>
+    <div class="input-group input-group-sm m-2">
+        <label class="form-check-inline m-2" for="Model.RecipesForDay.DinnerId">Select Dinner: </label>
+        @Html.DropDownListFor(m => m.RecipesForDay.DinnerId,
+        new SelectList(Model.Dinners, "Id", "Name"),
+        "Select Dinner")
+    </div>
+    <div class="input-group input-group-sm m-2">
+        <label class="form-check-inline m-2" for="Model.RecipesForDay.SnackId">Select Snack: </label>
+        @Html.DropDownListFor(m => m.RecipesForDay.SnackId,
+        new SelectList(Model.Recipes, "Id", "Name"),
+        "Select Snack")
+    </div>
+    <div class="input-group input-group-sm m-2">
+        <label class="form-check-inline m-2" for="Model.RecipesForDay.SupperId">Select Supper: </label>
+        @Html.DropDownListFor(m => m.RecipesForDay.SupperId,
+        new SelectList(Model.Recipes, "Id", "Name"),
+        "Select Supper")
+    </div>
+    <button type="submit" class="btn btn-success">Create</button>
+</form>

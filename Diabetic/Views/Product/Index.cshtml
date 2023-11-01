@@ -3,7 +3,7 @@
 <p> @Model.Hello </p>
 
 <form method="post" class="align-le">
-    <div class="mb-3 row w-25">
+    <div class="mb-3 row w-50">
         <div class="input-group input-group-sm m-2">
             <label class="form-check-inline m-2" for="@Model.Product.Name">Search by name: </label>
             <input asp-for="@Model.Product.Name" class="form-control" />
@@ -47,46 +47,67 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
-                <th scope="col">@nameof(Model.Product.KcalPer100g)</th>
-                <th scope="col">@nameof(Model.Product.GI)</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.GI)</th>
+                <th scope="col" >@nameof(Model.Product.GramsPerPortion)</th>
+                <th scope="col" class="text-center">ŁG</th>
+                <th scope="col" >Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Product task in Model.Products)
+            @foreach (Product product in Model.Products)
             {
                 <tr>
                     <th scope="row">
-                        @task.Id
+                        @product.Id
                     </th>
                     <td>
-                        @(char.ToUpper(task.Name[0]) + task.Name.Substring(1))
+                        @(char.ToUpper(product.Name[0]) + product.Name.Substring(1))
                     </td>
-                    <td>
-                        @task.KcalPer100g
+                    <td class="text-center">
+                        @product.KcalPer100g
                     </td>
-                    @if (Model.IsGreen(task.GI))
+                    @if (Model.IsGreenGI(product.GI))
                     {
                         <text>
-                            <td class="table-success"> @task.GI </td>
+                        <td class="table-success text-center"> @product.GI </td>
                         </text>
                     }
-                    @if (Model.IsOrange(task.GI))
+                    @if (Model.IsOrangeGI(product.GI))
                     {
                         <text>
-                             <td class="table-warning"> @task.GI </td>
+                        <td class="table-warning text-center"> @product.GI </td>
                         </text>
                     }
-                    @if (Model.IsRed(task.GI))
+                    @if (Model.IsRedGI(product.GI))
                     {
                         <text>
-                            <td class="table-danger"> @task.GI </td>
+                        <td class="table-danger text-center"> @product.GI </td>
+                        </text>
+                    }
+                    <td class="col col-lg-1 text-center">@product.GramsPerPortion</td>
+                    @if (Model.IsGreenLG((product.GI * product.CarbsPer100g) / 100))
+                    {
+                        <text>
+                        <td class="table-success text-center"> @(Math.Round(((product.GI * product.CarbsPer100g) / 100), 1)) </td>
+                        </text>
+                    }
+                    @if (Model.IsOrangeLG((product.GI * product.CarbsPer100g) / 100))
+                    {
+                        <text>
+                        <td class="table-warning text-center"> @(Math.Floor((product.GI * product.CarbsPer100g) / 100)) </td>
+                        </text>
+                    }
+                    @if (Model.IsRedLG((product.GI * product.CarbsPer100g) / 100))
+                    {
+                        <text>
+                        <td class="table-danger text-center"> @(Math.Floor((product.GI * product.CarbsPer100g) / 100)) </td>
                         </text>
                     }
                     <td class="col col-lg-3">
-                        <a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id" class="btn btn-warning">Details</a>
-                        <a asp-controller="Task" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-warning">Edit</a>
-                        <a asp-controller="Task" asp-action="Remove" asp-route-id="@task.Id" class="btn btn-warning">Delete</a>
+                        <a asp-controller="Task" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning">Details</a>
+                        <a asp-controller="Task" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Task" asp-action="Remove" asp-route-id="@product.Id" class="btn btn-warning">Delete</a>
                     </td>
                 </tr>
             }

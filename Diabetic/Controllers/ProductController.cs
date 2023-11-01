@@ -1,4 +1,6 @@
 ﻿using Diabetic.Data.Data;
+using Diabetic.Data.Repositories;
+using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,15 +9,17 @@ namespace Diabetic.Controllers
 {
     public class ProductController : Controller 
     {
+        private readonly IProductRepository _productRepository;
         private ProductViewModel _productViewModel { get; set; } = new ProductViewModel();
-        private ApplicationDbContext _db { get; }
+        private readonly ICategoryRepository _categoryRepository; 
 
-        public ProductController(ApplicationDbContext db)
+        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
-            _db = db;
-            _productViewModel.Categories = _db.Categories.ToList();
-            _productViewModel.Products = _db.Products.ToList();
-           
+
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _productViewModel.Categories = _categoryRepository.GetAll();
+            _productViewModel.Products = _productRepository.GetAll();
         }
         public IActionResult Index()
         {
@@ -25,7 +29,7 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Index(ProductViewModel productViewModel)
         {
-            IEnumerable<Product> products = _db.Products; 
+            IEnumerable<Product> products = _productRepository.GetAll(); 
             if (productViewModel.Product.Name != null)
             {
                 products = products.Where(a => a.Name.Contains(productViewModel.Product.Name));

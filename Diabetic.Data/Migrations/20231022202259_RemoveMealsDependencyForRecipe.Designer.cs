@@ -4,6 +4,7 @@ using Diabetic.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diabetic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231022202259_RemoveMealsDependencyForRecipe")]
+    partial class RemoveMealsDependencyForRecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,14 +234,8 @@ namespace Diabetic.Data.Migrations
                         new
                         {
                             Id = 1,
-                            MealsId = 3,
-                            RecipesId = 7
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MealsId = 3,
-                            RecipesId = 2
+                            MealsId = 1,
+                            RecipesId = 5
                         });
                 });
 
@@ -251,17 +247,8 @@ namespace Diabetic.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<double>("CarbsPer100g")
-                        .HasColumnType("float");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<double>("Fat")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Fibre")
-                        .HasColumnType("float");
 
                     b.Property<int>("GI")
                         .HasColumnType("int");
@@ -276,12 +263,6 @@ namespace Diabetic.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Protein")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Sugar")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -292,1817 +273,1122 @@ namespace Diabetic.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 20,
                             KcalPer100g = 33,
-                            Name = "marchew",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "marchew"
                         },
                         new
                         {
                             Id = 2,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 39,
                             KcalPer100g = 33,
-                            Name = "marchewka gotowana",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "marchewka gotowana"
                         },
                         new
                         {
                             Id = 3,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 51,
                             KcalPer100g = 86,
-                            Name = "groszek zielony",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "groszek zielony"
                         },
                         new
                         {
                             Id = 4,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 52,
                             KcalPer100g = 80,
-                            Name = "słodka kukurydza",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "słodka kukurydza"
                         },
                         new
                         {
                             Id = 5,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 56,
                             KcalPer100g = 1000,
-                            Name = "ziemniak gotowany",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ziemniak gotowany"
                         },
                         new
                         {
                             Id = 6,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 40,
                             KcalPer100g = 76,
-                            Name = "bób (surowy)",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "bób (surowy)"
                         },
                         new
                         {
                             Id = 7,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 53,
                             KcalPer100g = 46,
-                            Name = "Śliwka czerwona",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "Śliwka czerwona"
                         },
                         new
                         {
                             Id = 8,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 45,
                             GramsPerPortion = 50,
                             KcalPer100g = 330,
-                            Name = "Płatki orkiszowe",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "Płatki orkiszowe"
                         },
                         new
                         {
                             Id = 9,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 69,
                             KcalPer100g = 79,
-                            Name = "ziemniak pieczony",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ziemniak pieczony"
                         },
                         new
                         {
                             Id = 10,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 20,
                             KcalPer100g = 26,
-                            Name = "bakłażan",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "bakłażan"
                         },
                         new
                         {
                             Id = 11,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 30,
                             KcalPer100g = 42,
-                            Name = "burak",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "burak"
                         },
                         new
                         {
                             Id = 12,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 33,
-                            Name = "cebula",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "cebula"
                         },
                         new
                         {
                             Id = 13,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 17,
-                            Name = "cukinia",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "cukinia"
                         },
                         new
                         {
                             Id = 14,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 33,
                             KcalPer100g = 315,
-                            Name = "fasola biała ugotowana",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "fasola biała ugotowana"
                         },
                         new
                         {
                             Id = 15,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 27,
-                            Name = "kalafior",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kalafior"
                         },
                         new
                         {
                             Id = 16,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 33,
-                            Name = "kapusta biała",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kapusta biała"
                         },
                         new
                         {
                             Id = 17,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 31,
-                            Name = "kapusta czerwona",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kapusta czerwona"
                         },
                         new
                         {
                             Id = 18,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 43,
-                            Name = "kapusta włoska",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kapusta włoska"
                         },
                         new
                         {
                             Id = 19,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 14,
-                            Name = "ogórek",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ogórek"
                         },
                         new
                         {
                             Id = 20,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 32,
-                            Name = "papryka czerwona",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "papryka czerwona"
                         },
                         new
                         {
                             Id = 21,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 22,
-                            Name = "papryka zielona",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "papryka zielona"
                         },
                         new
                         {
                             Id = 22,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 10,
                             KcalPer100g = 21,
-                            Name = "pieczarki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pieczarki"
                         },
                         new
                         {
                             Id = 23,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 19,
                             KcalPer100g = 19,
-                            Name = "pomidor",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pomidor"
                         },
                         new
                         {
                             Id = 24,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 29,
-                            Name = "por",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "por"
                         },
                         new
                         {
                             Id = 25,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 72,
                             KcalPer100g = 33,
-                            Name = "rzepa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "rzepa"
                         },
                         new
                         {
                             Id = 26,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 18,
-                            Name = "rzodkiewka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "rzodkiewka"
                         },
                         new
                         {
                             Id = 27,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 10,
                             KcalPer100g = 14,
-                            Name = "sałata",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "sałata"
                         },
                         new
                         {
                             Id = 28,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 10,
                             KcalPer100g = 16,
-                            Name = "sałata lodowa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "sałata lodowa"
                         },
                         new
                         {
                             Id = 29,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 35,
                             KcalPer100g = 30,
-                            Name = "seler korzeń",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "seler korzeń"
                         },
                         new
                         {
                             Id = 30,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 17,
-                            Name = "seler naciowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "seler naciowy"
                         },
                         new
                         {
                             Id = 31,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 26,
                             KcalPer100g = 341,
-                            Name = "soczewica gotowana",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "soczewica gotowana"
                         },
                         new
                         {
                             Id = 32,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 22,
-                            Name = "szpinak",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "szpinak"
                         },
                         new
                         {
                             Id = 33,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 31,
-                            Name = "brokuł",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "brokuł"
                         },
                         new
                         {
                             Id = 34,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 18,
-                            Name = "kapusta kiszona",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kapusta kiszona"
                         },
                         new
                         {
                             Id = 35,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 52,
                             KcalPer100g = 49,
-                            Name = "pietruszka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pietruszka"
                         },
                         new
                         {
                             Id = 36,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 33,
-                            Name = "fasolka szparagowa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "fasolka szparagowa"
                         },
                         new
                         {
                             Id = 37,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 35,
                             KcalPer100g = 213,
-                            Name = "suszone pomidory",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "suszone pomidory"
                         },
                         new
                         {
                             Id = 38,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 35,
                             KcalPer100g = 23,
-                            Name = "pomidory z puszki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pomidory z puszki"
                         },
                         new
                         {
                             Id = 39,
-                            CarbsPer100g = 0.0,
                             CategoryId = 1,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 23,
-                            Name = "ogórek konserwowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ogórek konserwowy"
                         },
                         new
                         {
                             Id = 40,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 59,
                             KcalPer100g = 55,
-                            Name = "ananas",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ananas"
                         },
                         new
                         {
                             Id = 41,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 46,
-                            Name = "agrest",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "agrest"
                         },
                         new
                         {
                             Id = 42,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 72,
                             KcalPer100g = 36,
-                            Name = "arbuz",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "arbuz"
                         },
                         new
                         {
                             Id = 43,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 10,
                             KcalPer100g = 169,
-                            Name = "awokado",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "awokado"
                         },
                         new
                         {
                             Id = 44,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 52,
                             KcalPer100g = 97,
-                            Name = "banan",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "banan"
                         },
                         new
                         {
                             Id = 45,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 30,
                             KcalPer100g = 50,
-                            Name = "brzoskwinia",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "brzoskwinia"
                         },
                         new
                         {
                             Id = 46,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 22,
                             KcalPer100g = 63,
-                            Name = "czereśnie",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "czereśnie"
                         },
                         new
                         {
                             Id = 47,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 25,
                             KcalPer100g = 40,
-                            Name = "grejpfrut",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "grejpfrut"
                         },
                         new
                         {
                             Id = 48,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 38,
                             KcalPer100g = 58,
-                            Name = "gruszka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "gruszka"
                         },
                         new
                         {
                             Id = 49,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 37,
                             KcalPer100g = 50,
-                            Name = "jabłko",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "jabłko"
                         },
                         new
                         {
                             Id = 50,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 53,
                             KcalPer100g = 60,
-                            Name = "kiwi",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kiwi"
                         },
                         new
                         {
                             Id = 51,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 25,
                             KcalPer100g = 43,
-                            Name = "maliny",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "maliny"
                         },
                         new
                         {
                             Id = 52,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 30,
                             KcalPer100g = 45,
-                            Name = "mandarynki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "mandarynki"
                         },
                         new
                         {
                             Id = 53,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 51,
                             KcalPer100g = 59,
-                            Name = "mango",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "mango"
                         },
                         new
                         {
                             Id = 54,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 65,
                             KcalPer100g = 24,
-                            Name = "melon",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "melon"
                         },
                         new
                         {
                             Id = 55,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 57,
                             KcalPer100g = 50,
-                            Name = "morele",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "morele"
                         },
                         new
                         {
                             Id = 56,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 35,
                             KcalPer100g = 50,
-                            Name = "nektarynki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "nektarynki"
                         },
                         new
                         {
                             Id = 57,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 42,
                             KcalPer100g = 47,
-                            Name = "pomarańcza",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pomarańcza"
                         },
                         new
                         {
                             Id = 58,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 35,
-                            Name = "porzeczka czarna",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "porzeczka czarna"
                         },
                         new
                         {
                             Id = 59,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 39,
                             KcalPer100g = 49,
-                            Name = "śliwki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "śliwki"
                         },
                         new
                         {
                             Id = 60,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 40,
                             KcalPer100g = 33,
-                            Name = "truskawki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "truskawki"
                         },
                         new
                         {
                             Id = 61,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 46,
                             KcalPer100g = 71,
-                            Name = "winogron",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "winogron"
                         },
                         new
                         {
                             Id = 62,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 22,
                             KcalPer100g = 49,
-                            Name = "wiśnie",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "wiśnie"
                         },
                         new
                         {
                             Id = 137,
-                            CarbsPer100g = 0.0,
                             CategoryId = 2,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 55,
                             KcalPer100g = 57,
-                            Name = "borówki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "borówki"
                         },
                         new
                         {
                             Id = 63,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 54,
                             GramsPerPortion = 50,
                             KcalPer100g = 334,
-                            Name = "kasza gryczana",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kasza gryczana"
                         },
                         new
                         {
                             Id = 64,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 48,
                             GramsPerPortion = 50,
                             KcalPer100g = 213,
-                            Name = "chleb razowy na zakwasie",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "chleb razowy na zakwasie"
                         },
                         new
                         {
                             Id = 65,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 55,
                             KcalPer100g = 289,
-                            Name = "pełnoziarniste spaghetti",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pełnoziarniste spaghetti"
                         },
                         new
                         {
                             Id = 66,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 53,
                             KcalPer100g = 334,
-                            Name = "kosmosa ryżowa, quinoa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kosmosa ryżowa, quinoa"
                         },
                         new
                         {
                             Id = 67,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 55,
                             KcalPer100g = 376,
-                            Name = "płatki owsiane",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "płatki owsiane"
                         },
                         new
                         {
                             Id = 68,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 61,
                             KcalPer100g = 365,
-                            Name = "makaron ryżowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "makaron ryżowy"
                         },
                         new
                         {
                             Id = 69,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 50,
                             KcalPer100g = 335,
-                            Name = "ryż brązowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ryż brązowy"
                         },
                         new
                         {
                             Id = 70,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 54,
                             KcalPer100g = 379,
-                            Name = "biszkopt",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "biszkopt"
                         },
                         new
                         {
                             Id = 71,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 70,
                             KcalPer100g = 258,
-                            Name = "chleb pszenny",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "chleb pszenny"
                         },
                         new
                         {
                             Id = 72,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 58,
                             KcalPer100g = 229,
-                            Name = "chleb żytni pełnoziarnisty",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "chleb żytni pełnoziarnisty"
                         },
                         new
                         {
                             Id = 73,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 50,
                             KcalPer100g = 227,
-                            Name = "chleb żytni razowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "chleb żytni razowy"
                         },
                         new
                         {
                             Id = 74,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 70,
                             KcalPer100g = 300,
-                            Name = "kajzerka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kajzerka"
                         },
                         new
                         {
                             Id = 75,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 71,
                             KcalPer100g = 348,
-                            Name = "kasza jaglana ugotowana",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kasza jaglana ugotowana"
                         },
                         new
                         {
                             Id = 76,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 70,
                             KcalPer100g = 335,
-                            Name = "kasza jęczmienna perłowa gotowana",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kasza jęczmienna perłowa gotowana"
                         },
                         new
                         {
                             Id = 77,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 25,
                             KcalPer100g = 343,
-                            Name = "kasza jęczmienna pęczak",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kasza jęczmienna pęczak"
                         },
                         new
                         {
                             Id = 78,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 55,
                             KcalPer100g = 352,
-                            Name = "kasza manna",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kasza manna"
                         },
                         new
                         {
                             Id = 79,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 55,
                             KcalPer100g = 340,
-                            Name = "makaron dwujajeczny",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "makaron dwujajeczny"
                         },
                         new
                         {
                             Id = 80,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 81,
                             KcalPer100g = 381,
-                            Name = "płatki kukurydziane",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "płatki kukurydziane"
                         },
                         new
                         {
                             Id = 81,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 49,
                             GramsPerPortion = 40,
                             KcalPer100g = 244,
-                            Name = "chleb orkiszowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "chleb orkiszowy"
                         },
                         new
                         {
                             Id = 82,
-                            CarbsPer100g = 0.0,
                             CategoryId = 3,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 57,
                             KcalPer100g = 357,
-                            Name = "muslie",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "muslie"
                         },
                         new
                         {
                             Id = 83,
-                            CarbsPer100g = 0.0,
                             CategoryId = 4,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 604,
-                            Name = "migdały",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "migdały"
                         },
                         new
                         {
                             Id = 84,
-                            CarbsPer100g = 0.0,
                             CategoryId = 4,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 14,
                             KcalPer100g = 610,
-                            Name = "orzechy arachidowe ",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "orzechy arachidowe "
                         },
                         new
                         {
                             Id = 85,
-                            CarbsPer100g = 0.0,
                             CategoryId = 4,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 666,
-                            Name = "orzechy laskowe",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "orzechy laskowe"
                         },
                         new
                         {
                             Id = 86,
-                            CarbsPer100g = 0.0,
                             CategoryId = 4,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 621,
-                            Name = "pistacje",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pistacje"
                         },
                         new
                         {
                             Id = 87,
-                            CarbsPer100g = 0.0,
                             CategoryId = 4,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 666,
-                            Name = "orzechy włoskie",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "orzechy włoskie"
                         },
                         new
                         {
                             Id = 138,
-                            CarbsPer100g = 0.0,
                             CategoryId = 4,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 15,
                             KcalPer100g = 630,
-                            Name = "mieszanka orzechów",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "mieszanka orzechów"
                         },
                         new
                         {
                             Id = 88,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 36,
                             KcalPer100g = 60,
-                            Name = "jogurt naturalny 2%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "jogurt naturalny 2%"
                         },
                         new
                         {
                             Id = 89,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 27,
                             KcalPer100g = 49,
-                            Name = "jogurt naturalny 0%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "jogurt naturalny 0%"
                         },
                         new
                         {
                             Id = 90,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 32,
                             KcalPer100g = 51,
-                            Name = "kefir 2%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kefir 2%"
                         },
                         new
                         {
                             Id = 91,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 32,
                             KcalPer100g = 39,
-                            Name = "mleko 0,5%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "mleko 0,5%"
                         },
                         new
                         {
                             Id = 92,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 55,
                             KcalPer100g = 61,
-                            Name = "mleko 3,2%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "mleko 3,2%"
                         },
                         new
                         {
                             Id = 93,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 61,
                             KcalPer100g = 326,
-                            Name = "mleko słodzone zagęszczone",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "mleko słodzone zagęszczone"
                         },
                         new
                         {
                             Id = 94,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 150,
-                            Name = "ser kozi miękki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ser kozi miękki"
                         },
                         new
                         {
                             Id = 95,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 254,
-                            Name = "ser mozarella",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ser mozarella"
                         },
                         new
                         {
                             Id = 96,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 30,
                             KcalPer100g = 68,
-                            Name = "ser twarogowy chudy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ser twarogowy chudy"
                         },
                         new
                         {
                             Id = 97,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 260,
-                            Name = "ser feta",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ser feta"
                         },
                         new
                         {
                             Id = 98,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 332,
-                            Name = "brie pełnotłusty",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "brie pełnotłusty"
                         },
                         new
                         {
                             Id = 99,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 293,
-                            Name = "ser camembert",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ser camembert"
                         },
                         new
                         {
                             Id = 100,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 383,
-                            Name = "ementaler",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ementaler"
                         },
                         new
                         {
                             Id = 101,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 354,
-                            Name = "salami",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "salami"
                         },
                         new
                         {
                             Id = 102,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 134,
-                            Name = "śmietana 12%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "śmietana 12%"
                         },
                         new
                         {
                             Id = 103,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 186,
-                            Name = "śmietana 18%",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "śmietana 18%"
                         },
                         new
                         {
                             Id = 136,
-                            CarbsPer100g = 0.0,
                             CategoryId = 5,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 140,
-                            Name = "jajko",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "jajko"
                         },
                         new
                         {
                             Id = 104,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 217,
-                            Name = "kaczka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kaczka"
                         },
                         new
                         {
                             Id = 105,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 172,
-                            Name = "kiełbasa domowa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kiełbasa domowa"
                         },
                         new
                         {
                             Id = 106,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 213,
-                            Name = "kiełbasa żywiecka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kiełbasa żywiecka"
                         },
                         new
                         {
                             Id = 107,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 92,
-                            Name = "krewetki gotowane",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "krewetki gotowane"
                         },
                         new
                         {
                             Id = 108,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 115,
-                            Name = "królik",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "królik"
                         },
                         new
                         {
                             Id = 109,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 98,
-                            Name = "kurczak",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kurczak"
                         },
                         new
                         {
                             Id = 110,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 228,
-                            Name = "łosoś z rusztu",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "łosoś z rusztu"
                         },
                         new
                         {
                             Id = 111,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 165,
-                            Name = "polędwica sopocka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "polędwica sopocka"
                         },
                         new
                         {
                             Id = 112,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 346,
-                            Name = "salami (kiełbasa)",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "salami (kiełbasa)"
                         },
                         new
                         {
                             Id = 113,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 123,
-                            Name = "szynka z kurczaka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "szynka z kurczaka"
                         },
                         new
                         {
                             Id = 114,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 106,
-                            Name = "szynka wołowa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "szynka wołowa"
                         },
                         new
                         {
                             Id = 115,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 126,
-                            Name = "szynka z indyka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "szynka z indyka"
                         },
                         new
                         {
                             Id = 116,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 25,
                             KcalPer100g = 336,
-                            Name = "śledź w oleju",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "śledź w oleju"
                         },
                         new
                         {
                             Id = 117,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 129,
-                            Name = "tuńczyk z rusztu",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "tuńczyk z rusztu"
                         },
                         new
                         {
                             Id = 118,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 252,
-                            Name = "tuńczyk w zalewie",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "tuńczyk w zalewie"
                         },
                         new
                         {
                             Id = 119,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 268,
-                            Name = "kotlet schabowy",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kotlet schabowy"
                         },
                         new
                         {
                             Id = 120,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 112,
-                            Name = "polędwica wołowa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "polędwica wołowa"
                         },
                         new
                         {
                             Id = 121,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 172,
-                            Name = "kiełbasa domowa",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kiełbasa domowa"
                         },
                         new
                         {
                             Id = 122,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 84,
-                            Name = "indyk",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "indyk"
                         },
                         new
                         {
                             Id = 133,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             GramsPerPortion = 45,
                             KcalPer100g = 480,
-                            Name = "kabanos",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "kabanos"
                         },
                         new
                         {
                             Id = 135,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             GramsPerPortion = 90,
                             KcalPer100g = 161,
-                            Name = "podudzie z kurczaka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "podudzie z kurczaka"
                         },
                         new
                         {
                             Id = 139,
-                            CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             GramsPerPortion = 200,
                             KcalPer100g = 98,
-                            Name = "pierś z kurczaka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "pierś z kurczaka"
                         },
                         new
                         {
                             Id = 123,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 57,
                             KcalPer100g = 335,
-                            Name = "ciasteczka owsiane",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "ciasteczka owsiane"
                         },
                         new
                         {
                             Id = 124,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 22,
                             KcalPer100g = 645,
-                            Name = "czekolada gorzka",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "czekolada gorzka"
                         },
                         new
                         {
                             Id = 125,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 43,
                             KcalPer100g = 530,
-                            Name = "czekolada mleczna",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "czekolada mleczna"
                         },
                         new
                         {
                             Id = 126,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 44,
                             KcalPer100g = 564,
-                            Name = "czekolada biała",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "czekolada biała"
                         },
                         new
                         {
                             Id = 127,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 57,
                             KcalPer100g = 428,
-                            Name = "herbatniki ",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "herbatniki "
                         },
                         new
                         {
                             Id = 128,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 65,
                             KcalPer100g = 542,
-                            Name = "baton mars",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "baton mars"
                         },
                         new
                         {
                             Id = 129,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 44,
                             KcalPer100g = 493,
-                            Name = "twix",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "twix"
                         },
                         new
                         {
                             Id = 130,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 60,
                             KcalPer100g = 300,
-                            Name = "lody",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "lody"
                         },
                         new
                         {
                             Id = 131,
-                            CarbsPer100g = 0.0,
                             CategoryId = 7,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 78,
                             KcalPer100g = 306,
-                            Name = "żelki",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "żelki"
                         },
                         new
                         {
                             Id = 132,
-                            CarbsPer100g = 0.0,
                             CategoryId = 8,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 679,
-                            Name = "majonez",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "majonez"
                         },
                         new
                         {
                             Id = 134,
-                            CarbsPer100g = 0.0,
                             CategoryId = 8,
-                            Fat = 0.0,
-                            Fibre = 0.0,
                             GI = 25,
                             GramsPerPortion = 25,
                             KcalPer100g = 327,
-                            Name = "hummus",
-                            Protein = 0.0,
-                            Sugar = 0.0
+                            Name = "hummus"
                         });
                 });
 
