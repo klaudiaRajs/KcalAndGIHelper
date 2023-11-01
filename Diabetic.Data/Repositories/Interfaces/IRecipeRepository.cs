@@ -19,5 +19,7 @@ namespace Diabetic.Data.Repositories.Interfaces
         bool Remove(RecipeDTO recipe);
         List<Recipe_Ingredients> GetIngredientsByRecipe(int id);
         bool RemoveIngredientsForRecipe(List<Recipe_Ingredients> ingredients);
+        bool Update(Recipe recipe);
+        bool UpdateIngredientsForRecipe(Recipe currentRecipe, List<Recipe_Ingredients> toBeUpdated);
     }
 }

@@ -114,12 +114,38 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                _db.RemoveRange(ingredients);
+                _db.Recipe_Ingredients.RemoveRange(ingredients);
                 _db.SaveChanges();
                 return true; 
             } catch(Exception ex)
             {
                 return false; 
+            }
+        }
+
+        public bool Update(Recipe recipe)
+        {
+            try
+            {
+                _db.Recipes.Update(recipe);
+                _db.SaveChanges(); 
+                return true;
+            } catch(Exception ex)
+            {
+                return false; 
+            }
+        }
+
+        public bool UpdateIngredientsForRecipe(Recipe currentRecipe, List<Recipe_Ingredients> toBeUpdated)
+        {
+            try
+            {
+                _db.UpdateRange(toBeUpdated); 
+                _db.SaveChanges();
+                return true; 
+            } catch(Exception ex)
+            {
+                return false;
             }
         }
     }

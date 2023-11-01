@@ -2,6 +2,7 @@
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 
 namespace Diabetic.Controllers
 {
@@ -77,5 +78,100 @@ namespace Diabetic.Controllers
             }
             return RedirectToAction("Index"); 
         }
+
+        public IActionResult Edit(int id)
+        {
+            RecipeViewModel model = new RecipeViewModel();
+            var recipe = _recipeRepository.GetRecipeById(id);
+            if( recipe == null)
+            {
+                return NotFound();
+            }
+            model.Recipe.Name = recipe.Name; 
+            model.Recipe.Id = recipe.Id;
+
+            model.SelectedCheckboxes = _productRepository.GetAll()
+            .Select(product => new SelectedCheckboxViewModel
+            {
+                IsChecked = false,
+                Id = product.Id,
+                Name = product.Name,
+                CategoryId = product.CategoryId
+            }).ToList();
+
+            var ingredients = _recipeRepository.GetIngredientsByRecipe(id);
+            for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
+            {
+                SelectedCheckboxViewModel? item = model.SelectedCheckboxes[i];
+                var ingredient = ingredients.Where(a => a.ProductId == item.Id).FirstOrDefault();
+                if( ingredient == null)
+                {
+                    continue; 
+                } else
+                {
+                    model.SelectedCheckboxes[i].IsChecked = true;
+                    model.SelectedCheckboxes[i].Grams = ingredient.Amount; 
+                }
+            }
+
+            return View("Create", model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(RecipeViewModel model)
+        {
+            var recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            recipe.Name = model.Recipe.Name;
+
+            var currentRecipe = new Recipe { Name = recipe.Name, Id = recipe.Id };
+            bool result = _recipeRepository.Update(currentRecipe);
+
+            var currentIngredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
+            var newIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+
+            List<Recipe_Ingredients> toBeUpdated = new List<Recipe_Ingredients>(); 
+            List<Recipe_Ingredients> toBeAdded = new List<Recipe_Ingredients>(); 
+            List<Recipe_Ingredients> toBeRemoved = new List<Recipe_Ingredients>();
+
+            foreach(var old in currentIngredients)
+            {
+                bool isToBeUpdated = false;
+                foreach( var newItem in newIngredients)
+                {
+                    if( old.ProductId == newItem.Id)
+                    {
+                        toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
+                        isToBeUpdated = true;
+                        break; 
+                    }
+                }
+                if( !isToBeUpdated)
+                {
+                    toBeRemoved.Add(old);
+                }                
+            }
+
+            foreach( var item in newIngredients)
+            {
+                var itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
+                var itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
+
+                if( !itemToBeUpdated.Any() && !itemToBeRemoved.Any() ) {
+                    toBeAdded.Add(new Recipe_Ingredients { ProductId = item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
+                }
+            }
+            var addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
+            var updatingResult = _recipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
+            var removingResult = _recipeRepository.RemoveIngredientsForRecipe(toBeRemoved); 
+            
+
+            return RedirectToAction("Index");
+        }
     }
 }
+
