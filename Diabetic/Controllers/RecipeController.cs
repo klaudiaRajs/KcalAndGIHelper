@@ -9,11 +9,12 @@ namespace Diabetic.Controllers
     public class RecipeController : Controller
     {
         private readonly IProductRepository _productRepository;
-
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IRecipeRepository _recipeRepository; 
-        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository) {
+        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository) {
             _recipeRepository = recipeRepository;
             _productRepository = productRepository;
+            this._categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
@@ -42,6 +43,7 @@ namespace Diabetic.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 CategoryId = product.CategoryId,
+                Product = product
             }).ToList();
             return View(recipeViewModel);
         }
@@ -82,21 +84,22 @@ namespace Diabetic.Controllers
         public IActionResult Edit(int id)
         {
             RecipeViewModel model = new RecipeViewModel();
+            model.Categories = _categoryRepository.GetAll();
+
             var recipe = _recipeRepository.GetRecipeById(id);
             if( recipe == null)
             {
                 return NotFound();
             }
-            model.Recipe.Name = recipe.Name; 
-            model.Recipe.Id = recipe.Id;
-
+            model.Recipe = recipe; 
             model.SelectedCheckboxes = _productRepository.GetAll()
             .Select(product => new SelectedCheckboxViewModel
             {
                 IsChecked = false,
                 Id = product.Id,
                 Name = product.Name,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId, 
+                Product = product
             }).ToList();
 
             var ingredients = _recipeRepository.GetIngredientsByRecipe(id);
@@ -110,7 +113,7 @@ namespace Diabetic.Controllers
                 } else
                 {
                     model.SelectedCheckboxes[i].IsChecked = true;
-                    model.SelectedCheckboxes[i].Grams = ingredient.Amount; 
+                    model.SelectedCheckboxes[i].Grams = ingredient.Amount;
                 }
             }
 

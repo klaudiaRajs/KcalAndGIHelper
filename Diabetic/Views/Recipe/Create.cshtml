@@ -7,221 +7,136 @@
 <div class="container">
     <form method="post" action="@url">
         <div class="mb-3 row">
-            <input hidden asp-for="@Model.Recipe.Id"/>
+            <input hidden asp-for="@Model.Recipe.Id" />
+            <label asp-for="@Model.Recipe.TotalKcal"></label>
+            <input id="totalRecipe" asp-for="@Model.Recipe.TotalKcal" class="form-control" readonly/>
+            <label asp-for="@Model.Recipe.TotalGL"></label>
+            <input id="totalRecipeGL" asp-for="@Model.Recipe.TotalGL" class="form-control" readonly />
+        </div>
+        <div class="mb-3 row">
+            <input hidden asp-for="@Model.Recipe.Id" />
             <label asp-for="@Model.Recipe.Name"></label>
             <input asp-for="@Model.Recipe.Name" class="form-control" />
         </div>
-        <div class="m-2"><h3>Warzywa</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 1)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Owoce</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 2)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Produkty zbożowe</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 3)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Orzechy</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 4)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Nabiał</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 5)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Mięso, ryby, jaja</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 6)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Słodycze</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 7)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
-        <div class="m-2"><h3>Sosy</h3></div>
-        <div class="row">
-            @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-            {
-                if (Model.SelectedCheckboxes[i].CategoryId == 8)
-                {
-                    var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                    var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none"; 
-                    <text>
-                        <div class="col-auto">
-                            <div>
-                                <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                            </div>
-                            <div id="@boxId" style="display: @isDisplayed">
-                                <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                <input class="form-control-sm" asp-for="@Model.SelectedCheckboxes[i].Grams">
-                            </div>
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                            <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
-                        </div>
-                    </text>
-                }
-            }
-        </div>
+
+        @foreach( Category category in Model.Categories)
+        {
+            <text>
+                <div class="m-2"><h3>@category.Name</h3></div>
+                <div class="row">
+                    @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
+                    {
+                        if (Model.SelectedCheckboxes[i].CategoryId == category.Id)
+                        {
+                            var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
+                            var totalBox = "totalBox" + +Model.SelectedCheckboxes[i].Id;
+                            var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
+                            <text>
+                                <div class="col-auto">
+                                    <div>
+                                        <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
+                                        <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
+                                    </div>
+                                    <div id="@boxId" style="display: @isDisplayed">
+                                        <div>
+                                            <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
+                                            <input class="form-control-sm " asp-for="@Model.SelectedCheckboxes[i].Grams" 
+                                            oninput="updateTotal(this, @totalBox, @Model.SelectedCheckboxes[i].Product.KcalPer100g, @Model.SelectedCheckboxes[i].Product.GI, @Model.SelectedCheckboxes[i].Product.CarbsPer100g)" />
+                                        </div>
+                                        <div>
+                                            <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].TotalKcal">Selected kcals: </label>
+                                            <input id="@totalBox" class="form-control-sm total-kcal" asp-for="@Model.SelectedCheckboxes[i].TotalKcal" readonly>
+                                        </div>
+                                        <div>
+                                            <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].GL">Ładunek glikemiczny: </label>
+                                            <input id="@totalBox" class="form-control-sm total-gl" asp-for="@Model.SelectedCheckboxes[i].GL" readonly>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
+                                    <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
+                                </div>
+                            </text>
+                        }
+                    }
+                </div>
+            </text>
+        }
         <button type="submit" class="btn btn-primary mt-5">Save</button>
     </form>
 </div>
 
 <script>
 
+    function updateTotal(element, id, kcalPer100g, productGI, carbsPer100g ) { 
+        var amount = element.value; 
+        id[0].value = Math.round((element.value / 100) * kcalPer100g); 
+        id[1].value = Math.floor( (productGI * (carbsPer100g * (amount/100) ) )   / 100); 
+        countTotal(); 
+        countTotalGL();
+        setIndividualGlBackgrounds();
+        setTotalGlBackground();
+    }
+
+    function countTotal() { 
+        var items = $(".total-kcal:visible"); 
+        var total = 0; 
+        for (var i = 0; i < items.length; i++ ){
+            var kcals = parseInt(items[i].value); 
+            if (kcals != 0) {
+                total += kcals; 
+            }            
+        }
+        ($("#totalRecipe")[0]).value = total; 
+    }
+
+    function countTotalGL() {
+        var items = $(".total-gl:visible");
+        var total = 0;
+        for (var i = 0; i < items.length; i++) {
+            var gl = parseInt(items[i].value);
+
+            if (gl != 0) {
+                total += gl;
+            }
+        }
+        ($("#totalRecipeGL")[0]).value = total;
+    }
+
     function toggleAmount(element) {
         if (element.style.display === "none") {
             element.style.display = "block";
         } else {
             element.style.display = "none";
+        }
+    }
+
+    $(function () {
+        setIndividualGlBackgrounds(); 
+        setTotalGlBackground();
+    });
+
+    function setTotalGlBackground() {
+        var totalRecipeGL = $("#totalRecipeGL")[0];
+        if (totalRecipeGL.value <= 79) {
+            $("#totalRecipeGL")[0].style.backgroundColor = "green";
+        } else if (totalRecipeGL.value <= 119) {
+            $("#totalRecipeGL")[0].style.backgroundColor = "orange";
+        } else {
+            $("#totalRecipeGL")[0].style.backgroundColor = "red";
+        }
+    }
+
+    function setIndividualGlBackgrounds() {
+        var items = $(".total-gl:visible");
+        for (var i = 0; i < items.length; i++) {
+            var item = parseFloat(items[i].value);
+            if (item <= 10) {
+                items[i].style.backgroundColor = "green";
+            } else if (item <= 39) {
+                items[i].style.backgroundColor = "orange";
+            } else {
+                items[i].style.backgroundColor = "red";
+            }
         }
     }
 </script>

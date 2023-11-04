@@ -11,6 +11,13 @@
             }
         }
 
+        public double GL
+        {
+            get
+            {
+                return Math.Floor((Product.GI * Product.CarbsPer100g) / 100); 
+            }
+        }
         
     }
 }

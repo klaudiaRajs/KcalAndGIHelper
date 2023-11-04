@@ -66,7 +66,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                return _db.Recipe_Ingredients.Where(a => a.RecipeId == id).ToList();
+                return _db.Recipe_Ingredients.Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
             } catch(Exception ex)
             {
                 return new List<Recipe_Ingredients>();
