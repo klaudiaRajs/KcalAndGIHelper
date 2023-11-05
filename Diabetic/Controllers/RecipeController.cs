@@ -178,6 +178,12 @@ namespace Diabetic.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult GetRecipeKcals(int recipeId)
+        {
+            RecipeDTO recipe = _recipeRepository.GetRecipeById(recipeId);
+            return Ok(new {success = true, kcals = recipe.TotalKcal, gl = recipe.TotalGL }); 
+        }
     }
 }
 

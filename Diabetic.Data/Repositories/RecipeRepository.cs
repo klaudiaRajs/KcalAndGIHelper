@@ -77,9 +77,22 @@ namespace Diabetic.Data.Repositories
 
         public IEnumerable<RecipeDTO> GetNonDinnerRecipes()
         {
-            List<RecipeDTO> recipes = new List<RecipeDTO>();
-            var relation = _db.MealRecipes.Where(c => c.MealsId == 3).Select(a => a.RecipesId).ToList();
-            return _db.Recipes.Where(a => !relation.Contains(a.Id)).Select(a => new RecipeDTO {  Id = a.Id, Name = a.Name}).ToList();
+            try
+            {
+                var relation = _db.MealRecipes.Where(c => c.MealsId == 3).Select(a => a.RecipesId).ToList();
+                var recipes = _db.Recipes
+                    .Where(a => !relation.Contains(a.Id))
+                    .Include(a => a.Recipe_Ingredients)
+                    .ThenInclude(a => a.Product)
+                    .Select(a => 
+                        new RecipeDTO { Id = a.Id, Name = a.Name, Recipe_Ingredients = a.Recipe_Ingredients }
+                    )
+                    .ToList();
+                return recipes;
+            } catch(Exception e)
+            {
+                return new List<RecipeDTO>();
+            }
         }
 
         public RecipeDTO GetRecipeById(int id)

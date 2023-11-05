@@ -7,6 +7,7 @@ namespace Diabetic.Models.DTOs
         public int Id { get; set; }
         public string Name { get; set; }
         public List<IngredientDTO> Ingredients { get; set; } = new List<IngredientDTO>();
+        public IEnumerable<Recipe_Ingredients> Recipe_Ingredients { get; set; } = new List<Recipe_Ingredients>();
         [DisplayName("Selected amount of kcals")]
         public double TotalKcal
         {

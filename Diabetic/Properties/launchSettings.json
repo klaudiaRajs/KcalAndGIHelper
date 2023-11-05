@@ -3,7 +3,7 @@
     "Diabetic": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:7080/Recipe",
+      "launchUrl": "https://localhost:7080/DietDay",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
