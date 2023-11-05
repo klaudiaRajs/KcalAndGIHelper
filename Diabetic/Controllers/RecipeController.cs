@@ -1,6 +1,7 @@
 ﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
+using Diabetic.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
@@ -37,6 +38,7 @@ namespace Diabetic.Controllers
         public IActionResult Create()
         {
             RecipeViewModel recipeViewModel = new RecipeViewModel();
+            recipeViewModel.Categories = _categoryRepository.GetAll(); 
             recipeViewModel.SelectedCheckboxes = _productRepository.GetAll().Select(product => new SelectedCheckboxViewModel 
             { 
                 IsChecked = false, 
@@ -45,6 +47,7 @@ namespace Diabetic.Controllers
                 CategoryId = product.CategoryId,
                 Product = product
             }).ToList();
+            
             return View(recipeViewModel);
         }
 
@@ -62,8 +65,8 @@ namespace Diabetic.Controllers
                 ingredients.Add( ingredient );
             }
 
-            bool ingredientsResult = _recipeRepository.AddIngredientsToRecipe(newRecipe, ingredients); 
-
+            bool ingredientsResult = _recipeRepository.AddIngredientsToRecipe(newRecipe, ingredients);
+            SeederService.GenerateSeederForRecipeCreate(newRecipe, ingredients); 
             return RedirectToAction("Index");
         }
 

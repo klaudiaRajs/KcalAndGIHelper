@@ -10,6 +10,7 @@
             <th scope="col">Amount</th>
             <th scope="col">Kcal</th>
             <th scope="col">GI</th>
+            <th scope="col">GL</th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +39,24 @@
                     <td class="table-danger"> @item.Product.GI </td>
                         </text>
                     }
+                @if (Model.IsGreenLG(item.GL))
+                {
+                    <text>
+                    <td class="table-success"> @item.GL </td>
+                    </text>
+                }
+                @if (Model.IsOrangeLG(item.GL))
+                {
+                    <text>
+                    <td class="table-warning"> @item.GL </td>
+                    </text>
+                }
+                @if (Model.IsRedLG(item.GL))
+                {
+                    <text>
+                    <td class="table-danger"> @item.GL </td>
+                    </text>
+                }
             </tr>
         }
         <tr>
@@ -45,6 +64,7 @@
             <td class="text-bg-primary" colspan="2">Total: </td>
             <td class="text-bg-primary">@Model.Recipe.TotalKcal</td>
             <td class="text-bg-primary"></td>
+            <td class="text-bg-primary">@Model.Recipe.TotalGL</td>
         </tr>
     </tbody>
 </table>

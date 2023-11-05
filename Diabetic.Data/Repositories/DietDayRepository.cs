@@ -33,17 +33,23 @@ namespace Diabetic.Data.Repositories
 
         public DayDietDTO GetDay(int id)
         {
-            var day = _db.Day_Recipes.Where(a => a.DayId == id).Select(a => new DayDietDTO
+            try
             {
-                Id = a.Id,
-                BreakfastId = a.BreakfastRecipeId,
-                LunchId = a.LunchRecipeId,
-                DinnerId = a.DinnerRecipeId,
-                SnackId = a.SnackRecipeId,
-                SupperId = a.SupperRecipeId
-            }).FirstOrDefault();
+                var day = _db.Day_Recipes.Where(a => a.Id == id).Select(a => new DayDietDTO
+                {
+                    Id = a.Id,
+                    BreakfastId = a.BreakfastRecipeId,
+                    LunchId = a.LunchRecipeId,
+                    DinnerId = a.DinnerRecipeId,
+                    SnackId = a.SnackRecipeId,
+                    SupperId = a.SupperRecipeId
+                }).FirstOrDefault();
 
-            return day;
+                return day;
+            } catch( Exception ex)
+            {
+                return null; 
+            }
         }
 
         public bool Create(DayDietDTO day)
@@ -64,6 +70,23 @@ namespace Diabetic.Data.Repositories
             {
                 return false;
             }
+        }
+
+        public bool Delete(DayDietDTO day)
+        {
+            try
+            {
+                Day_Recipe day_Recipe = _db.Day_Recipes.Where(a => a.Id == day.Id).FirstOrDefault();
+                _db.Remove(day_Recipe);
+                _db.SaveChanges();
+                return true;
+
+            } catch(Exception e)
+            {
+                return false;
+            }
+            
+            
         }
     }
 }
