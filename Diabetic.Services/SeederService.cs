@@ -28,5 +28,26 @@ namespace Diabetic.Services
 
             File.AppendAllText(path, content); 
         }
+
+        public static void GenerateSeederForProductCreate(Product product)
+        {
+            var path = "C:\\Projects\\Diabetic\\Diabetic\\product-seeder.txt";
+
+            string content = 
+                "new Product { Id = " + product.Id 
+                + ", Name = \"" + product.Name + "\"" +
+                ", KcalPer100g = " + product.KcalPer100g 
+                + ", CarbsPer100g = " + product.CarbsPer100g 
+                + ", Protein = " + product.Protein 
+                + ", Fat = " + product.Fat 
+                + ", Sugar = " + product.Sugar 
+                + ", Fibre = " + product.Fibre 
+                + ", GI = " + product.GI 
+                + ", CategoryId = " + product.CategoryId 
+                + ", GramsPerPortion = " + product.GramsPerPortion 
+                + "}," + Environment.NewLine;
+
+            File.AppendAllText(path, content);
+        }
     }
 }

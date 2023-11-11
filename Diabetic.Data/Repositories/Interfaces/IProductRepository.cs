@@ -10,5 +10,6 @@ namespace Diabetic.Data.Repositories.Interfaces
     public interface IProductRepository
     {
         IEnumerable<Product> GetAll();
+        bool Create(Product product);
     }
 }

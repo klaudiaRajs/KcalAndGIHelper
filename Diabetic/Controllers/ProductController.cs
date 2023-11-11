@@ -2,6 +2,7 @@
 using Diabetic.Data.Repositories;
 using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
+using Diabetic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -77,6 +78,20 @@ namespace Diabetic.Controllers
 
             _productViewModel.Products = products.ToList();
             return View(_productViewModel);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(ProductViewModel productViewModel)
+        {
+            var product = productViewModel.Product;
+            var result = _productRepository.Create(product); 
+            SeederService.GenerateSeederForProductCreate(product);
+            return RedirectToAction("Index"); 
         }
     }
 }

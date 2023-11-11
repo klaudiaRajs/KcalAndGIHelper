@@ -15,6 +15,19 @@ namespace Diabetic.Data.Repositories
         {
         }
 
+        public bool Create(Product product)
+        {
+            try
+            {
+                _db.Products.Add(product);
+                _db.SaveChanges();
+                return true;
+            } catch (Exception ex)
+            {
+                return false; 
+            }
+        }
+
         public IEnumerable<Product> GetAll()
         {
             return _db.Products.ToList();
