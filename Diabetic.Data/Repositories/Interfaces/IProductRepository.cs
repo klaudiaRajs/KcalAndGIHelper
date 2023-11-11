@@ -11,5 +11,7 @@ namespace Diabetic.Data.Repositories.Interfaces
     {
         IEnumerable<Product> GetAll();
         bool Create(Product product);
+        Product GetById(int id);
+        bool Update(Product product);
     }
 }

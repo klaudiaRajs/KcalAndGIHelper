@@ -93,5 +93,21 @@ namespace Diabetic.Controllers
             SeederService.GenerateSeederForProductCreate(product);
             return RedirectToAction("Index"); 
         }
+
+        public IActionResult Details(int id)
+        {
+            var product = _productRepository.GetById(id); 
+            _productViewModel.Product = product;
+            return View("Create", _productViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Details(ProductViewModel model)
+        {
+            var product = model.Product;
+            var result = _productRepository.Update(product);
+            SeederService.GenerateSeederForProductCreate(product);
+            return RedirectToAction("Index");
+        }
     }
 }

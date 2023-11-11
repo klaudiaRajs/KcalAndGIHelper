@@ -32,5 +32,31 @@ namespace Diabetic.Data.Repositories
         {
             return _db.Products.ToList();
         }
+
+        public Product GetById(int id)
+        {
+            try
+            {
+                return _db.Products.Where(a => a.Id == id).FirstOrDefault(); 
+            } catch(Exception ex)
+            {
+                //Add logging 
+                return new Product(); 
+
+            }
+        }
+
+        public bool Update(Product product)
+        {
+            try
+            {
+                _db.Products.Update(product);
+                _db.SaveChanges();
+                return true;
+            } catch(Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

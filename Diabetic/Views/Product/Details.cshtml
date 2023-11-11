@@ -1,57 +1,16 @@
 ﻿@model ProductViewModel
 
-<p> @Model.Hello </p>
-
-<form method="post" class="align-le">
-    <div class="mb-3 row w-50">
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="@Model.Product.Name">Search by name: </label>
-            <input asp-for="@Model.Product.Name" class="form-control" />
-        </div>
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="Model.Product.CategoryId">Select category: </label>
-            @Html.DropDownListFor(m => m.Product.CategoryId,
-            new SelectList(Model.Categories, "Id", "Name"),
-            "Select category")
-        </div>
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Minimum calories: </label>
-            <input asp-for="@Model.CaloryRangeMin" class="form-control" />
-        </div>
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Maximum calories: </label>
-            <input asp-for="@Model.CaloryRangeMax" class="form-control" />
-        </div>
-
-        <div class="input-group input-group-sm">
-            @Html.CheckBoxFor(x => x.Green)
-            <label class="form-check-inline m-2" for="@Model.Green">Green</label>
-        </div>
-        <div class="input-group input-group-sm">
-            @Html.CheckBoxFor(x => x.Orange)
-            <label class="form-check-inline m-2" for="@Model.Orange">Orange</label>
-        </div>
-        <div class="input-group input-group-sm">
-            @Html.CheckBoxFor(x => x.Red)
-            <label class="form-check-inline m-2" for="@Model.Red">Red</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-</form>
-
-<a class="btn btn-primary" asp-controller="Product" asp-action="Create">Create new product</a>
-
 <div class="mt-5">
-    <table class="table w-75">
+    <table class="table">
         <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.GI)</th>
-                <th scope="col" >@nameof(Model.Product.GramsPerPortion)</th>
+                <th scope="col">@nameof(Model.Product.GramsPerPortion)</th>
                 <th scope="col" class="text-center">ŁG</th>
-                <th scope="col" >Action</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -106,6 +65,7 @@
                     }
                     <td class="col col-lg-3">
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning">Details</a>
+                        <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edit</a>
                         <a asp-controller="Product" asp-action="Remove" asp-route-id="@product.Id" class="btn btn-warning">Delete</a>
                     </td>
                 </tr>
