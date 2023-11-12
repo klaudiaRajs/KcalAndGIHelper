@@ -1,0 +1,64 @@
+﻿@model DayToDayDiaryViewModel
+
+<div class="container w-50">
+    @foreach (Meal meal in Model.Meals)
+    {
+        <h3>@meal.Name</h3>
+        <div>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Kcals</th>
+                        <th scope="col">GI</th>
+                        <th scope="col">GL</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (MealDTO mealDto in Model.MealsWithIngredients)
+                    {
+                        if (meal.Id == mealDto.MealId)
+                        {
+                            foreach (IngredientDTO ingredient in mealDto.Ingredients)
+                            {
+                                <tr>
+                                    <td>
+                                        @ingredient.Product.Name
+                                    </td>
+                                    <td>
+                                        @ingredient.Amount
+                                    </td>
+                                    <td>
+                                        @ingredient.Kcals
+                                    </td>
+                                    <td>
+                                        @ingredient.Product.GI
+                                    </td>
+                                    <td>
+                                        To be announced
+                                    </td>
+                                    <td class="col col-lg-2">
+                                        <a asp-controller="DayToDayDiary" asp-action="Remove" asp-route-id="@meal.Id" class="btn btn-warning">Delete</a>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+
+                    }
+                    <tr>
+                        <td class="">Total: </td>
+                        <td></td>
+                        <td>@Model.TotalKcalsPerMeal(meal.Id)</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <a class="btn btn-success mb-5" asp-controller="DayToDayDiary" asp-action="AddToMeal" asp-route-mealId="@meal.Id">Add to @meal.Name</a>
+    }
+</div>

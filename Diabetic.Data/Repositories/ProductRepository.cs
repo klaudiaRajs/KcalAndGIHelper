@@ -28,6 +28,20 @@ namespace Diabetic.Data.Repositories
             }
         }
 
+        public bool Delete(int id)
+        {
+            try
+            {
+                var product = _db.Products.FirstOrDefault(p => p.Id == id);
+                _db.Products.Remove(product);
+                _db.SaveChanges();
+                return true;
+            } catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public IEnumerable<Product> GetAll()
         {
             return _db.Products.ToList();

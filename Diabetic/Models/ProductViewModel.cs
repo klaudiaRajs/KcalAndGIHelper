@@ -11,5 +11,8 @@ namespace Diabetic.Models
         public IEnumerable<Category> Categories { get; set; } = new List<Category>();
         public int CaloryRangeMin { get; set; }
         public int CaloryRangeMax { get; set; }
+        public bool ShouldAllowToAddToMeal { get; set; } = false;
+        public int? SelectedMealId { get; set; }
+        public IEnumerable<Meal> Meals { get; set; }
     }
 }

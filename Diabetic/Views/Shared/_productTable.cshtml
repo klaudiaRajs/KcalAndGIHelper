@@ -1,0 +1,83 @@
+﻿@model ProductViewModel
+
+
+<div class="mt-5">
+    <table class="table w-75">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">@nameof(Model.Product.Name)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.GI)</th>
+                <th scope="col">@nameof(Model.Product.GramsPerPortion)</th>
+                <th scope="col" class="text-center">ŁG</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Product product in Model.Products)
+            {
+                <tr>
+                    <th scope="row">
+                        @product.Id
+                    </th>
+                    <td>
+                        @(char.ToUpper(product.Name[0]) + product.Name.Substring(1))
+                    </td>
+                    <td class="text-center">
+                        @product.KcalPer100g
+                    </td>
+                    @if (Model.IsGreenGI(product.GI))
+                    {
+                        <text>
+                        <td class="table-success text-center"> @product.GI </td>
+                        </text>
+                    }
+                    @if (Model.IsOrangeGI(product.GI))
+                    {
+                        <text>
+                        <td class="table-warning text-center"> @product.GI </td>
+                        </text>
+                    }
+                    @if (Model.IsRedGI(product.GI))
+                    {
+                        <text>
+                        <td class="table-danger text-center"> @product.GI </td>
+                        </text>
+                    }
+                    <td class="col col-lg-1 text-center">@product.GramsPerPortion</td>
+                    @if (Model.IsGreenLG((product.GI * product.CarbsPer100g) / 100))
+                    {
+                        <text>
+                        <td class="table-success text-center"> @(Math.Round(((product.GI * product.CarbsPer100g) / 100), 1)) </td>
+                        </text>
+                    }
+                    @if (Model.IsOrangeLG((product.GI * product.CarbsPer100g) / 100))
+                    {
+                        <text>
+                        <td class="table-warning text-center"> @(Math.Floor((product.GI * product.CarbsPer100g) / 100)) </td>
+                        </text>
+                    }
+                    @if (Model.IsRedLG((product.GI * product.CarbsPer100g) / 100))
+                    {
+                        <text>
+                        <td class="table-danger text-center"> @(Math.Floor((product.GI * product.CarbsPer100g) / 100)) </td>
+                        </text>
+                    }
+                    <td class="col col-lg-3">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning">Details</a>
+                        <a asp-controller="Product" asp-action="Remove" asp-route-id="@product.Id" class="btn btn-warning">Delete</a>
+                        @if (Model.ShouldAllowToAddToMeal == true)
+                        {
+                            @Html.DropDownListFor(m => m.SelectedMealId,
+                                new SelectList(Model.Meals, "Id", "Name"),
+                                "Select meal")
+                            
+                            <a asp-controller="DayToDayDiary" asp-action="AddToMeal" asp-route-id="@product.Id" class="btn btn-warning">Add to meal</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

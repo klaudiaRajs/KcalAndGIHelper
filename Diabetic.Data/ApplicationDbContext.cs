@@ -17,6 +17,8 @@ namespace Diabetic.Data.Data
         public DbSet<Day> Days { get; set; }
         public DbSet<Day_Recipe> Day_Recipes { get; set; }
         public DbSet<MealRecipe> MealRecipes { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<Ingredient_Meal_Day> Ingredient_Meal_Days { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

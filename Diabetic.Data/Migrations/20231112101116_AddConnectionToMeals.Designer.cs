@@ -4,6 +4,7 @@ using Diabetic.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diabetic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231112101116_AddConnectionToMeals")]
+    partial class AddConnectionToMeals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,43 +161,6 @@ namespace Diabetic.Data.Migrations
                             LunchRecipeId = 9,
                             SupperRecipeId = 10
                         });
-                });
-
-            modelBuilder.Entity("Diabetic.Models.Ingredient_Meal_Day", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<float?>("RecipePortion")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MealId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Ingredient_Meal_Days");
                 });
 
             modelBuilder.Entity("Diabetic.Models.Meal", b =>
@@ -2429,29 +2394,6 @@ namespace Diabetic.Data.Migrations
                             ProductId = 134,
                             RecipeId = 6
                         });
-                });
-
-            modelBuilder.Entity("Diabetic.Models.Ingredient_Meal_Day", b =>
-                {
-                    b.HasOne("Diabetic.Models.Meal", "Meal")
-                        .WithMany()
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Diabetic.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("Diabetic.Models.Recipe", "Recipe")
-                        .WithMany()
-                        .HasForeignKey("RecipeId");
-
-                    b.Navigation("Meal");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("Diabetic.Models.Meal", b =>

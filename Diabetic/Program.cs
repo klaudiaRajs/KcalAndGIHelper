@@ -17,6 +17,8 @@ builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddTransient<IDietDayRepository, DietDayRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IMealRepository, MealRepository>();
+builder.Services.AddTransient<IDayToDayDiaryRepository, DayToDayDiaryRepository>();
 
 var app = builder.Build();
 

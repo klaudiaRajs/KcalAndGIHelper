@@ -1,4 +1,5 @@
 ﻿using Diabetic.Models;
+using Diabetic.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace Diabetic.Data.Repositories.Interfaces
 {
-    public interface IProductRepository
+    public interface IDayToDayDiaryRepository
     {
-        IEnumerable<Product> GetAll();
-        bool Create(Product product);
-        Product GetById(int id);
-        bool Update(Product product);
         bool Delete(int id);
+        List<MealDTO> GetAllByDate(DateTime? date = null);
+        bool Create(Ingredient_Meal_Day ingredient_Meal_Day); 
     }
 }
