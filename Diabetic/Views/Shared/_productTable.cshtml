@@ -27,52 +27,18 @@
                     <td class="text-center">
                         @ingredient.Product.KcalPer100g
                     </td>
-                    @if (Model.IsGreenGI(ingredient.Product.GI))
-                    {
-                        <text>
-                        <td class="table-success text-center"> @ingredient.Product.GI </td>
-                        </text>
-                    }
-                    @if (Model.IsOrangeGI(ingredient.Product.GI))
-                    {
-                        <text>
-                        <td class="table-warning text-center"> @ingredient.Product.GI </td>
-                        </text>
-                    }
-                    @if (Model.IsRedGI(ingredient.Product.GI))
-                    {
-                        <text>
-                        <td class="table-danger text-center"> @ingredient.Product.GI </td>
-                        </text>
-                    }
+                    <td class="@ingredient.GetGIRating() text-center"> @ingredient.Product.GI </td>
                     <td class="col col-lg-1 text-center">@ingredient.Product.GramsPerPortion</td>
-                    @if (Model.IsGreenLG((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100))
-                    {
-                        <text>
-                        <td class="table-success text-center"> @(Math.Round(((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100), 1)) </td>
-                        </text>
-                    }
-                    @if (Model.IsOrangeLG((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100))
-                    {
-                        <text>
-                        <td class="table-warning text-center"> @(Math.Floor((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100)) </td>
-                        </text>
-                    }
-                    @if (Model.IsRedLG((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100))
-                    {
-                        <text>
-                        <td class="table-danger text-center"> @(Math.Floor((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100)) </td>
-                        </text>
-                    }
+                    <td class="@ingredient.GetGLRating() text-center"> @ingredient.GL </td>
                     <td class="col col-lg-3">
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Details</a>
                         <a asp-controller="Product" asp-action="Remove" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Delete</a>
                         @if (Model.ShouldAllowToAddToMeal == true)
                         {
                             @Html.DropDownListFor(m => m.SelectedMealId,
-                                new SelectList(Model.Meals, "Id", "Name"),
-                                "Select meal")
-                            
+                                     new SelectList(Model.Meals, "Id", "Name"),
+                                     "Select meal")
+
                             <a asp-controller="DayToDayDiary" asp-action="AddToMeal" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Add to meal</a>
                         }
                     </td>
