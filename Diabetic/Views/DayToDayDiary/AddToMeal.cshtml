@@ -1,14 +1,26 @@
-﻿@model AddToMealViewModel 
+﻿@model AddToMealViewModel
 
+<button class="btn btn-success" onclick="addMore()">Add more</button>
 <form method="post">
-    @Html.DropDownListFor(m => m.SelectedMealId,
-    new SelectList(Model.Meals, "Id", "Name"),
-    "Select")
-    @Html.DropDownListFor(m => m.SelectedProductId,
-    new SelectList(Model.Products, "Id", "Name"),
-    "Select")
-    <input asp-for="@Model.Amount" />
+    <div class="wrapper">
+        <div class="row-fluid">
+            <div>
+                @Html.DropDownListFor(m => m.SelectedMealId,
+                         new SelectList(Model.Meals, "Id", "Name"),
+                         "Select")
+                @Html.DropDownListFor(m => m.SelectedProductId,
+                         new SelectList(Model.Products, "Id", "Name"),
+                         "Select")
+                <input asp-for="@Model.Amount" />
+            </div>
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Add</button>
 </form>
 
 @* @await Html.PartialAsync("~/Views/Shared/_productTable.cshtml", Model);  *@
+<script>
+    function addMore() {
+        $(".row-fluid:last").clone().appendTo(".wrapper");
+    }
+</script>

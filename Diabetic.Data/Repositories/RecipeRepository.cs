@@ -21,12 +21,13 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                _db.Recipe_Ingredients.AddRange(ingredients); 
+                _db.Recipe_Ingredients.AddRange(ingredients);
                 _db.SaveChanges();
-                return true; 
-            } catch(Exception e)
+                return true;
+            }
+            catch (Exception e)
             {
-                return false; 
+                return false;
             }
 
         }
@@ -38,15 +39,42 @@ namespace Diabetic.Data.Repositories
                 _db.Recipes.Add(recipe);
                 _db.SaveChanges();
                 return true;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                return false; 
+                return false;
             }
         }
 
-        public IEnumerable<Recipe> GetAllRecipes()
+        public IEnumerable<RecipeDTO> GetAllRecipes()
         {
-            return _db.Recipes.ToList();
+            try
+            {
+                List<RecipeDTO> recipes = new List<RecipeDTO>();
+                var result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).ToList();
+
+                foreach (var item in result)
+                {
+                    var recipe = recipes.Where(a => a.Id == item.RecipeId).FirstOrDefault();
+                    if (recipe != null)
+                    {
+                        recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount });
+                    }
+                    else
+                    {
+                        var newRecipe = new RecipeDTO();
+                        newRecipe.Id = item.RecipeId;
+                        newRecipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount });
+                        newRecipe.Name = item.Recipe.Name;
+                        recipes.Add(newRecipe);
+                    }
+                }
+                return recipes;
+            }
+            catch (Exception ex)
+            {
+                return Enumerable.Empty<RecipeDTO>();
+            }
         }
 
         //TODO Poprawić zjebaną relacją!! 
@@ -67,7 +95,8 @@ namespace Diabetic.Data.Repositories
             try
             {
                 return _db.Recipe_Ingredients.Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new List<Recipe_Ingredients>();
             }
@@ -84,12 +113,13 @@ namespace Diabetic.Data.Repositories
                     .Where(a => !relation.Contains(a.Id))
                     .Include(a => a.Recipe_Ingredients)
                     .ThenInclude(a => a.Product)
-                    .Select(a => 
+                    .Select(a =>
                         new RecipeDTO { Id = a.Id, Name = a.Name, Recipe_Ingredients = a.Recipe_Ingredients }
                     )
                     .ToList();
                 return recipes;
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return new List<RecipeDTO>();
             }
@@ -116,10 +146,11 @@ namespace Diabetic.Data.Repositories
                 var result = _db.Recipes.Where(a => a.Id == recipe.Id).FirstOrDefault();
                 _db.Remove(result);
                 _db.SaveChanges();
-                return true; 
-            } catch(Exception ex)
+                return true;
+            }
+            catch (Exception ex)
             {
-                return false; 
+                return false;
             }
         }
 
@@ -129,10 +160,11 @@ namespace Diabetic.Data.Repositories
             {
                 _db.Recipe_Ingredients.RemoveRange(ingredients);
                 _db.SaveChanges();
-                return true; 
-            } catch(Exception ex)
+                return true;
+            }
+            catch (Exception ex)
             {
-                return false; 
+                return false;
             }
         }
 
@@ -141,11 +173,12 @@ namespace Diabetic.Data.Repositories
             try
             {
                 _db.Recipes.Update(recipe);
-                _db.SaveChanges(); 
+                _db.SaveChanges();
                 return true;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                return false; 
+                return false;
             }
         }
 
@@ -153,10 +186,11 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                _db.UpdateRange(toBeUpdated); 
+                _db.UpdateRange(toBeUpdated);
                 _db.SaveChanges();
-                return true; 
-            } catch(Exception ex)
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
