@@ -21,42 +21,8 @@
                 <td>@item.Product.Name</td>
                 <td>@item.Amount</td>
                 <td>@item.Kcals </td>
-                    @if (Model.IsGreenGI(item.Product.GI))
-                    {
-                        <text>
-                    <td class="table-success"> @item.Product.GI </td>
-                        </text>
-                    }
-                    @if (Model.IsOrangeGI(item.Product.GI))
-                    {
-                        <text>
-                    <td class="table-warning"> @item.Product.GI </td>
-                        </text>
-                    }
-                    @if (Model.IsRedGI(item.Product.GI))
-                    {
-                        <text>
-                    <td class="table-danger"> @item.Product.GI </td>
-                        </text>
-                    }
-                @if (Model.IsGreenLG(item.GL))
-                {
-                    <text>
-                    <td class="table-success"> @item.GL </td>
-                    </text>
-                }
-                @if (Model.IsOrangeLG(item.GL))
-                {
-                    <text>
-                    <td class="table-warning"> @item.GL </td>
-                    </text>
-                }
-                @if (Model.IsRedLG(item.GL))
-                {
-                    <text>
-                    <td class="table-danger"> @item.GL </td>
-                    </text>
-                }
+                <td class="@item.GetGIRating()"> @item.Product.GI </td>
+                <td class="@item.GetGLRating()"> @item.GL </td>
             </tr>
         }
         <tr>

@@ -2,7 +2,7 @@
 
 namespace Diabetic.Models.DTOs
 {
-    public class RecipeDTO
+    public class RecipeDTO : BaseDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -37,21 +37,20 @@ namespace Diabetic.Models.DTOs
         public bool Green { get; set; }
         public bool Orange { get; set; }
         public bool Red { get; set; }
-        public int _maxGreen { get; set; } = 39;
-        public int _maxOrange { get; set; } = 55;
+
         public bool IsGreen(int gI)
         {
-            return gI <= _maxGreen;
+            return gI <= _maxGreenGI;
         }
 
         public bool IsOrange(int gI)
         {
-            return (gI > _maxGreen && gI <= _maxOrange);
+            return (gI > _maxGreenGI && gI <= _maxOrangeGI);
         }
 
         public bool IsRed(int gI)
         {
-            return gI > _maxOrange;
+            return gI > _maxOrangeGI;
         }
     }
 }

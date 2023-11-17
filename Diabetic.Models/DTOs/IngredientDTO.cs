@@ -1,6 +1,6 @@
 ﻿namespace Diabetic.Models.DTOs
 {
-    public class IngredientDTO
+    public class IngredientDTO : BaseDTO
     {
         public Product Product { get; set; }
         public int Amount { get; set; }
@@ -18,6 +18,38 @@
                 return Math.Floor((Product.GI * Product.CarbsPer100g) / 100); 
             }
         }
-        
+        public string GetGIRating()
+        {
+            if (Product.GI > _maxGreenGI && Product.GI <= _maxOrangeGI)
+            {
+                return "table-warning";
+            }
+            if (Product.GI <= _maxGreenGI)
+            {
+                return "table-success";
+            }
+            if (Product.GI > _maxOrangeGI)
+            {
+                return "table-danger";
+            }
+            return "";
+        }
+
+        public string GetGLRating()
+        {
+            if (GL > _maxGreenLG && GL <= _maxOrangeLG)
+            {
+                return "table-warning"; 
+            }
+            if ( GL <= _maxGreenLG)
+            {
+                return "table-success";
+            }
+            if( GL > _maxOrangeLG)
+            {
+                return "table-danger"; 
+            }
+            return "";
+        }
     }
 }
