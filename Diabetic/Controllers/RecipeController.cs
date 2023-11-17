@@ -42,10 +42,10 @@ namespace Diabetic.Controllers
             recipeViewModel.SelectedCheckboxes = _productRepository.GetAll().Select(product => new SelectedCheckboxViewModel 
             { 
                 IsChecked = false, 
-                Id = product.Id,
-                Name = product.Name,
-                CategoryId = product.CategoryId,
-                Product = product
+                Id = product.Product.Id,
+                Name = product.Product.Name,
+                CategoryId = product.Product.CategoryId,
+                Product = product.Product
             }).ToList();
             
             return View(recipeViewModel);
@@ -96,13 +96,13 @@ namespace Diabetic.Controllers
             }
             model.Recipe = recipe; 
             model.SelectedCheckboxes = _productRepository.GetAll()
-            .Select(product => new SelectedCheckboxViewModel
+            .Select(ingredient => new SelectedCheckboxViewModel
             {
                 IsChecked = false,
-                Id = product.Id,
-                Name = product.Name,
-                CategoryId = product.CategoryId, 
-                Product = product
+                Id = ingredient.Product.Id,
+                Name = ingredient.Product.Name,
+                CategoryId = ingredient.Product.CategoryId, 
+                Product = ingredient.Product
             }).ToList();
 
             var ingredients = _recipeRepository.GetIngredientsByRecipe(id);

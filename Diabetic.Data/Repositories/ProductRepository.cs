@@ -1,6 +1,7 @@
 ﻿using Diabetic.Data.Data;
 using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
+using Diabetic.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,9 +43,19 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<IngredientDTO> GetAll()
         {
-            return _db.Products.ToList();
+            try
+            {
+                return _db.Products.Select(product => new IngredientDTO
+                {
+                    Product = product 
+                }).ToList();
+            } catch (Exception ex)
+            {
+                return Enumerable.Empty<IngredientDTO>();
+            }
+            
         }
 
         public Product GetById(int id)
