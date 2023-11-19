@@ -1,6 +1,10 @@
 ﻿@model DayToDayDiaryViewModel
 
 <div class="container w-50">
+    <h4>Total kcal for today: @Model.TotalKcalsForDay</h4> <p> Remaining: @(1500 - Model.TotalKcalsForDay)</p>
+    <h4>Total GL for today: @Model.TotalGLForDay</h4>
+    
+
     @foreach (Meal meal in Model.Meals)
     {
         <h3>@meal.Name</h3>
@@ -33,14 +37,14 @@
                                     <td>
                                         @ingredient.Kcals
                                     </td>
-                                    <td>
+                                    <td class="@ingredient.GetGIRating()">
                                         @ingredient.Product.GI
                                     </td>
-                                    <td>
-                                        To be announced
+                                    <td class="@ingredient.GetGLRating()">
+                                        @ingredient.GL
                                     </td>
                                     <td class="col col-lg-2">
-                                        <a asp-controller="DayToDayDiary" asp-action="Remove" asp-route-id="@meal.Id" class="btn btn-warning">Delete</a>
+                                        <a asp-controller="DayToDayDiary" asp-action="Remove" asp-route-productId="@ingredient.Product.Id" asp-route-mealId="@meal.Id" asp-route-addedTo="@DateTime.Now.Date" class="btn btn-danger">-</a>
                                     </td>
                                 </tr>
 
@@ -53,7 +57,7 @@
                         <td></td>
                         <td>@Model.TotalKcalsPerMeal(meal.Id)</td>
                         <td></td>
-                        <td></td>
+                        <td>@Model.TotalGLPerMeal(meal.Id)</td>
                     </tr>
 
                 </tbody>

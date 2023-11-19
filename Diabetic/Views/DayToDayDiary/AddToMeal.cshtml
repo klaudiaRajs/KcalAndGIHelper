@@ -1,26 +1,34 @@
-﻿@model AddToMealViewModel
+﻿@model IEnumerable<IngredientsToMealDTO>
 
-<button class="btn btn-success" onclick="addMore()">Add more</button>
+
+<button class="btn btn-success" onclick="addMore()">+</button>
 <form method="post">
     <div class="wrapper">
-        <div class="row-fluid">
-            <div>
-                @Html.DropDownListFor(m => m.SelectedMealId,
-                         new SelectList(Model.Meals, "Id", "Name"),
-                         "Select")
-                @Html.DropDownListFor(m => m.SelectedProductId,
-                         new SelectList(Model.Products, "Id", "Name"),
-                         "Select")
-                <input asp-for="@Model.Amount" />
+        @for (var i = 0; i < Model.Count(); i++)
+        {
+            <div class="row-fluid">
+                
+                <div>
+                    @Html.DropDownListFor(m => Model.ElementAt(i).SelectedMealId, new SelectList(Model.ElementAt(i).Meals, "Id", "Name"), "Select", new { required = "required" })
+                    @Html.DropDownListFor(m => Model.ElementAt(i).SelectedProductId, new SelectList(Model.ElementAt(i).Products, "ProductId", "ProductName"), "Select", new { required = "required" })
+                    <input asp-for="@Model.ElementAt(i).Amount" required/>
+                </div>
             </div>
-        </div>
+        }
     </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button class="btn btn-primary">Add</button>
 </form>
-
-@* @await Html.PartialAsync("~/Views/Shared/_productTable.cshtml", Model);  *@
 <script>
+    var index = @Model.Count();
     function addMore() {
-        $(".row-fluid:last").clone().appendTo(".wrapper");
+        var newRow = $(".row-fluid:last").clone();
+        //newRow.find(':input').val(''); // Clear input values
+        newRow.find('select').prop('selectedIndex', 0); // Reset dropdowns
+        newRow.find(':input').each(function () {
+            var name = $(this).attr('name').replace(`[${index - 1}]`, `[${index}]`);
+            $(this).attr('name', name);
+        });
+        newRow.appendTo(".wrapper");
+        index++;
     }
 </script>

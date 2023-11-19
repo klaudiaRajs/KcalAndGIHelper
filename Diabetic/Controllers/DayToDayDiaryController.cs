@@ -29,26 +29,79 @@ namespace Diabetic.Controllers
             return View(_viewModel);
         }
 
-        public IActionResult Remove(int id)
-        {
-            bool result = _dayToDayDiaryRepository.Delete(id);
-            return RedirectToAction("Today");
-        }
-
         public IActionResult AddToMeal(int mealId)
         {
-            AddToMealViewModel viewModel = new AddToMealViewModel();
+            List<IngredientsToMealDTO> addToMealViewModels = new List<IngredientsToMealDTO>();
+            IngredientsToMealDTO viewModel = new IngredientsToMealDTO();
             viewModel.Meals = _mealRepository.GetAll();
-            viewModel.Products = _productRepository.GetAll(); 
+            viewModel.Products = _productRepository.GetAll().ToList(); 
             viewModel.SelectedMealId = mealId;
-            return View(viewModel);
+            addToMealViewModels.Add(viewModel);
+            return View(addToMealViewModels);
         }
 
         [HttpPost]
-        public IActionResult AddToMeal(AddToMealViewModel model)
+        public IActionResult AddToMeal(IFormCollection form)
         {
-            var entity = new Ingredient_Meal_Day { AddedAt = DateTime.Now, Amount = model.Amount, MealId = model.SelectedMealId, ProductId = model.SelectedProductId };
-            _dayToDayDiaryRepository.Create(entity);
+            List<IngredientsToMealDTO> ingredients = MapAddViewModelFromFormCollection(form); 
+            bool result = _dayToDayDiaryRepository.InsertIngredients(ingredients);
+            return RedirectToAction("Today"); 
+        }
+
+        private List<IngredientsToMealDTO> MapAddViewModelFromFormCollection(IFormCollection form)
+        {
+            List<IngredientsToMealDTO> ingredients = new List<IngredientsToMealDTO>();
+            int numberOfLines = form.First().Value.Count - 1;
+            for (int i = 0; i <= numberOfLines; i++)
+            {
+                ingredients.Add(new IngredientsToMealDTO());
+            }
+
+            foreach (var item in form)
+            {
+                if (nameof(IngredientsToMealDTO.SelectedMealId) == item.Key)
+                {
+                    for (int i = 0; i < item.Value.Count; i++)
+                    {
+                        string? value = item.Value[i];
+                        var viewModel = ingredients.ElementAt(i);
+                        viewModel.SelectedMealId = int.Parse(value);
+                    }
+                }
+                if (nameof(IngredientsToMealDTO.Amount) == item.Key)
+                {
+                    for (int i = 0; i < item.Value.Count; i++)
+                    {
+                        string? value = item.Value[i];
+                        var viewModel = ingredients.ElementAt(i);
+                        viewModel.Amount = int.Parse(value);
+                    }
+                }
+                if (nameof(IngredientsToMealDTO.SelectedProductId) == item.Key)
+                {
+                    for (int i = 0; i < item.Value.Count; i++)
+                    {
+                        string? value = item.Value[i];
+                        var viewModel = ingredients.ElementAt(i);
+                        viewModel.SelectedProductId = int.Parse(value);
+                        var product = _productRepository.GetById(viewModel.SelectedProductId);
+                        viewModel.Products.Add(new IngredientDTO { Product = product, Amount = viewModel.Amount });
+
+                    }
+                }
+            }
+            return ingredients; 
+        }
+
+        
+        public IActionResult Remove(int productId, int mealId, string addedTo)
+        {
+            DateTime dateTime = DateTime.Parse(addedTo);
+            Ingredient_Meal_Day record = _dayToDayDiaryRepository.GetByProductMealAndDay(productId, mealId, dateTime); 
+            if (record != null)
+            {
+                _dayToDayDiaryRepository.Delete(record.Id); 
+            }
             return RedirectToAction("Today"); 
         }
     }

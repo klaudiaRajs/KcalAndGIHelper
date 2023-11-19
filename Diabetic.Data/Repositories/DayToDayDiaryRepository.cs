@@ -74,5 +74,41 @@ namespace Diabetic.Data.Repositories
                 return new List<MealDTO>();
             }
         }
+
+        public Ingredient_Meal_Day GetByProductMealAndDay(int productId, int mealId, DateTime? dateTime)
+        {
+            try
+            {
+                var result = _db.Ingredient_Meal_Days.Where(a => a.ProductId == productId && a.MealId == mealId && a.AddedAt.Date == dateTime.GetValueOrDefault().Date).FirstOrDefault();
+                return result; 
+            } catch (Exception e)
+            {
+                return null; 
+            }
+        }
+
+        public bool InsertIngredients(List<IngredientsToMealDTO> ingredients)
+        {
+            try
+            {
+                List<Ingredient_Meal_Day> selectedIngredients = new List<Ingredient_Meal_Day>();
+                foreach (var item in ingredients)
+                {
+                    var ingredient = new Ingredient_Meal_Day();
+                    ingredient.MealId = item.SelectedMealId;
+                    ingredient.ProductId = item.SelectedProductId;
+                    ingredient.AddedAt = DateTime.Now;
+                    ingredient.Amount = item.Amount;
+                    selectedIngredients.Add(ingredient);
+                }
+                _db.Ingredient_Meal_Days.AddRange(selectedIngredients);
+                _db.SaveChanges();
+
+                return true;
+            } catch(Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

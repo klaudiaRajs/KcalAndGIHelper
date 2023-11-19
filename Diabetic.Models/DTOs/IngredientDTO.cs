@@ -4,18 +4,22 @@
     {
         public Product Product { get; set; }
         public int Amount { get; set; }
-        public double Kcals {
+        public double Kcals
+        {
             get
             {
                 return Math.Round((Product.KcalPer100g * ((double)Amount / (double)100)));
             }
         }
 
+        public string ProductName { get { return Product.Name; } }
+        public int ProductId { get { return Product.Id; } }
+
         public double GL
         {
             get
             {
-                return Math.Floor((Product.GI * Product.CarbsPer100g) / 100); 
+                return Math.Floor((Product.GI * Product.CarbsPer100g) / 100);
             }
         }
         public string GetGIRating()
@@ -39,15 +43,15 @@
         {
             if (GL > _maxGreenLG && GL <= _maxOrangeLG)
             {
-                return "table-warning"; 
+                return "table-warning";
             }
-            if ( GL <= _maxGreenLG)
+            if (GL <= _maxGreenLG)
             {
                 return "table-success";
             }
-            if( GL > _maxOrangeLG)
+            if (GL > _maxOrangeLG)
             {
-                return "table-danger"; 
+                return "table-danger";
             }
             return "";
         }
