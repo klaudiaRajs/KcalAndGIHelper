@@ -1,6 +1,7 @@
 using Diabetic.Data.Data;
 using Diabetic.Data.Repositories;
 using Diabetic.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
+builder.Services.AddDefaultIdentity<IdentityUser>(option => option.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddTransient<IDietDayRepository, DietDayRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
@@ -40,5 +42,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Product}/{action=Index}/{id?}");
-
+app.MapRazorPages(); 
 app.Run();
