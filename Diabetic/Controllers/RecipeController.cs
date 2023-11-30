@@ -7,16 +7,10 @@ using System.Security.Cryptography;
 
 namespace Diabetic.Controllers
 {
-    public class RecipeController : Controller
+    public class RecipeController : BaseController
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IRecipeRepository _recipeRepository; 
-        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository) {
-            _recipeRepository = recipeRepository;
-            _productRepository = productRepository;
-            this._categoryRepository = categoryRepository;
-        }
+        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository) 
+            : base(recipeRepository, productRepository, categoryRepository){}
 
         public IActionResult Index()
         {

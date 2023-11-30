@@ -3,29 +3,35 @@ using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diabetic.Controllers
 {
-    public class DayToDayDiaryController : Controller
+    public class DayToDayDiaryController : BaseController
     {
         private DayToDayDiaryViewModel _viewModel = new DayToDayDiaryViewModel();
         private readonly IMealRepository _mealRepository;
         private readonly IDayToDayDiaryRepository _dayToDayDiaryRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
 
-        public DayToDayDiaryController(IMealRepository mealRepository, IDayToDayDiaryRepository dayToDayDiaryRepository, IProductRepository productRepository, ICategoryRepository categoryRepository)
+        public DayToDayDiaryController(
+            IRecipeRepository recipeRepository, 
+            IProductRepository productRepository, 
+            ICategoryRepository categoryRepository, 
+            IDayToDayDiaryRepository dayToDayDiaryRepository,
+            IMealRepository mealRepository
+        ) 
+        : base(recipeRepository, productRepository, categoryRepository)
         {
             this._mealRepository = mealRepository;
             _dayToDayDiaryRepository = dayToDayDiaryRepository;
-            this._productRepository = productRepository;
-            this._categoryRepository = categoryRepository;
         }
+
         public ActionResult Today()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _viewModel.Meals = _mealRepository.GetAll();
-            _viewModel.MealsWithIngredients = _dayToDayDiaryRepository.GetAllByDate();
+            _viewModel.MealsWithIngredients = _dayToDayDiaryRepository.GetAllByDate(userId);
             return View(_viewModel);
         }
 
@@ -43,12 +49,13 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult AddToMeal(IFormCollection form)
         {
-            List<IngredientsToMealDTO> ingredients = MapAddViewModelFromFormCollection(form); 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+            List<IngredientsToMealDTO> ingredients = MapAddViewModelFromFormCollection(form, userId); 
             bool result = _dayToDayDiaryRepository.InsertIngredients(ingredients);
             return RedirectToAction("Today"); 
         }
 
-        private List<IngredientsToMealDTO> MapAddViewModelFromFormCollection(IFormCollection form)
+        private List<IngredientsToMealDTO> MapAddViewModelFromFormCollection(IFormCollection form, string userId)
         {
             List<IngredientsToMealDTO> ingredients = new List<IngredientsToMealDTO>();
             int numberOfLines = form.First().Value.Count - 1;
@@ -59,6 +66,7 @@ namespace Diabetic.Controllers
 
             foreach (var item in form)
             {
+                
                 if (nameof(IngredientsToMealDTO.SelectedMealId) == item.Key)
                 {
                     for (int i = 0; i < item.Value.Count; i++)
@@ -83,6 +91,7 @@ namespace Diabetic.Controllers
                     {
                         string? value = item.Value[i];
                         var viewModel = ingredients.ElementAt(i);
+                        viewModel.UserId = userId; 
                         viewModel.SelectedProductId = int.Parse(value);
                         var product = _productRepository.GetById(viewModel.SelectedProductId);
                         viewModel.Products.Add(new IngredientDTO { Product = product, Amount = viewModel.Amount });

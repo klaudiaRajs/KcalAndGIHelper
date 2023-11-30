@@ -3,10 +3,11 @@ using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity; 
 
 namespace Diabetic.Controllers
 {
-    public class DietDayController : Controller
+    public class DietDayController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly IRecipeRepository _recipeRepository;
 
@@ -70,6 +71,7 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Create(DayDietViewModel model)
         {
+
             var result = _dietDayRepository.Create(model.RecipesForDay);
             return RedirectToAction("Index");
         }

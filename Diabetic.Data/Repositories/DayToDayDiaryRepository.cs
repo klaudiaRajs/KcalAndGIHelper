@@ -48,7 +48,7 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public List<MealDTO> GetAllByDate(DateTime? date = null)
+        public List<MealDTO> GetAllByDate(string userId, DateTime? date = null)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace Diabetic.Data.Repositories
                 {
                     date = DateTime.Now.Date;
                 }
-                var ingredientsPerDate = _db.Ingredient_Meal_Days.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date).ToList();
+                var ingredientsPerDate = _db.Ingredient_Meal_Days.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date && record.UserId == userId).ToList();
                 List<MealDTO> mealsWithIngredients = new List<MealDTO>();
                 
                 foreach( var ingredient in ingredientsPerDate )
@@ -99,6 +99,7 @@ namespace Diabetic.Data.Repositories
                     ingredient.ProductId = item.SelectedProductId;
                     ingredient.AddedAt = DateTime.Now;
                     ingredient.Amount = item.Amount;
+                    ingredient.UserId = item.UserId;
                     selectedIngredients.Add(ingredient);
                 }
                 _db.Ingredient_Meal_Days.AddRange(selectedIngredients);

@@ -1,5 +1,4 @@
 ﻿using Diabetic.Models.DTOs;
-using Xunit.Abstractions;
 
 namespace Diabetic.Models
 {

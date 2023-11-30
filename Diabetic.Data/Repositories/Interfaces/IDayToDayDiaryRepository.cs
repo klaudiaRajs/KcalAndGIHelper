@@ -11,7 +11,7 @@ namespace Diabetic.Data.Repositories.Interfaces
     public interface IDayToDayDiaryRepository
     {
         bool Delete(int id);
-        List<MealDTO> GetAllByDate(DateTime? date = null);
+        List<MealDTO> GetAllByDate(string userId, DateTime? date = null);
         bool Create(Ingredient_Meal_Day ingredient_Meal_Day);
         bool InsertIngredients(List<IngredientsToMealDTO> ingredients);
         Ingredient_Meal_Day GetByProductMealAndDay(int productId, int mealId, DateTime? dateTime);

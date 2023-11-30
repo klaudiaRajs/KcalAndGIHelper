@@ -7,5 +7,6 @@
         public int SelectedProductId { get; set; }
         public List<IngredientDTO> Products { get; set; } = new List<IngredientDTO>();
         public int Amount { get; set; }
+        public string UserId { get; set; }
     }
 }
