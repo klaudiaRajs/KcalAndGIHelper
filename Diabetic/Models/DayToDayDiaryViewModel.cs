@@ -5,7 +5,8 @@ namespace Diabetic.Models
     public class DayToDayDiaryViewModel
     {
         public IEnumerable<Meal> Meals { get; set; }
-        public IEnumerable<MealDTO> MealsWithIngredients { get; set; }
+        public IEnumerable<MealDTO> MealsWithIngredients { get; set; } = new List<MealDTO>();
+        public DateTime GetDate { get; set; } = DateTime.Now;
         public int TotalKcalsForDay
         {
             get

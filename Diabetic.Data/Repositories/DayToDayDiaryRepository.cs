@@ -56,7 +56,7 @@ namespace Diabetic.Data.Repositories
                 {
                     date = DateTime.Now.Date;
                 }
-                var ingredientsPerDate = _db.Ingredient_Meal_Days.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date && record.UserId == userId).ToList();
+                var ingredientsPerDate = _db.Ingredient_Meal_Days.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date.Value.Date && record.UserId == userId).ToList();
                 List<MealDTO> mealsWithIngredients = new List<MealDTO>();
                 
                 foreach( var ingredient in ingredientsPerDate )
@@ -87,7 +87,7 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public bool InsertIngredients(List<IngredientsToMealDTO> ingredients)
+        public bool InsertIngredients(List<IngredientsToMealDTO> ingredients, DateTime dateTime)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Diabetic.Data.Repositories
                     var ingredient = new Ingredient_Meal_Day();
                     ingredient.MealId = item.SelectedMealId;
                     ingredient.ProductId = item.SelectedProductId;
-                    ingredient.AddedAt = DateTime.Now;
+                    ingredient.AddedAt = dateTime;
                     ingredient.Amount = item.Amount;
                     ingredient.UserId = item.UserId;
                     selectedIngredients.Add(ingredient);

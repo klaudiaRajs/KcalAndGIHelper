@@ -13,7 +13,7 @@ namespace Diabetic.Data.Repositories.Interfaces
         bool Delete(int id);
         List<MealDTO> GetAllByDate(string userId, DateTime? date = null);
         bool Create(Ingredient_Meal_Day ingredient_Meal_Day);
-        bool InsertIngredients(List<IngredientsToMealDTO> ingredients);
+        bool InsertIngredients(List<IngredientsToMealDTO> ingredients, DateTime dateTime);
         Ingredient_Meal_Day GetByProductMealAndDay(int productId, int mealId, DateTime? dateTime);
     }
 }
