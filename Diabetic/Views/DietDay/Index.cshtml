@@ -1,6 +1,6 @@
 ﻿@model DayDietViewModel
 
-<div class="container">
+<div class="container-fluid">
     <div>
         <a class="btn btn-outline-success text-light" asp-area="" asp-controller="DietDay" asp-action="Create">Stwórz nowy</a>
     </div>
@@ -43,6 +43,7 @@
                             <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>
                             <a asp-controller="DietDay" asp-action="Edit" asp-route-id="@day.Id" class="btn btn-warning">Edit</a>
                             <a asp-controller="DietDay" asp-action="Remove" asp-route-id="@day.Id" class="btn btn-warning">Delete</a>
+                            <a asp-controller="DietDay" asp-action="Remove" asp-route-id="@day.Id" class="btn btn-warning">Generate shopping list</a>
                         </td>
                     </tr>
                 }

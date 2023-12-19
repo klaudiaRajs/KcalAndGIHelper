@@ -1,44 +1,45 @@
 ﻿@model ProductViewModel
+<div class="container">
+    <p> @Model.Hello </p>
 
-<p> @Model.Hello </p>
+    <form method="post" class="align-le">
+        <div class="mb-3 row w-50">
+            <div class="input-group input-group-sm m-2">
+                <label class="form-check-inline m-2" for="@Model.Product.Name">Search by name: </label>
+                <input asp-for="@Model.Product.Name" class="form-control" />
+            </div>
+            <div class="input-group input-group-sm m-2">
+                <label class="form-check-inline m-2" for="Model.Product.CategoryId">Select category: </label>
+                @Html.DropDownListFor(m => m.Product.CategoryId,
+                         new SelectList(Model.Categories, "Id", "Name"),
+                         "Select category")
+            </div>
+            <div class="input-group input-group-sm m-2">
+                <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Minimum calories: </label>
+                <input asp-for="@Model.CaloryRangeMin" class="form-control" />
+            </div>
+            <div class="input-group input-group-sm m-2">
+                <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Maximum calories: </label>
+                <input asp-for="@Model.CaloryRangeMax" class="form-control" />
+            </div>
 
-<form method="post" class="align-le">
-    <div class="mb-3 row w-50">
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="@Model.Product.Name">Search by name: </label>
-            <input asp-for="@Model.Product.Name" class="form-control" />
+            <div class="input-group input-group-sm">
+                @Html.CheckBoxFor(x => x.Green)
+                <label class="form-check-inline m-2" for="@Model.Green">Green</label>
+            </div>
+            <div class="input-group input-group-sm">
+                @Html.CheckBoxFor(x => x.Orange)
+                <label class="form-check-inline m-2" for="@Model.Orange">Orange</label>
+            </div>
+            <div class="input-group input-group-sm">
+                @Html.CheckBoxFor(x => x.Red)
+                <label class="form-check-inline m-2" for="@Model.Red">Red</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="Model.Product.CategoryId">Select category: </label>
-            @Html.DropDownListFor(m => m.Product.CategoryId,
-            new SelectList(Model.Categories, "Id", "Name"),
-            "Select category")
-        </div>
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Minimum calories: </label>
-            <input asp-for="@Model.CaloryRangeMin" class="form-control" />
-        </div>
-        <div class="input-group input-group-sm m-2">
-            <label class="form-check-inline m-2" for="@Model.CaloryRangeMin">Maximum calories: </label>
-            <input asp-for="@Model.CaloryRangeMax" class="form-control" />
-        </div>
+    </form>
 
-        <div class="input-group input-group-sm">
-            @Html.CheckBoxFor(x => x.Green)
-            <label class="form-check-inline m-2" for="@Model.Green">Green</label>
-        </div>
-        <div class="input-group input-group-sm">
-            @Html.CheckBoxFor(x => x.Orange)
-            <label class="form-check-inline m-2" for="@Model.Orange">Orange</label>
-        </div>
-        <div class="input-group input-group-sm">
-            @Html.CheckBoxFor(x => x.Red)
-            <label class="form-check-inline m-2" for="@Model.Red">Red</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-</form>
+    <a class="btn btn-primary" asp-controller="Product" asp-action="Create">Create new product</a>
 
-<a class="btn btn-primary" asp-controller="Product" asp-action="Create">Create new product</a>
-
-@await Html.PartialAsync("~/Views/Shared/_productTable.cshtml", Model); 
+    @await Html.PartialAsync("~/Views/Shared/_productTable.cshtml", Model);
+</div>
