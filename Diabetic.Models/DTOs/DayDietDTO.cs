@@ -20,5 +20,6 @@ namespace Diabetic.Models.DTOs
         public int? SupperId { get; set; }
         public RecipeDTO Snack { get; set; } = new RecipeDTO();
         public int? SnackId { get; set; }
+        public double TotalGL { get; set; }
     }
 }

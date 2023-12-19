@@ -25,21 +25,26 @@ namespace Diabetic.Controllers
             viewModel.Days = _dietDayRepository.GetAll();
             foreach (DayDietDTO day in viewModel.Days)
             {   
+                day.TotalGL = 0;
                 if( day.BreakfastId != null)
                 {
                     day.Breakfast = _recipeRepository.GetRecipeById((int)day.BreakfastId);
+                    day.TotalGL += day.Breakfast.TotalGL;
                 }
                 if( day.LunchId != null)
                 {
                     day.Lunch = _recipeRepository.GetRecipeById((int)day.LunchId);
+                    day.TotalGL += day.Lunch.TotalGL;
                 }
                 if( day.DinnerId != null)
                 {
                     day.Dinner = _recipeRepository.GetRecipeById((int)day.DinnerId);
+                    day.TotalGL += day.Dinner.TotalGL;
                 }
                 if( day.SupperId != null)
                 {
                     day.Supper = _recipeRepository.GetRecipeById((int)day.SupperId);
+                    day.TotalGL += day.Supper.TotalGL;
                 }
             }
             return View(viewModel);

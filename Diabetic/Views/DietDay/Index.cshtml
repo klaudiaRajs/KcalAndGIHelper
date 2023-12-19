@@ -8,12 +8,12 @@
         <table class="table">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Breakfast</th>
                     <th scope="col">Lunch</th>
                     <th scope="col">Dinner</th>
                     <th scope="col">Snack</th>
                     <th scope="col">Supper</th>
+                    <th scope="col">DayGL</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -21,23 +21,23 @@
                 @foreach (DayDietDTO day in Model.Days)
                 {
                     <tr>
-                        <th scope="row">
-                            @day.Id
-                        </th>
                         <td>
-                            @day.Breakfast.Name
+                            @day.Breakfast.Name (@day.Breakfast.TotalGL)
                         </td>
                         <td>
-                            @day.Lunch.Name
+                            @day.Lunch.Name (@day.Lunch.TotalGL)
                         </td>
                         <td>
-                            @day.Dinner.Name
+                            @day.Dinner.Name (@day.Dinner.TotalGL)
                         </td>
                         <td>
-                            @day.Snack?.Name
+                            @day.Snack?.Name (@day.Snack?.TotalGL)
                         </td>
                         <td>
-                            @day.Supper.Name
+                            @day.Supper.Name (@day.Supper.TotalGL)
+                        </td>
+                        <td class="@BaseDTO.GetDayGLRating(day.TotalGL)">
+                            @day.TotalGL
                         </td>
                         <td class="col col-lg-3">
                             <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>
