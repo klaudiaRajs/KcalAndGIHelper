@@ -54,13 +54,7 @@ namespace Diabetic.Controllers
         {
             DayDietViewModel viewModel = new DayDietViewModel();
             viewModel.RecipesForDay = _dietDayRepository.GetDay(id);
-            if( viewModel.RecipesForDay != null)
-            {
-                viewModel.RecipesForDay.Breakfast = _recipeRepository.GetRecipeById((int)viewModel.RecipesForDay.BreakfastId);
-                viewModel.RecipesForDay.Lunch = _recipeRepository.GetRecipeById((int)viewModel.RecipesForDay.LunchId);
-                viewModel.RecipesForDay.Dinner = _recipeRepository.GetRecipeById((int)viewModel.RecipesForDay.DinnerId);
-                viewModel.RecipesForDay.Supper = _recipeRepository.GetRecipeById((int)viewModel.RecipesForDay.SupperId);
-            }
+            LoadAllRecipesForDayByDayId(id, viewModel);
 
             return View(viewModel);
         }
@@ -86,6 +80,47 @@ namespace Diabetic.Controllers
             DayDietDTO day = _dietDayRepository.GetDay(id);
             bool result = _dietDayRepository.Delete(day); 
             return RedirectToAction("Index"); 
+        }
+
+        public IActionResult GenerateShoppingList(int id)
+        {
+            DayDietViewModel viewModel = new DayDietViewModel();     
+            viewModel.RecipesForDay = _dietDayRepository.GetDay(id);
+            LoadAllRecipesForDayByDayId(id, viewModel);
+            List<IngredientDTO> productsToShop = ExtractIngredientsFromRecipesForDay(viewModel);
+
+            return View("ShoppingList", productsToShop);
+        }
+
+        private List<IngredientDTO> ExtractIngredientsFromRecipesForDay(DayDietViewModel viewModel)
+        {
+            //Extract ingredients only from all recipes of the day
+            IEnumerable<IngredientDTO> ingredients = ((viewModel.RecipesForDay.Breakfast.Ingredients)
+                .Concat(viewModel.RecipesForDay.Lunch.Ingredients))
+                .Concat(viewModel.RecipesForDay.Dinner.Ingredients)
+                .Concat(viewModel.RecipesForDay.Supper.Ingredients);
+
+            //Group repeated ingredients -> Collapse repeated ingredients to one ingredients and sum amount to buy
+            List<IngredientDTO> distinctIngredients = ingredients
+                .GroupBy(n => n.Product.Id)
+                .Select(group => new IngredientDTO()
+                {
+                    Product = group.Select(n => n.Product).FirstOrDefault(),
+                    Amount = group.Select(n => n.Amount).Sum()
+                }).ToList();
+
+            return distinctIngredients;
+        }
+
+        private void LoadAllRecipesForDayByDayId(int dayId, DayDietViewModel viewModel)
+        {
+            if (viewModel.RecipesForDay != null)
+            {
+                viewModel.RecipesForDay.Breakfast = _recipeRepository.GetRecipeById(viewModel.RecipesForDay.BreakfastId ?? 0);
+                viewModel.RecipesForDay.Lunch = _recipeRepository.GetRecipeById(viewModel.RecipesForDay.LunchId ?? 0);
+                viewModel.RecipesForDay.Dinner = _recipeRepository.GetRecipeById(viewModel.RecipesForDay.DinnerId ?? 0);
+                viewModel.RecipesForDay.Supper = _recipeRepository.GetRecipeById(viewModel.RecipesForDay.SupperId ?? 0);
+            }
         }
     }
 }

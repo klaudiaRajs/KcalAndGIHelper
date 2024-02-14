@@ -1,0 +1,23 @@
+﻿@model List<IngredientDTO>
+
+<h1>Shopping List</h1>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Ingredient name</th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Product.Id</th>
+                <td>@item.Product.Name</td>
+                <td>@item.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
