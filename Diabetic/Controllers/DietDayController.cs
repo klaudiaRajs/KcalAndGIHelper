@@ -59,7 +59,7 @@ namespace Diabetic.Controllers
                 return View("MyErrorPage", new ErrorPageDTO() { Body = HelperErrorMessages.PL_SHOPPING_LIST_NO_DAYS_SELECTED });
             }
 
-            return GenerateShoppingList(model.SelectedDaysIds);
+            return GenerateShoppingListForMultipleDays(model.SelectedDaysIds);
         }
 
         public IActionResult Details(int id)
@@ -92,7 +92,7 @@ namespace Diabetic.Controllers
             bool result = _dietDayRepository.Delete(day); 
             return RedirectToAction("Index"); 
         }
-        public IActionResult GenerateShoppingList(List<int> daysIds)
+        public IActionResult GenerateShoppingListForMultipleDays(List<int> daysIds)
         {
             DayDietViewModel viewModel = new DayDietViewModel();
             List<IngredientDTO> productsToShop = new List<IngredientDTO>();
@@ -106,6 +106,18 @@ namespace Diabetic.Controllers
             //Sort alphabetically
             productsToShop = productsToShop.OrderBy(n => n.Product.Name).ToList();
             
+            return View("ShoppingList", productsToShop);
+        }
+
+        public IActionResult GenerateShoppingListForOneDay(int id)
+        {
+            DayDietViewModel viewModel = new DayDietViewModel();
+            viewModel.RecipesForDay = _dietDayRepository.GetDay(id);
+            LoadAllRecipesForDayByDayId(id, viewModel);
+            List<IngredientDTO> productsToShop = ExtractIngredientsFromRecipesForDay(viewModel);
+            productsToShop = CollapseRepeatedIngredients(productsToShop);
+            //Sort alphabetically
+            productsToShop = productsToShop.OrderBy(n => n.Product.Name).ToList();
             return View("ShoppingList", productsToShop);
         }
 
