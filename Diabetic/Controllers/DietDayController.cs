@@ -48,20 +48,13 @@ namespace Diabetic.Controllers
                     day.TotalGL += day.Supper.TotalGL;
                 }
             }
+
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Index(DayDietViewModel model)
-        {
-            if (model.SelectedDaysIds == null)
-            {
-                return View("MyErrorPage", new ErrorPageDTO() { Body = HelperErrorMessages.PL_SHOPPING_LIST_NO_DAYS_SELECTED });
-            }
-
-            return GenerateShoppingListForMultipleDays(model.SelectedDaysIds);
-        }
-
+        public IActionResult Index(DayDietViewModel model) => GenerateShoppingListForMultipleDays(model.SelectedDaysIds);
+        
         public IActionResult Details(int id)
         {
             DayDietViewModel viewModel = new DayDietViewModel();
@@ -152,6 +145,6 @@ namespace Diabetic.Controllers
                 viewModel.RecipesForDay.Dinner = _recipeRepository.GetRecipeById(viewModel.RecipesForDay.DinnerId ?? 0);
                 viewModel.RecipesForDay.Supper = _recipeRepository.GetRecipeById(viewModel.RecipesForDay.SupperId ?? 0);
             }
-        }
+        }  
     }
 }

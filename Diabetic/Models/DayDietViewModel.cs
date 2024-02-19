@@ -1,4 +1,5 @@
 ﻿using Diabetic.Models.DTOs;
+using Diabetic.Models.Helpers;
 
 namespace Diabetic.Models
 {
@@ -16,5 +17,10 @@ namespace Diabetic.Models
         public List<IngredientDTO> IngredientsForShoppingList { get; set; } = new List<IngredientDTO>();
         public bool test { get; set; }
         public List<int> SelectedDaysIds { get; set; }
+        public ErrorPageDTO ShoppingDaysNotSelected { get; set; } = new ErrorPageDTO
+        {
+            Title = HelperErrorMessages.PL_ERROR_MESSAGE_TITLE,
+            Body = HelperErrorMessages.PL_SHOPPING_LIST_NO_DAYS_SELECTED
+        };
     }
 }

@@ -53,9 +53,53 @@
                         </td>
                     </tr>
                 }
-                <button type="submit" class="btn btn-warning">Generate Shopping List For Checked Days</button>
+                <button id="generate-for-checked" type="submit" class="btn btn-warning">Generate Shopping List For Checked Days</button>
                 </form>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    const generateForCheckedButton = document.getElementById('generate-for-checked');
+    generateForCheckedButton.addEventListener('click', generateForCheckedListener);
+
+    function generateForCheckedListener(e) {
+        let isEmpty = true;
+
+        const checkboxes = document.querySelectorAll('#diet-day-checkbox');
+        const checkboxesArray = Array.from(checkboxes);
+        checkboxesArray.forEach(item => {   //see if there is any checked checkbox
+            if(item.checked == true) {
+                isEmpty = false;
+                console.log("Znalazłem zaznaczony");
+            }  
+        });
+        console.log(`Po wyjsciu z petli: isEmpty = ${isEmpty}`);
+        if(isEmpty === true) {   //.. if not then block controller communication and genereate pup up error message
+            e.preventDefault();
+            const body = "@Model.ShoppingDaysNotSelected.Body";
+            const title = "@Model.ShoppingDaysNotSelected.Title";
+
+
+            toastr["error"]("@Model.ShoppingDaysNotSelected.Body", "@Model.ShoppingDaysNotSelected.Title");
+        }
+    }
+</script>
