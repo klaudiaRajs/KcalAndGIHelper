@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Diabetic.Models.DTOs
 {
     public class RecipeDTO : BaseDTO
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public List<IngredientDTO> Ingredients { get; set; } = new List<IngredientDTO>();
         public IEnumerable<Recipe_Ingredients> Recipe_Ingredients { get; set; } = new List<Recipe_Ingredients>();

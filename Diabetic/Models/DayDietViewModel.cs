@@ -13,5 +13,29 @@ namespace Diabetic.Models
         public IEnumerable<RecipeDTO> Breakfasts { get; set; } = new List<RecipeDTO>();
         public IEnumerable<RecipeDTO> Dinners { get; set; } = new List<RecipeDTO>();
         public int SelectedKcals { get; set; } = 0;
+        public int SelectedGL { get; set; } = 0;
+
+        public int SetTotalKcals()
+        {
+            SelectedKcals += (int)this.RecipesForDay.Breakfast.TotalKcal; 
+            SelectedKcals += (int)this.RecipesForDay.Lunch.TotalKcal;
+            SelectedKcals += (int)this.RecipesForDay.Dinner.TotalKcal;
+            SelectedKcals += (int)this.RecipesForDay.Snack.TotalKcal;
+            SelectedKcals += (int)this.RecipesForDay.Supper.TotalKcal;
+            return SelectedKcals; 
+        }
+        public int SetTotalGL()
+        {
+            SelectedGL += (int)this.RecipesForDay.Breakfast.TotalGL;
+            SelectedGL += (int)this.RecipesForDay.Lunch.TotalGL;
+            SelectedGL += (int)this.RecipesForDay.Dinner.TotalGL;
+            SelectedGL += (int)this.RecipesForDay.Snack.TotalGL;
+            SelectedGL += (int)this.RecipesForDay.Supper.TotalGL;
+            return SelectedGL;
+        }
+
+        public List<IngredientDTO> IngredientsForShoppingList { get; set; } = new List<IngredientDTO>();
+        public bool test { get; set; }
+        public List<int> SelectedDaysIds { get; set; }
     }
 }

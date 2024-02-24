@@ -120,6 +120,11 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Edit(RecipeViewModel model)
         {
+            if( model == null)
+            {
+                //zrób jakieś logowanie błędu 
+                return RedirectToAction("Index");
+            }
             var recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
             if (recipe == null)
             {

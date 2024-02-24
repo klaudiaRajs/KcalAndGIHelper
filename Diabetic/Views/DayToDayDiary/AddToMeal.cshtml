@@ -8,9 +8,12 @@
         {
             <div class="row-fluid">
                 
+
+
                 <div>
                     @Html.DropDownListFor(m => Model.ElementAt(i).SelectedMealId, new SelectList(Model.ElementAt(i).Meals, "Id", "Name"), "Select", new { required = "required" })
-                    @Html.DropDownListFor(m => Model.ElementAt(i).SelectedProductId, new SelectList(Model.ElementAt(i).Products, "ProductId", "ProductName"), "Select", new { required = "required" })
+                    @Html.TextBoxFor(m => Model.ElementAt(i).ProductName)
+                    @Html.TextBoxFor(m => Model.ElementAt(i).SelectedProductId)
                     <input asp-for="@Model.ElementAt(i).Amount" required/>
                 </div>
             </div>
@@ -31,4 +34,32 @@
         newRow.appendTo(".wrapper");
         index++;
     }
+
+    $(function () {
+        $("#ProductName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Product/Products/',
+                    data: { "prefix": request.term },
+                    type: "GET",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            return item;
+                        }))
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#SelectedProductId").val(i.item.val);
+            },
+            minLength: 1
+        });
+    });
 </script>

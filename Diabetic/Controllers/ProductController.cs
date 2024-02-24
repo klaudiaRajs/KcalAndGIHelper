@@ -116,5 +116,12 @@ namespace Diabetic.Controllers
             var result = _productRepository.Delete(id);
             return RedirectToAction("Index"); 
         }
+
+        [HttpGet]
+        public IActionResult Products(string prefix)
+        {
+            var products = _productRepository.GetAll().Where(a => a.ProductName.StartsWith(prefix)).ToList();
+            return Json(products);
+        }
     }
 }

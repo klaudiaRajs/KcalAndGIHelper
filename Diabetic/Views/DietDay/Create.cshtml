@@ -7,54 +7,54 @@
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.SelectedKcals">Selected kcals: </label>
         <input class="text-light" asp-for="@Model.SelectedKcals" value="@Model.SelectedKcals" disabled id="totalKcals"/>
-        <input class="text-light" asp-for="@Model.SelectedKcals" value="@Model.SelectedKcals" disabled id="totalGLs" />
+        <input class="text-light" asp-for="@Model.SelectedKcals" value="@Model.SelectedGL" disabled id="totalGLs" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.RecipesForDay.BreakfastId">Select Breakfast: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.BreakfastId,
         new SelectList(Model.Recipes, "Id", "Name"),
         "Select Breakfast", new { @onchange = "updateTotal(this.value, 'breakfast')"})
-        <input class="text-light ml-2 kcals" value="" disabled id="breakfastKcals"/>
-        <input class="text-light ml-2 gls" value="" disabled id="breakfastGLs" />
+        <input class="text-light ml-2 kcals" disabled id="breakfastKcals" asp-for="@Model.RecipesForDay.Breakfast.TotalKcal" />
+        <input class="text-light ml-2 gls" disabled id="breakfastGLs" asp-for="@Model.RecipesForDay.Breakfast.TotalGL" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.RecipesForDay.LunchId">Select Lunch: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.LunchId,
         new SelectList(Model.Recipes, "Id", "Name"),
         "Select Lunch", new { @onchange = "updateTotal(this.value, 'lunch')"})
-        <input class="text-light ml-2 kcals" value="" disabled id="lunchKcals" />
-        <input class="text-light ml-2 gls" value="" disabled id="lunchGLs" />
+        <input class="text-light ml-2 kcals" disabled id="lunchKcals" asp-for="@Model.RecipesForDay.Lunch.TotalKcal" />
+        <input class="text-light ml-2 gls" disabled id="lunchGLs" asp-for="@Model.RecipesForDay.Lunch.TotalGL" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.RecipesForDay.DinnerId">Select Dinner: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.DinnerId,
         new SelectList(Model.Dinners, "Id", "Name"),
         "Select Dinner", new { @onchange = "updateTotal(this.value, 'dinner')"})
-        <input class="text-light ml-2 kcals" value="" disabled id="dinnerKcals" />
-        <input class="text-light ml-2 gls" value="" disabled id="dinnerGLs" />
+        <input class="text-light ml-2 kcals" disabled id="dinnerKcals" asp-for="@Model.RecipesForDay.Dinner.TotalKcal" />
+        <input class="text-light ml-2 gls" disabled id="dinnerGLs" asp-for="@Model.RecipesForDay.Dinner.TotalGL" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.RecipesForDay.SnackId">Select Snack: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.SnackId,
         new SelectList(Model.Recipes, "Id", "Name"),
         "Select Snack", new { @onchange = "updateTotal(this.value, 'snack')"})
-        <input class="text-light ml-2 kcals" value="" disabled id="snackKcals" />
-        <input class="text-light ml-2 gls" value="" disabled id="snackGLs" />
+        <input class="text-light ml-2 kcals" disabled id="snackKcals" asp-for="@Model.RecipesForDay.Snack.TotalKcal" />
+        <input class="text-light ml-2 gls" disabled id="snackGLs" asp-for="@Model.RecipesForDay.Snack.TotalGL" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.RecipesForDay.SupperId">Select Supper: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.SupperId,
         new SelectList(Model.Recipes, "Id", "Name"),
         "Select Supper", new { @onchange = "updateTotal(this.value, 'supper')"})
-        <input class="text-light ml-2 kcals" value="" disabled id="supperKcals" />
-        <input class="text-light ml-2 gls" value="" disabled id="supperGLs" />
+        <input class="text-light ml-2 kcals" disabled id="supperKcals" asp-for="@Model.RecipesForDay.Supper.TotalKcal" />
+        <input class="text-light ml-2 gls" disabled id="supperGLs" asp-for="@Model.RecipesForDay.Snack.TotalGL" />
     </div>
     <button type="submit" class="btn btn-success">Create</button>
 </form>
 
 <script>
+
     function updateTotal(recipeId, meal) { 
-        console.log("RecipeId: " + recipeId); 
         $.ajax({
             url: "@Url.Action("GetRecipeKcals", "Recipe")",
             type: 'GET',
