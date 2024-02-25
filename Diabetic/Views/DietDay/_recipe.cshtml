@@ -8,7 +8,7 @@
             <th scope="col">Ingredient name</th>
             <th scope="col">Amount</th>
             <th scope="col">Kcal</th>
-            <th scope="col">GI</th>
+            <th scope="col" class="col col-lg-2">GI</th>
         </tr>
     </thead>
     <tbody>
@@ -41,9 +41,9 @@
         }
         <tr>
             <td class="text-bg-primary"></td>
-            <td class="text-bg-primary" colspan="2">Total: </td>
-            <td class="text-bg-primary">@Model.TotalKcal</td>
-            <td class="text-bg-primary"></td>
+            <td class="text-bg-primary align-middle" colspan="2">Total: </td>
+            <td class="text-bg-primary align-middle">@Model.TotalKcal</td>
+            <td><a asp-controller="Recipe" asp-action="ChangeIngredients" asp-route-recipeId="@Model.Id" asp-route-mealId="@Model.MealId" asp-route-recipeDayId="@Model.RecipeDayId" class="btn btn-primary">Change ingredients</a></td>
         </tr>
     </tbody>
 </table>

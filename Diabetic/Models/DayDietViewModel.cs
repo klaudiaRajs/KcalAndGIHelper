@@ -18,7 +18,7 @@ namespace Diabetic.Models
 
         public int SetTotalKcals()
         {
-            SelectedKcals += (int)this.RecipesForDay.Breakfast.TotalKcal; 
+            SelectedKcals += (int)this.RecipesForDay.Breakfast?.TotalKcal; 
             SelectedKcals += (int)this.RecipesForDay.Lunch.TotalKcal;
             SelectedKcals += (int)this.RecipesForDay.Dinner.TotalKcal;
             SelectedKcals += (int)this.RecipesForDay.Snack.TotalKcal;
@@ -35,9 +35,6 @@ namespace Diabetic.Models
             return SelectedGL;
         }
 
-        public List<IngredientDTO> IngredientsForShoppingList { get; set; } = new List<IngredientDTO>();
-        public bool test { get; set; }
-        public List<int> SelectedDaysIds { get; set; }
         public List<IngredientDTO> IngredientsForShoppingList { get; set; } = new List<IngredientDTO>();
         public bool test { get; set; }
         public List<int> SelectedDaysIds { get; set; }

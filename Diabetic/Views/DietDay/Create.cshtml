@@ -1,9 +1,12 @@
 ﻿@model DayDietViewModel
 
+@{
+    var url = Model.Id == 0 ? Url.Action("Create", "DietDay") : Url.Action("Update", "DietDay");
+    var buttonText = Model.Id == 0 ? "Create" : "Update";
+}
 
-
-<form method="post" action="@Url.Action("Create", "DietDay")">
-
+<form method="post" action="@url">
+    <input hidden asp-for="@Model.Id" value="@Model.Id" />
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2" for="Model.SelectedKcals">Selected kcals: </label>
         <input class="text-light" asp-for="@Model.SelectedKcals" value="@Model.SelectedKcals" disabled id="totalKcals"/>
@@ -49,7 +52,7 @@
         <input class="text-light ml-2 kcals" disabled id="supperKcals" asp-for="@Model.RecipesForDay.Supper.TotalKcal" />
         <input class="text-light ml-2 gls" disabled id="supperGLs" asp-for="@Model.RecipesForDay.Snack.TotalGL" />
     </div>
-    <button type="submit" class="btn btn-success">Create</button>
+    <button type="submit" class="btn btn-success">@buttonText</button>
 </form>
 
 <script>

@@ -1,13 +1,14 @@
-﻿@model RecipeViewModel
+﻿@using Diabetic.Controllers
+@model RecipeViewModel
 
 @{
     var url = Model.Recipe.Id == 0 ? Url.Action("Create", "Recipe") : Url.Action("Edit", "Recipe");
+    url = Model.IsIngredientBeingSwitched && Model.Recipe.Id != 0 ? Url.Action("ChangeIngredients", "Recipe") : url;
 }
 
 <div class="container">
     <form method="post" action="@url">
         <div class="mb-3 row">
-            <input hidden asp-for="@Model.Recipe.Id" />
             <label asp-for="@Model.Recipe.TotalKcal"></label>
             <input id="totalRecipe" asp-for="@Model.Recipe.TotalKcal" class="form-control" readonly/>
             <label asp-for="@Model.Recipe.TotalGL"></label>
@@ -15,6 +16,8 @@
         </div>
         <div class="mb-3 row">
             <input hidden asp-for="@Model.Recipe.Id" />
+            <input hidden asp-for="@Model.Recipe.MealId" />
+            <input hidden asp-for="@Model.Recipe.RecipeDayId" />
             <label asp-for="@Model.Recipe.Name"></label>
             <input asp-for="@Model.Recipe.Name" class="form-control" />
         </div>
@@ -53,7 +56,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                                    <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" />
+                                    @*                                   <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" /> *@
                                 </div>
                             </text>
                         }

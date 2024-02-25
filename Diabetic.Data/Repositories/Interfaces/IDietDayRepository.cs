@@ -12,6 +12,7 @@ namespace Diabetic.Data.Repositories.Interfaces
         DayDietDTO GetDay(int id); 
         IEnumerable<DayDietDTO> GetAll();
         bool Create(DayDietDTO day);
+        bool Update(DayDietDTO day, int id);
         bool Delete(DayDietDTO day);
     }
 }

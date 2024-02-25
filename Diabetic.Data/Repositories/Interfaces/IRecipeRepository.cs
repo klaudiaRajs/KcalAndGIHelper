@@ -10,7 +10,7 @@ namespace Diabetic.Data.Repositories.Interfaces
 {
     public interface IRecipeRepository
     {
-        RecipeDTO GetRecipeById(int id);
+        RecipeDTO? GetRecipeById(int? id);
         IEnumerable<RecipeDTO> GetAllRecipes();
         IEnumerable<RecipeDTO> GetByMeal(int id);
         IEnumerable<RecipeDTO> GetNonDinnerRecipes();
@@ -21,5 +21,6 @@ namespace Diabetic.Data.Repositories.Interfaces
         bool RemoveIngredientsForRecipe(List<Recipe_Ingredients> ingredients);
         bool Update(Recipe recipe);
         bool UpdateIngredientsForRecipe(Recipe currentRecipe, List<Recipe_Ingredients> toBeUpdated);
+        bool CreateRecipeIfNotExistant(List<SelectionDTO> ingredients, int recipeId, string title, int recipeDayId);
     }
 }

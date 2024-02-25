@@ -9,16 +9,15 @@ namespace Diabetic.Controllers
 {
     public class RecipeController : BaseController
     {
-        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository) 
-            : base(recipeRepository, productRepository, categoryRepository){}
+        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository)
+            : base(recipeRepository, productRepository, categoryRepository) { }
 
         public IActionResult Index()
         {
-            var result = _recipeRepository.GetAllRecipes();
             RecipeViewModel viewModel = new RecipeViewModel();
-            viewModel.Recipes = result.ToList(); 
+            viewModel.Recipes = _recipeRepository.GetAllRecipes().ToList(); 
 
-            return View(viewModel); 
+            return View(viewModel);
         }
 
         public IActionResult Details(int id)
@@ -32,35 +31,35 @@ namespace Diabetic.Controllers
         public IActionResult Create()
         {
             RecipeViewModel recipeViewModel = new RecipeViewModel();
-            recipeViewModel.Categories = _categoryRepository.GetAll(); 
-            recipeViewModel.SelectedCheckboxes = _productRepository.GetAll().Select(product => new SelectedCheckboxViewModel 
-            { 
-                IsChecked = false, 
+            recipeViewModel.Categories = _categoryRepository.GetAll();
+            recipeViewModel.SelectedCheckboxes = _productRepository.GetAll().Select(product => new SelectedCheckboxViewModel
+            {
+                IsChecked = false,
                 Id = product.Product.Id,
                 Name = product.Product.Name,
                 CategoryId = product.Product.CategoryId,
                 Product = product.Product
             }).ToList();
-            
+
             return View(recipeViewModel);
         }
 
         [HttpPost]
         public IActionResult Create(RecipeViewModel model)
         {
-            Recipe newRecipe = new Recipe() { Name = model.Recipe.Name } ;
-            var result = _recipeRepository.Create(newRecipe); 
+            Recipe newRecipe = new Recipe() { Name = model.Recipe.Name };
+            var result = _recipeRepository.Create(newRecipe);
 
             List<Recipe_Ingredients> ingredients = new List<Recipe_Ingredients>();
-            var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList(); 
-            foreach ( var item in selectedIngredients )
+            var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+            foreach (var item in selectedIngredients)
             {
-                Recipe_Ingredients ingredient = new Recipe_Ingredients { Amount = item.Grams, ProductId = item.Id, RecipeId = newRecipe.Id }; 
-                ingredients.Add( ingredient );
+                Recipe_Ingredients ingredient = new Recipe_Ingredients { Amount = item.Grams, ProductId = item.Id, RecipeId = newRecipe.Id };
+                ingredients.Add(ingredient);
             }
 
             bool ingredientsResult = _recipeRepository.AddIngredientsToRecipe(newRecipe, ingredients);
-            SeederService.GenerateSeederForRecipeCreate(newRecipe, ingredients); 
+            SeederService.GenerateSeederForRecipeCreate(newRecipe, ingredients);
             return RedirectToAction("Index");
         }
 
@@ -69,13 +68,13 @@ namespace Diabetic.Controllers
             var recipe = _recipeRepository.GetRecipeById(id);
             if (recipe == null)
                 return NotFound();
-            bool result = _recipeRepository.Remove(recipe); 
-            if(result)
+            bool result = _recipeRepository.Remove(recipe);
+            if (result)
             {
                 List<Recipe_Ingredients> ingredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
-                bool deleteResult = _recipeRepository.RemoveIngredientsForRecipe(ingredients); 
+                bool deleteResult = _recipeRepository.RemoveIngredientsForRecipe(ingredients);
             }
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
@@ -84,37 +83,50 @@ namespace Diabetic.Controllers
             model.Categories = _categoryRepository.GetAll();
 
             var recipe = _recipeRepository.GetRecipeById(id);
-            if( recipe == null)
+            if (recipe == null)
             {
                 return NotFound();
             }
-            model.Recipe = recipe; 
+            model.Recipe = recipe;
+
+            model = CreateSelectboxesForIngredients(model);
+            model = SetCheckBoxBasedOnIngredients(model, id);
+
+            return View("Create", model);
+        }
+
+        private RecipeViewModel CreateSelectboxesForIngredients(RecipeViewModel model)
+        {
             model.SelectedCheckboxes = _productRepository.GetAll()
             .Select(ingredient => new SelectedCheckboxViewModel
             {
                 IsChecked = false,
                 Id = ingredient.Product.Id,
                 Name = ingredient.Product.Name,
-                CategoryId = ingredient.Product.CategoryId, 
+                CategoryId = ingredient.Product.CategoryId,
                 Product = ingredient.Product
             }).ToList();
+            return model;
+        }
 
+        private RecipeViewModel SetCheckBoxBasedOnIngredients(RecipeViewModel model, int id)
+        {
             var ingredients = _recipeRepository.GetIngredientsByRecipe(id);
             for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
             {
                 SelectedCheckboxViewModel? item = model.SelectedCheckboxes[i];
                 var ingredient = ingredients.Where(a => a.ProductId == item.Id).FirstOrDefault();
-                if( ingredient == null)
+                if (ingredient == null)
                 {
-                    continue; 
-                } else
+                    continue;
+                }
+                else
                 {
                     model.SelectedCheckboxes[i].IsChecked = true;
                     model.SelectedCheckboxes[i].Grams = ingredient.Amount;
                 }
             }
-
-            return View("Create", model);
+            return model; 
         }
 
         [HttpPost]
@@ -182,6 +194,42 @@ namespace Diabetic.Controllers
         {
             RecipeDTO recipe = _recipeRepository.GetRecipeById(recipeId);
             return Ok(new {success = true, kcals = recipe.TotalKcal, gl = recipe.TotalGL }); 
+        }
+
+        public IActionResult ChangeIngredients(int recipeId, int mealId, int recipeDayId)
+        {
+            RecipeViewModel model = new RecipeViewModel();
+            model.Categories = _categoryRepository.GetAll();
+
+            var recipe = _recipeRepository.GetRecipeById(recipeId);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            model.Recipe = recipe;
+            model.Recipe.MealId = mealId;
+            model.Recipe.RecipeDayId = recipeDayId;
+
+            model = CreateSelectboxesForIngredients(model);
+            model = SetCheckBoxBasedOnIngredients(model, recipeId);
+            model.IsIngredientBeingSwitched = true; 
+
+            return View("Create", model);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeIngredients(RecipeViewModel model)
+        {
+            List<SelectionDTO> selections = new List<SelectionDTO>();
+            var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+            foreach(var itm in selectedIngredients)
+            {
+                selections.Add(new SelectionDTO { Grams =  itm.Grams, Id = itm.Id, MealId = model.Recipe.MealId, RecipeDayId = model.Recipe.RecipeDayId });
+            }
+
+            _recipeRepository.CreateRecipeIfNotExistant(selections, model.Recipe.Id, model.Recipe.Name, model.Recipe.RecipeDayId);
+
+            return RedirectToAction("Index", "DietDay");
         }
     }
 }

@@ -46,6 +46,124 @@ namespace Diabetic.Data.Repositories
             }
         }
 
+        public bool CreateRecipeIfNotExistant(List<SelectionDTO> ingredients, int recipeId, string title, int recipeDayId)
+        {
+            try
+            {
+                var products = ingredients.Select(a => a.Id).ToList();
+                var grams = ingredients.Select(a => a.Grams).ToList();
+
+                var recipeIdsWithTheSameAmountOfProducts = _db.Recipe_Ingredients.GroupBy(a => a.RecipeId, (a, b) => new { RecipeId = a, NumberOfProducts = b.Count() }).Where(x => x.NumberOfProducts == products.Count() && x.RecipeId != recipeDayId).ToList();
+
+                var newRecipeIdsWithTheSameAmountOfProducts = recipeIdsWithTheSameAmountOfProducts.Select(a => a.RecipeId).ToList();
+                
+                var result = _db.Recipe_Ingredients.Where(a => products.Contains(a.ProductId) && grams.Contains(a.Amount) && a.RecipeId != recipeId).ToList();
+                
+                var recipeIngredietWithTheSameAmountOfProducts = _db.Recipe_Ingredients.Where(a => newRecipeIdsWithTheSameAmountOfProducts.Contains(a.RecipeId)).ToList();
+
+                List<RecipeDTO> fullRecipes = new List<RecipeDTO>();
+                foreach( var recipe in recipeIngredietWithTheSameAmountOfProducts)
+                {
+                    if( !fullRecipes.Where(a => a.Id == recipe.RecipeId).Any())
+                    {
+                        fullRecipes.Add(GetRecipeById(recipe.RecipeId)); 
+                    }
+                }
+
+                int? extractedRecipeId = null;
+                foreach( var recipe in fullRecipes)
+                {
+                    foreach( var ingredient in recipe.Ingredients)
+                    {
+                        if(!products.Contains(ingredient.ProductId)){
+                            extractedRecipeId = null;
+                            break; 
+                        } else
+                        {
+                            extractedRecipeId = recipe.Id;
+                        }                        
+                    }
+                    if (extractedRecipeId != null)
+                    {
+                        break; 
+                    }
+                }
+
+                if (extractedRecipeId != null)
+                {
+                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
+                    if (dietDay != null)
+                    {
+                        switch (ingredients.FirstOrDefault().MealId)
+                        {
+                            case 1:
+                                dietDay.BreakfastRecipeId = extractedRecipeId;
+                                break;
+                            case 2:
+                                dietDay.LunchRecipeId = extractedRecipeId;
+                                break;
+                            case 3:
+                                dietDay.DinnerRecipeId = extractedRecipeId;
+                                break;
+                            case 4:
+                                dietDay.SnackRecipeId = extractedRecipeId;
+                                break;
+                            case 5:
+                                dietDay.SupperRecipeId = extractedRecipeId;
+                                break;
+                        }
+
+                        _db.Day_Recipes.Update(dietDay);
+                        _db.SaveChanges();
+                    }
+                } else
+                {
+                    var name = title + "-Copy";
+                    var recipe = new Recipe { Name = name.ToString() };
+                    _db.Recipes.Add(recipe);
+                    _db.SaveChanges();
+
+                    List<Recipe_Ingredients> ingredientsToAdd = new List<Recipe_Ingredients>();
+                    foreach (var itm in ingredients)
+                    {
+                        ingredientsToAdd.Add(new Recipe_Ingredients() { ProductId = itm.Id, Amount = itm.Grams, RecipeId = recipe.Id });
+                    }
+
+                    _db.Recipe_Ingredients.AddRange(ingredientsToAdd);
+                    _db.SaveChanges();
+                    
+                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
+                    switch (ingredients.FirstOrDefault().MealId)
+                    {
+                        case 1:
+                            dietDay.BreakfastRecipeId = recipe.Id;
+                            break;
+                        case 2:
+                            dietDay.LunchRecipeId = recipe.Id;
+                            break;
+                        case 3:
+                            dietDay.DinnerRecipeId = recipe.Id;
+                            break;
+                        case 4:
+                            dietDay.SnackRecipeId = recipe.Id;
+                            break;
+                        case 5:
+                            dietDay.SupperRecipeId = recipe.Id;
+                            break;
+                    }
+
+                    _db.Day_Recipes.Update(dietDay);
+                    _db.SaveChanges();
+                }
+                return true; 
+            }
+            catch (Exception ex)
+            {
+                //TODO zrobić logowanie
+                return false;
+            }
+        }
+
         public IEnumerable<RecipeDTO> GetAllRecipes()
         {
             try
@@ -125,8 +243,12 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public RecipeDTO GetRecipeById(int id)
+        public RecipeDTO? GetRecipeById(int? id)
         {
+            if( id == null)
+            {
+                return new RecipeDTO();
+            }
             RecipeDTO recipe = new RecipeDTO();
             var result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
 

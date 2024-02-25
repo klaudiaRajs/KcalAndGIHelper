@@ -8,6 +8,8 @@ namespace Diabetic.Models.DTOs
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public int MealId { get; set; }
+        public int RecipeDayId { get; set; }
         public List<IngredientDTO> Ingredients { get; set; } = new List<IngredientDTO>();
         public IEnumerable<Recipe_Ingredients> Recipe_Ingredients { get; set; } = new List<Recipe_Ingredients>();
         [DisplayName("Selected amount of kcals")]
@@ -22,6 +24,7 @@ namespace Diabetic.Models.DTOs
                 });
                 return totalKcal; 
             }
+            set { }
         }
         public double TotalGL
         {
@@ -34,6 +37,7 @@ namespace Diabetic.Models.DTOs
                 });
                 return totalGL;
             }
+            set { } 
         }
 
         public bool Green { get; set; }
