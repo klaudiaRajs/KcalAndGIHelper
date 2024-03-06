@@ -3,6 +3,7 @@ using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Diabetic.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Cryptography;
 
 namespace Diabetic.Controllers
@@ -54,7 +55,7 @@ namespace Diabetic.Controllers
             var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
             foreach (var item in selectedIngredients)
             {
-                Recipe_Ingredients ingredient = new Recipe_Ingredients { Amount = item.Grams, ProductId = item.Id, RecipeId = newRecipe.Id };
+                Recipe_Ingredients ingredient = new Recipe_Ingredients { Amount = item.Grams, ProductId = (int)item.Id, RecipeId = newRecipe.Id };
                 ingredients.Add(ingredient);
             }
 
@@ -102,6 +103,8 @@ namespace Diabetic.Controllers
             {
                 IsChecked = false,
                 Id = ingredient.Product.Id,
+                ProductId = ingredient.Product.Id.ToString(),
+                Grams = 0,
                 Name = ingredient.Product.Name,
                 CategoryId = ingredient.Product.CategoryId,
                 Product = ingredient.Product
@@ -111,6 +114,7 @@ namespace Diabetic.Controllers
 
         private RecipeViewModel SetCheckBoxBasedOnIngredients(RecipeViewModel model, int id)
         {
+            
             var ingredients = _recipeRepository.GetIngredientsByRecipe(id);
             for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
             {
@@ -132,11 +136,13 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Edit(RecipeViewModel model)
         {
-            if( model == null)
+            if ( model == null)
             {
                 //zrób jakieś logowanie błędu 
                 return RedirectToAction("Index");
             }
+
+
             var recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
             if (recipe == null)
             {
@@ -162,7 +168,7 @@ namespace Diabetic.Controllers
                 {
                     if( old.ProductId == newItem.Id)
                     {
-                        toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
+                        toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = (int)newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
                         isToBeUpdated = true;
                         break; 
                     }
@@ -179,7 +185,7 @@ namespace Diabetic.Controllers
                 var itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
 
                 if( !itemToBeUpdated.Any() && !itemToBeRemoved.Any() ) {
-                    toBeAdded.Add(new Recipe_Ingredients { ProductId = item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
+                    toBeAdded.Add(new Recipe_Ingredients { ProductId = (int)item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
                 }
             }
             var addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
@@ -224,7 +230,7 @@ namespace Diabetic.Controllers
             var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
             foreach(var itm in selectedIngredients)
             {
-                selections.Add(new SelectionDTO { Grams =  itm.Grams, Id = itm.Id, MealId = model.Recipe.MealId, RecipeDayId = model.Recipe.RecipeDayId });
+                selections.Add(new SelectionDTO { Grams =  itm.Grams, Id = (int)itm.Id, MealId = model.Recipe.MealId, RecipeDayId = model.Recipe.RecipeDayId });
             }
 
             _recipeRepository.CreateRecipeIfNotExistant(selections, model.Recipe.Id, model.Recipe.Name, model.Recipe.RecipeDayId);

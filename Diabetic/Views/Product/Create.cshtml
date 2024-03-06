@@ -1,64 +1,65 @@
 ﻿@model ProductViewModel
 
-<form method="post">
-    <div class="pt-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary"> "Create" </h2>
-            <hr />
+<div class="container">
+    <form method="post">
+        <div class="pt-3 mt-4">
+            <div class="row pb-2">
+                <h2 class="text-primary"> "Create" </h2>
+                <hr />
+            </div>
         </div>
-    </div>
-    <div class="mb-3 w-25 row">
-        <input asp-for="@Model.Product.Id" hidden />
-    </div>
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.Name"></label>
-        <input asp-for="@Model.Product.Name" class="form-control" />
-    </div>
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.KcalPer100g"></label>
-        <input asp-for="@Model.Product.KcalPer100g" class="form-control" />
-    </div>
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.CarbsPer100g"></label>
-        <input asp-for="@Model.Product.CarbsPer100g" class="form-control" />
-    </div>
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.Protein"></label>
-        <input asp-for="@Model.Product.Protein" class="form-control" />
-    </div>
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.Fat"></label>
-        <input asp-for="@Model.Product.Fat" class="form-control" />
-    </div>
-
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.Sugar"></label>
-        <input asp-for="@Model.Product.Sugar" class="form-control" />
-    </div>
-
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.Fibre"></label>
-        <input asp-for="@Model.Product.Fibre" class="form-control" />
-    </div>
-
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.GI"></label>
-        <input asp-for="@Model.Product.GI" class="form-control" />
-    </div>
-
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.CategoryId"></label>
-        <input asp-for="@Model.Product.CategoryId" class="form-control" />
-    </div>
-
-    <div class="mb-3 w-25 row">
-        <label asp-for="@Model.Product.GramsPerPortion"></label>
-        <input asp-for="@Model.Product.GramsPerPortion" class="form-control" />
-    </div>
-    <div class="row w-25">
-        <div class="col-6">
-            <button type="submit" class="btn btn-primary w-5">Create</button>
+        <div class="mb-3 w-25 row">
+            <input asp-for="@Model.Product.Id" hidden />
         </div>
-    </div>
-    </div>
-</form>
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.Name"></label>
+            <input asp-for="@Model.Product.Name" class="form-control" />
+        </div>
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.KcalPer100g"></label>
+            <input asp-for="@Model.Product.KcalPer100g" class="form-control" />
+        </div>
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.CarbsPer100g"></label>
+            <input asp-for="@Model.Product.CarbsPer100g" class="form-control" />
+        </div>
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.Protein"></label>
+            <input asp-for="@Model.Product.Protein" class="form-control" />
+        </div>
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.Fat"></label>
+            <input asp-for="@Model.Product.Fat" class="form-control" />
+        </div>
+
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.Sugar"></label>
+            <input asp-for="@Model.Product.Sugar" class="form-control" />
+        </div>
+
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.Fibre"></label>
+            <input asp-for="@Model.Product.Fibre" class="form-control" />
+        </div>
+
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.GI"></label>
+            <input asp-for="@Model.Product.GI" class="form-control" />
+        </div>
+
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.CategoryId"></label>
+            <input asp-for="@Model.Product.CategoryId" class="form-control" />
+        </div>
+
+        <div class="mb-3 w-25 row">
+            <label asp-for="@Model.Product.GramsPerPortion"></label>
+            <input asp-for="@Model.Product.GramsPerPortion" class="form-control" />
+        </div>
+        <div class="row w-25">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary w-5">Create</button>
+            </div>
+        </div>
+    </form>
+</div>

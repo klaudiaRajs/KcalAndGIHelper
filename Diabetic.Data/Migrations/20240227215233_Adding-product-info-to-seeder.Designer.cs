@@ -4,6 +4,7 @@ using Diabetic.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diabetic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240227215233_Adding-product-info-to-seeder")]
+    partial class Addingproductinfotoseeder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1750,12 +1753,12 @@ namespace Diabetic.Data.Migrations
                             Id = 109,
                             CarbsPer100g = 0.0,
                             CategoryId = 6,
-                            Fat = 1.0,
+                            Fat = 0.0,
                             Fibre = 0.0,
                             GI = 0,
                             KcalPer100g = 98,
                             Name = "kurczak",
-                            Protein = 22.0,
+                            Protein = 0.0,
                             Sugar = 0.0
                         },
                         new

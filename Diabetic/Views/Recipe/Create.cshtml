@@ -38,6 +38,7 @@
                                 <div class="col-auto">
                                     <div>
                                         <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
+                                        <input hidden asp-for="@Model.SelectedCheckboxes[i].Id" />
                                         <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
                                     </div>
                                     <div id="@boxId" style="display: @isDisplayed">
@@ -53,10 +54,10 @@
                                         <div>
                                             <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].GL">Ładunek glikemiczny: </label>
                                             <input id="@totalBox" class="form-control-sm total-gl" asp-for="@Model.SelectedCheckboxes[i].GL" readonly>
+                                   
                                         </div>
                                     </div>
-                                    <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Id" />
-                                    @*                                   <input type="hidden" asp-for="@Model.SelectedCheckboxes[i].Name" /> *@
+                         
                                 </div>
                             </text>
                         }

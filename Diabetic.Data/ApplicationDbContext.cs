@@ -33,6 +33,7 @@ namespace Diabetic.Data.Data
                 new Category { Id = 5, Name = "Nabiał" },
                 new Category { Id = 6, Name = "Mięso, ryby, jaja" },
                 new Category { Id = 7, Name = "Słodycze" },
+                new Category { Id = 9, Name = "Tłuszcz" },
                 new Category { Id = 8, Name = "Sosy" }
             );
 
@@ -43,8 +44,8 @@ namespace Diabetic.Data.Data
                 new Product { Id = 3, Name = "groszek zielony", KcalPer100g = 86, GI = 51, CategoryId = 1 },
                 new Product { Id = 4, Name = "słodka kukurydza", KcalPer100g = 80, GI = 52, CategoryId = 1 },
                 new Product { Id = 5, Name = "ziemniak gotowany", KcalPer100g = 1000, GI = 56, CategoryId = 1 },
-                new Product { Id = 6, Name = "bób (surowy)", KcalPer100g = 76, GI = 40, CategoryId = 1 },
-                new Product { Id = 7, Name = "Śliwka czerwona", KcalPer100g = 46, GI = 53, CategoryId = 2},
+                new Product { Id = 6, Name = "bób (surowy)", KcalPer100g = 76, GI = 40, CategoryId = 1, CarbsPer100g = 8.2, Fat = 0.4, Fibre = 5.8, Protein = 7.1, Sugar = 0 },
+                new Product { Id = 7, Name = "Śliwka czerwona", KcalPer100g = 46, GI = 53, CategoryId = 2 },
                 new Product { Id = 8, Name = "Płatki orkiszowe", KcalPer100g = 330, GI = 45, CategoryId = 3, GramsPerPortion = 50 },
                 new Product { Id = 9, Name = "ziemniak pieczony", KcalPer100g = 79, GI = 69, CategoryId = 1 },
                 new Product { Id = 10, Name = "bakłażan", KcalPer100g = 26, GI = 20, CategoryId = 1 },
@@ -76,7 +77,7 @@ namespace Diabetic.Data.Data
                 new Product { Id = 36, Name = "fasolka szparagowa", KcalPer100g = 33, GI = 15, CategoryId = 1 },
                 new Product { Id = 37, Name = "suszone pomidory", KcalPer100g = 213, GI = 35, CategoryId = 1 },
                 new Product { Id = 38, Name = "pomidory z puszki", KcalPer100g = 23, GI = 35, CategoryId = 1 },
-                new Product { Id = 39, Name = "ogórek konserwowy", KcalPer100g = 23, GI = 15, CategoryId = 1 },
+                new Product { Id = 39, Name = "ogórek konserwowy", KcalPer100g = 23, GI = 15, CategoryId = 1, CarbsPer100g = 6.6, Sugar = 5.8, Protein = 0, Fibre = 0, Fat = 0 },
 
 
                 new Product { Id = 40, Name = "ananas", KcalPer100g = 55, GI = 59, CategoryId = 2 },
@@ -102,7 +103,7 @@ namespace Diabetic.Data.Data
                 new Product { Id = 60, Name = "truskawki", KcalPer100g = 33, GI = 40, CategoryId = 2 },
                 new Product { Id = 61, Name = "winogron", KcalPer100g = 71, GI = 46, CategoryId = 2 },
                 new Product { Id = 62, Name = "wiśnie", KcalPer100g = 49, GI = 22, CategoryId = 2 },
-                new Product { Id = 137, Name = "borówki", KcalPer100g = 57, GI = 55, CategoryId = 2 },
+
 
 
                 new Product { Id = 63, Name = "kasza gryczana", KcalPer100g = 334, GI = 54, CategoryId = 3, GramsPerPortion = 50 },
@@ -124,16 +125,15 @@ namespace Diabetic.Data.Data
                 new Product { Id = 79, Name = "makaron dwujajeczny", KcalPer100g = 340, GI = 55, CategoryId = 3 },
                 new Product { Id = 80, Name = "płatki kukurydziane", KcalPer100g = 381, GI = 81, CategoryId = 3 },
                 new Product { Id = 81, Name = "chleb orkiszowy", KcalPer100g = 244, GI = 49, CategoryId = 3, GramsPerPortion = 40 },
-                new Product { Id = 82, Name = "muslie", KcalPer100g = 357, GI = 57, CategoryId = 3 }, 
+                new Product { Id = 82, Name = "muslie", KcalPer100g = 357, GI = 57, CategoryId = 3 },
 
 
 
-                new Product { Id = 83, Name = "migdały", KcalPer100g = 604, GI = 15, CategoryId = 4 }, 
-                new Product { Id = 84, Name = "orzechy arachidowe ", KcalPer100g = 610, GI = 14, CategoryId = 4 }, 
-                new Product { Id = 85, Name = "orzechy laskowe", KcalPer100g = 666, GI = 15, CategoryId = 4 }, 
-                new Product { Id = 86, Name = "pistacje", KcalPer100g = 621, GI = 15, CategoryId = 4 }, 
-                new Product { Id = 87, Name = "orzechy włoskie", KcalPer100g = 666, GI = 15, CategoryId = 4 }, 
-                new Product { Id = 138, Name = "mieszanka orzechów", KcalPer100g = 630, GI = 15, CategoryId = 4 },
+                new Product { Id = 83, Name = "migdały", KcalPer100g = 604, GI = 15, CategoryId = 4 },
+                new Product { Id = 84, Name = "orzechy arachidowe ", KcalPer100g = 610, GI = 14, CategoryId = 4 },
+                new Product { Id = 85, Name = "orzechy laskowe", KcalPer100g = 666, GI = 15, CategoryId = 4 },
+                new Product { Id = 86, Name = "pistacje", KcalPer100g = 621, GI = 15, CategoryId = 4 },
+                new Product { Id = 87, Name = "orzechy włoskie", KcalPer100g = 666, GI = 15, CategoryId = 4 },
 
 
 
@@ -153,7 +153,6 @@ namespace Diabetic.Data.Data
                 new Product { Id = 101, Name = "salami", KcalPer100g = 354, GI = 0, CategoryId = 5 },
                 new Product { Id = 102, Name = "śmietana 12%", KcalPer100g = 134, GI = 0, CategoryId = 5 },
                 new Product { Id = 103, Name = "śmietana 18%", KcalPer100g = 186, GI = 0, CategoryId = 5 },
-                new Product { Id = 136, Name = "jajko", KcalPer100g = 140, GI = 0, CategoryId = 5 },
 
 
 
@@ -162,7 +161,7 @@ namespace Diabetic.Data.Data
                 new Product { Id = 106, Name = "kiełbasa żywiecka", KcalPer100g = 213, GI = 0, CategoryId = 6 },
                 new Product { Id = 107, Name = "krewetki gotowane", KcalPer100g = 92, GI = 0, CategoryId = 6 },
                 new Product { Id = 108, Name = "królik", KcalPer100g = 115, GI = 0, CategoryId = 6 },
-                new Product { Id = 109, Name = "kurczak", KcalPer100g = 98, GI = 0, CategoryId = 6 },
+                new Product { Id = 109, Name = "kurczak", KcalPer100g = 98, GI = 0, CategoryId = 6, Fat = 1, Protein = 22, Fibre = 0, Sugar = 0 },
                 new Product { Id = 110, Name = "łosoś z rusztu", KcalPer100g = 228, GI = 0, CategoryId = 6 },
                 new Product { Id = 111, Name = "polędwica sopocka", KcalPer100g = 165, GI = 0, CategoryId = 6 },
                 new Product { Id = 112, Name = "salami (kiełbasa)", KcalPer100g = 346, GI = 0, CategoryId = 6 },
@@ -176,9 +175,7 @@ namespace Diabetic.Data.Data
                 new Product { Id = 120, Name = "polędwica wołowa", KcalPer100g = 112, GI = 0, CategoryId = 6 },
                 new Product { Id = 121, Name = "kiełbasa domowa", KcalPer100g = 172, GI = 0, CategoryId = 6 },
                 new Product { Id = 122, Name = "indyk", KcalPer100g = 84, GI = 0, CategoryId = 6 },
-                new Product { Id = 133, Name = "kabanos", KcalPer100g = 480, GI = 0, CategoryId = 6, GramsPerPortion = 45 },
-                new Product { Id = 135, Name = "podudzie z kurczaka", KcalPer100g = 161, GI = 0, CategoryId = 6, GramsPerPortion = 90 },
-                new Product { Id = 139, Name = "pierś z kurczaka", KcalPer100g = 98, GI = 0, CategoryId = 6, GramsPerPortion = 200 },
+
 
 
                 new Product { Id = 123, Name = "ciasteczka owsiane", KcalPer100g = 335, GI = 57, CategoryId = 7 },
@@ -193,8 +190,16 @@ namespace Diabetic.Data.Data
 
 
                 new Product { Id = 132, Name = "majonez", KcalPer100g = 679, GI = 0, CategoryId = 8 },
-                new Product { Id = 134, Name = "hummus", KcalPer100g = 327, GI = 25, GramsPerPortion = 25, CategoryId = 8 }
-            );
+                new Product { Id = 133, Name = "kabanos", KcalPer100g = 480, GI = 0, CategoryId = 6, GramsPerPortion = 45 },
+                new Product { Id = 134, Name = "hummus", KcalPer100g = 327, GI = 25, GramsPerPortion = 25, CategoryId = 8 }, 
+                new Product { Id = 135, Name = "podudzie z kurczaka", KcalPer100g = 161, GI = 0, CategoryId = 6, GramsPerPortion = 90 },
+                new Product { Id = 136, Name = "jajko", KcalPer100g = 140, GI = 0, CategoryId = 5 },
+                new Product { Id = 137, Name = "borówki", KcalPer100g = 57, GI = 55, CategoryId = 2 },
+                new Product { Id = 138, Name = "olej rzepakowy", KcalPer100g = 884, CarbsPer100g = 0, Protein = 0, Fat = 100, Fibre = 0, GI = 0, Sugar = 0, CategoryId = 9 },
+                new Product { Id = 139, Name = "pierś z kurczaka", KcalPer100g = 98, GI = 0, CategoryId = 6, GramsPerPortion = 200 },
+                new Product { Id = 142, Name = "mieszanka orzechów", KcalPer100g = 630, GI = 15, CategoryId = 4 },
+                new Product { Id = 141, Name = "sos sojowy", KcalPer100g = 27, GI = 25, GramsPerPortion = 25, CategoryId = 8, CarbsPer100g = 3, Fat = 0, Protein = 4, Sugar = 0, Fibre = 0 }
+            ) ;
             #endregion
 
             modelBuilder.Entity<Recipe>().HasData(
