@@ -83,7 +83,9 @@ namespace Diabetic.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            ProductViewModel model = new ProductViewModel(); 
+            model.Categories = _categoryRepository.GetAll();
+            return View(model);
         }
 
         [HttpPost]

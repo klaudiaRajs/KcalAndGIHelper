@@ -49,7 +49,9 @@
 
         <div class="mb-3 w-25 row">
             <label asp-for="@Model.Product.CategoryId"></label>
-            <input asp-for="@Model.Product.CategoryId" class="form-control" />
+            @Html.DropDownListFor(m => m.Product.CategoryId,
+                     new SelectList(Model.Categories, "Id", "Name"),
+                     "Select category", new { @class = "dropdown form-control" })
         </div>
 
         <div class="mb-3 w-25 row">
