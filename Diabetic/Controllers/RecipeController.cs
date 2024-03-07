@@ -48,6 +48,14 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Create(RecipeViewModel model)
         {
+            if( String.IsNullOrEmpty(model.Recipe.Name) )
+            {
+                ModelState.AddModelError(nameof(model.Recipe.Name), "error");
+                model.Categories = _categoryRepository.GetAll();
+                model = CreateSelectboxesForIngredients(model);
+                model = SetCheckboxesForModel(model);
+                return View(model);
+            }
             Recipe newRecipe = new Recipe() { Name = model.Recipe.Name };
             var result = _recipeRepository.Create(newRecipe);
 
@@ -133,6 +141,26 @@ namespace Diabetic.Controllers
             return model; 
         }
 
+        private RecipeViewModel SetCheckboxesForModel(RecipeViewModel model)
+        {
+            var ingredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+            for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
+            {
+                SelectedCheckboxViewModel? item = model.SelectedCheckboxes[i];
+                var ingredient = ingredients.Where(a => a.Id == item.Id).FirstOrDefault();
+                if (ingredient == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    model.SelectedCheckboxes[i].IsChecked = true;
+                    model.SelectedCheckboxes[i].Grams = ingredient.Grams;
+                }
+            }
+            return model; 
+        }
+
         [HttpPost]
         public IActionResult Edit(RecipeViewModel model)
         {
@@ -142,55 +170,60 @@ namespace Diabetic.Controllers
                 return RedirectToAction("Index");
             }
 
-
-            var recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
-            if (recipe == null)
+            if( ModelState.IsValid)
             {
-                return NotFound();
-            }
 
-            recipe.Name = model.Recipe.Name;
-
-            var currentRecipe = new Recipe { Name = recipe.Name, Id = recipe.Id };
-            bool result = _recipeRepository.Update(currentRecipe);
-
-            var currentIngredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
-            var newIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
-
-            List<Recipe_Ingredients> toBeUpdated = new List<Recipe_Ingredients>(); 
-            List<Recipe_Ingredients> toBeAdded = new List<Recipe_Ingredients>(); 
-            List<Recipe_Ingredients> toBeRemoved = new List<Recipe_Ingredients>();
-
-            foreach(var old in currentIngredients)
-            {
-                bool isToBeUpdated = false;
-                foreach( var newItem in newIngredients)
+                var recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
+                if (recipe == null)
                 {
-                    if( old.ProductId == newItem.Id)
+                    return NotFound();
+                }
+
+                recipe.Name = model.Recipe.Name;
+
+                var currentRecipe = new Recipe { Name = recipe.Name, Id = recipe.Id };
+                bool result = _recipeRepository.Update(currentRecipe);
+
+                var currentIngredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
+                var newIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+
+                List<Recipe_Ingredients> toBeUpdated = new List<Recipe_Ingredients>();
+                List<Recipe_Ingredients> toBeAdded = new List<Recipe_Ingredients>();
+                List<Recipe_Ingredients> toBeRemoved = new List<Recipe_Ingredients>();
+
+                foreach (var old in currentIngredients)
+                {
+                    bool isToBeUpdated = false;
+                    foreach (var newItem in newIngredients)
                     {
-                        toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = (int)newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
-                        isToBeUpdated = true;
-                        break; 
+                        if (old.ProductId == newItem.Id)
+                        {
+                            toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = (int)newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
+                            isToBeUpdated = true;
+                            break;
+                        }
+                    }
+                    if (!isToBeUpdated)
+                    {
+                        toBeRemoved.Add(old);
                     }
                 }
-                if( !isToBeUpdated)
+
+                foreach (var item in newIngredients)
                 {
-                    toBeRemoved.Add(old);
-                }                
-            }
+                    var itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
+                    var itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
 
-            foreach( var item in newIngredients)
-            {
-                var itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
-                var itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
-
-                if( !itemToBeUpdated.Any() && !itemToBeRemoved.Any() ) {
-                    toBeAdded.Add(new Recipe_Ingredients { ProductId = (int)item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
+                    if (!itemToBeUpdated.Any() && !itemToBeRemoved.Any())
+                    {
+                        toBeAdded.Add(new Recipe_Ingredients { ProductId = (int)item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
+                    }
                 }
+                var addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
+                var updatingResult = _recipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
+                var removingResult = _recipeRepository.RemoveIngredientsForRecipe(toBeRemoved);
             }
-            var addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
-            var updatingResult = _recipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
-            var removingResult = _recipeRepository.RemoveIngredientsForRecipe(toBeRemoved); 
+
             
 
             return RedirectToAction("Index");

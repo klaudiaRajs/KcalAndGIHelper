@@ -20,6 +20,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
+                product.Name = product.Name.ToLower();
                 _db.Products.Add(product);
                 _db.SaveChanges();
                 return true;
