@@ -22,5 +22,6 @@ namespace Diabetic.Data.Repositories.Interfaces
         bool Update(Recipe recipe);
         bool UpdateIngredientsForRecipe(Recipe currentRecipe, List<Recipe_Ingredients> toBeUpdated);
         bool CreateRecipeIfNotExistant(List<SelectionDTO> ingredients, int recipeId, string title, int recipeDayId);
+        bool AssignRecipeToMeals(int id, int[] selectedMeals);
     }
 }

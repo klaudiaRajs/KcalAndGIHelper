@@ -22,6 +22,10 @@
             <input asp-for="@Model.Recipe.Name" class="form-control" />
             <span asp-validation-for="@Model.Recipe.Name" class="text-danger"> </span>
         </div>
+        <div class="mb-3 row vh-25">
+            <label asp-for="@Model.SelectedMeals" />
+            <select class="form-control vh-25" multiple="multiple" asp-for="@Model.SelectedMeals" asp-items="@Model.Meals"></select>
+        </div>
 
         @foreach( Category category in Model.Categories)
         {
@@ -69,9 +73,7 @@
         <button type="submit" class="btn btn-primary mt-5">Save</button>
     </form>
 </div>
-
 <script>
-
     function updateTotal(element, id, kcalPer100g, productGI, carbsPer100g ) { 
         var amount = element.value; 
         id[0].value = Math.round((element.value / 100) * kcalPer100g); 
@@ -114,11 +116,9 @@
             element.style.display = "none";
         }
     }
-
     $(function () {
         setIndividualGlBackgrounds(); 
         setTotalGlBackground();
-        setVisibilityOnLoad();
     });
 
     function setTotalGlBackground() {
