@@ -32,6 +32,24 @@ namespace Diabetic.Data.Repositories
 
         }
 
+        public bool AssignRecipeToMeals(int id, int[] selectedMeals)
+        {
+            try
+            {
+                foreach (var ingredient in selectedMeals)
+                {
+                    MealRecipe entity = new MealRecipe { MealsId = ingredient, RecipesId = id};
+                    _db.MealRecipes.Add(entity);                    
+                }
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         public bool Create(Recipe recipe)
         {
             try
@@ -56,42 +74,44 @@ namespace Diabetic.Data.Repositories
                 var recipeIdsWithTheSameAmountOfProducts = _db.Recipe_Ingredients.GroupBy(a => a.RecipeId, (a, b) => new { RecipeId = a, NumberOfProducts = b.Count() }).Where(x => x.NumberOfProducts == products.Count() && x.RecipeId != recipeDayId).ToList();
 
                 var newRecipeIdsWithTheSameAmountOfProducts = recipeIdsWithTheSameAmountOfProducts.Select(a => a.RecipeId).ToList();
-                
+
                 var result = _db.Recipe_Ingredients.Where(a => products.Contains(a.ProductId) && grams.Contains(a.Amount) && a.RecipeId != recipeId).ToList();
-                
+
                 var recipeIngredietWithTheSameAmountOfProducts = _db.Recipe_Ingredients.Where(a => newRecipeIdsWithTheSameAmountOfProducts.Contains(a.RecipeId)).ToList();
 
                 List<RecipeDTO> fullRecipes = new List<RecipeDTO>();
-                foreach( var recipe in recipeIngredietWithTheSameAmountOfProducts)
+                foreach (var recipe in recipeIngredietWithTheSameAmountOfProducts)
                 {
-                    if( !fullRecipes.Where(a => a.Id == recipe.RecipeId).Any())
+                    if (!fullRecipes.Where(a => a.Id == recipe.RecipeId).Any())
                     {
-                        fullRecipes.Add(GetRecipeById(recipe.RecipeId)); 
+                        fullRecipes.Add(GetRecipeById(recipe.RecipeId));
                     }
                 }
 
                 int? extractedRecipeId = null;
-                foreach( var recipe in fullRecipes)
+                foreach (var recipe in fullRecipes)
                 {
-                    foreach( var ingredient in recipe.Ingredients)
+                    foreach (var ingredient in recipe.Ingredients)
                     {
-                        if(!products.Contains(ingredient.ProductId)){
+                        if (!products.Contains(ingredient.ProductId))
+                        {
                             extractedRecipeId = null;
-                            break; 
-                        } else
+                            break;
+                        }
+                        else
                         {
                             extractedRecipeId = recipe.Id;
-                        }                        
+                        }
                     }
                     if (extractedRecipeId != null)
                     {
-                        break; 
+                        break;
                     }
                 }
 
                 if (extractedRecipeId != null)
                 {
-                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
+                    var dietDay = _db.Day_Recipes.FirstOrDefault(a => a.Id == recipeDayId);
                     if (dietDay != null)
                     {
                         switch (ingredients.FirstOrDefault().MealId)
@@ -116,7 +136,8 @@ namespace Diabetic.Data.Repositories
                         _db.Day_Recipes.Update(dietDay);
                         _db.SaveChanges();
                     }
-                } else
+                }
+                else
                 {
                     var name = title + "-Copy";
                     var recipe = new Recipe { Name = name.ToString() };
@@ -131,8 +152,8 @@ namespace Diabetic.Data.Repositories
 
                     _db.Recipe_Ingredients.AddRange(ingredientsToAdd);
                     _db.SaveChanges();
-                    
-                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
+
+                    var dietDay = _db.Day_Recipes.FirstOrDefault(a => a.Id == recipeDayId);
                     switch (ingredients.FirstOrDefault().MealId)
                     {
                         case 1:
@@ -155,7 +176,7 @@ namespace Diabetic.Data.Repositories
                     _db.Day_Recipes.Update(dietDay);
                     _db.SaveChanges();
                 }
-                return true; 
+                return true;
             }
             catch (Exception ex)
             {
@@ -245,7 +266,7 @@ namespace Diabetic.Data.Repositories
 
         public RecipeDTO? GetRecipeById(int? id)
         {
-            if( id == null)
+            if (id == null)
             {
                 return new RecipeDTO();
             }

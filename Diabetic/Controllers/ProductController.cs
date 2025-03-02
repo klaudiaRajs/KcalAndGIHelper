@@ -1,11 +1,9 @@
-﻿using Diabetic.Data.Data;
-using Diabetic.Data.Repositories;
-using Diabetic.Data.Repositories.Interfaces;
+﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Diabetic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Diabetic.Controllers
 {
@@ -80,14 +78,14 @@ namespace Diabetic.Controllers
             _productViewModel.Products = products.ToList();
             return View(_productViewModel);
         }
-
+        [Authorize]
         public IActionResult Create()
         {
             ProductViewModel model = new ProductViewModel(); 
             model.Categories = _categoryRepository.GetAll();
             return View(model);
         }
-
+        
         [HttpPost]
         public IActionResult Create(ProductViewModel productViewModel)
         {
@@ -96,14 +94,14 @@ namespace Diabetic.Controllers
             SeederService.GenerateSeederForProductCreate(product);
             return RedirectToAction("Index"); 
         }
-
+        [Authorize]
         public IActionResult Details(int id)
         {
             var product = _productRepository.GetById(id); 
             _productViewModel.Product = product;
             return View("Create", _productViewModel);
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Details(ProductViewModel model)
         {
@@ -113,6 +111,7 @@ namespace Diabetic.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult Remove(int id)
         {
             var result = _productRepository.Delete(id);

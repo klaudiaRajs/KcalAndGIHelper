@@ -1,10 +1,5 @@
 ﻿using Diabetic.Models;
 using Diabetic.Models.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Diabetic.Data.Repositories.Interfaces
 {
@@ -22,5 +17,6 @@ namespace Diabetic.Data.Repositories.Interfaces
         bool Update(Recipe recipe);
         bool UpdateIngredientsForRecipe(Recipe currentRecipe, List<Recipe_Ingredients> toBeUpdated);
         bool CreateRecipeIfNotExistant(List<SelectionDTO> ingredients, int recipeId, string title, int recipeDayId);
+        bool AssignRecipeToMeals(int id, int[] selectedMeals);
     }
 }

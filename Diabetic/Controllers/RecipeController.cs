@@ -3,15 +3,14 @@ using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Diabetic.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Diabetic.Controllers
 {
     public class RecipeController : BaseController
     {
-        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository)
-            : base(recipeRepository, productRepository, categoryRepository) { }
+        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IMealRepository mealRepository)
+            : base(recipeRepository, productRepository, categoryRepository, mealRepository) { }
 
         public IActionResult Index()
         {
@@ -33,6 +32,7 @@ namespace Diabetic.Controllers
         {
             RecipeViewModel recipeViewModel = new RecipeViewModel();
             recipeViewModel.Categories = _categoryRepository.GetAll();
+            recipeViewModel.Meals = _mealRepository.GetAll().Select(a => new SelectListItem {  Text = a.Name, Value = a.Id.ToString() });   
             recipeViewModel.SelectedCheckboxes = _productRepository.GetAll().Select(product => new SelectedCheckboxViewModel
             {
                 IsChecked = false,
@@ -54,10 +54,12 @@ namespace Diabetic.Controllers
                 model.Categories = _categoryRepository.GetAll();
                 model = CreateSelectboxesForIngredients(model);
                 model = SetCheckboxesForModel(model);
+                model.Meals = _mealRepository.GetAll().Select(a => new SelectListItem { Text = a.Name, Value = a.Id.ToString() });
                 return View(model);
             }
             Recipe newRecipe = new Recipe() { Name = model.Recipe.Name };
             var result = _recipeRepository.Create(newRecipe);
+            _recipeRepository.AssignRecipeToMeals(newRecipe.Id, model.SelectedMeals);
 
             List<Recipe_Ingredients> ingredients = new List<Recipe_Ingredients>();
             var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
