@@ -16,8 +16,8 @@ namespace Diabetic.Controllers
         {
             _recipeRepository = recipeRepository;
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
-            _mealRepository = mealRepository;
+            this._categoryRepository = categoryRepository;
+            this._mealRepository = mealRepository;
         }
     }
 }

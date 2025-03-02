@@ -4,6 +4,8 @@ using Diabetic.Models.DTOs;
 using Diabetic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Cryptography;
 
 namespace Diabetic.Controllers
 {

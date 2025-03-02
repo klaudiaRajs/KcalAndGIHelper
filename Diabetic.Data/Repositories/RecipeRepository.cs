@@ -111,7 +111,7 @@ namespace Diabetic.Data.Repositories
 
                 if (extractedRecipeId != null)
                 {
-                    var dietDay = _db.Day_Recipes.FirstOrDefault(a => a.Id == recipeDayId);
+                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
                     if (dietDay != null)
                     {
                         switch (ingredients.FirstOrDefault().MealId)
@@ -153,7 +153,7 @@ namespace Diabetic.Data.Repositories
                     _db.Recipe_Ingredients.AddRange(ingredientsToAdd);
                     _db.SaveChanges();
 
-                    var dietDay = _db.Day_Recipes.FirstOrDefault(a => a.Id == recipeDayId);
+                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
                     switch (ingredients.FirstOrDefault().MealId)
                     {
                         case 1:
