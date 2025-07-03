@@ -125,22 +125,10 @@ namespace Diabetic.Controllers
             
             return View("ShoppingList", productsToShop);
         }
-
+        
         public IActionResult GenerateShoppingListForOneDay(int id)
         {
-            DayDietDTO day = _dietDayRepository.GetDay(id);
-            DayDietViewModel model = new DayDietViewModel { RecipesForDay = day };
-            if (model.RecipesForDay != null)
-            {
-                LoadAllRecipesForDayByDayId(model); 
-                model.SelectedKcals = model.SetTotalKcals();
-                model.SelectedGL = model.SetTotalGL();
-            }
-
-            model.Dinners = _recipeRepository.GetByMeal(3);
-            model.Recipes = _recipeRepository.GetNonDinnerRecipes();
-
-            return View("Create", model);
+            return RedirectToAction(nameof(GenerateShoppingListForMultipleDays), new { daysIds = new List<int> { id } });
         }
 
         private List<IngredientDTO> ExtractIngredientsFromRecipesForDay(DayDietViewModel viewModel)
