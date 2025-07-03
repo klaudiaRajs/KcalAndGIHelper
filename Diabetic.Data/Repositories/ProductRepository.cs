@@ -34,7 +34,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var product = _db.Products.FirstOrDefault(p => p.Id == id);
+                Product? product = _db.Products.FirstOrDefault(p => p.Id == id);
                 _db.Products.Remove(product);
                 _db.SaveChanges();
                 return true;
@@ -63,7 +63,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                return _db.Products.Where(a => a.Id == id).FirstOrDefault(); 
+                return _db.Products.FirstOrDefault(a => a.Id == id); 
             } catch(Exception ex)
             {
                 //Add logging 

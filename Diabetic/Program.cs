@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -18,9 +18,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddDefaultIdentity<IdentityUser>(option => option.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
-builder.Services.AddTransient<IDietDayRepository, DietDayRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IDietDayRepository, DietDayRepository>();
 builder.Services.AddTransient<IMealRepository, MealRepository>();
 builder.Services.AddTransient<IDayToDayDiaryRepository, DayToDayDiaryRepository>();
 builder.Services.Configure<KestrelServerOptions>(options =>
@@ -34,7 +34,7 @@ builder.Services.Configure<FormOptions>(options =>
     options.ValueCountLimit = int.MaxValue;
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

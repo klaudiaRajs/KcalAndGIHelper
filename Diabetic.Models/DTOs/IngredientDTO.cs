@@ -15,13 +15,8 @@
         public string ProductName { get { return Product.Name; } }
         public int ProductId { get { return Product.Id; } }
 
-        public double GL
-        {
-            get
-            {
-                return Math.Floor((Product.GI * Product.CarbsPer100g) / 100);
-            }
-        }
+        public double GL { get; set; }
+
         public string GetGIRating()
         {
             if (Product.GI > _maxGreenGI && Product.GI <= _maxOrangeGI)

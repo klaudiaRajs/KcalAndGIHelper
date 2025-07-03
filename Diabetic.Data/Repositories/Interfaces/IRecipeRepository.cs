@@ -5,7 +5,7 @@ namespace Diabetic.Data.Repositories.Interfaces
 {
     public interface IRecipeRepository
     {
-        RecipeDTO? GetRecipeById(int? id);
+        RecipeDTO GetRecipeById(int? id);
         IEnumerable<RecipeDTO> GetAllRecipes();
         IEnumerable<RecipeDTO> GetByMeal(int id);
         IEnumerable<RecipeDTO> GetNonDinnerRecipes();

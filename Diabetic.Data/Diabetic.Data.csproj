@@ -20,5 +20,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Diabetic.Models\Diabetic.Models.csproj" />
+	  <ProjectReference Include="..\Diabetic.Services\Diabetic.Services.csproj" />
 	</ItemGroup>
 </Project>

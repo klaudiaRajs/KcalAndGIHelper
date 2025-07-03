@@ -34,7 +34,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var entity = _db.Ingredient_Meal_Days.Where(a => a.Id == id).FirstOrDefault();
+                Ingredient_Meal_Day? entity = _db.Ingredient_Meal_Days.FirstOrDefault(a => a.Id == id);
                 if (entity != null)
                 {
                     _db.Remove(entity);
@@ -56,12 +56,12 @@ namespace Diabetic.Data.Repositories
                 {
                     date = DateTime.Now.Date;
                 }
-                var ingredientsPerDate = _db.Ingredient_Meal_Days.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date.Value.Date && record.UserId == userId).ToList();
+                List<Ingredient_Meal_Day> ingredientsPerDate = _db.Ingredient_Meal_Days.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date.Value.Date && record.UserId == userId).ToList();
                 List<MealDTO> mealsWithIngredients = new List<MealDTO>();
                 
-                foreach( var ingredient in ingredientsPerDate )
+                foreach( Ingredient_Meal_Day ingredient in ingredientsPerDate )
                 {
-                    var meal = new MealDTO();
+                    MealDTO meal = new MealDTO();
                     meal.Id = ingredient.Id;
                     meal.MealId = ingredient.MealId;
                     meal.Name = ingredient.Meal?.Name;
@@ -79,7 +79,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var result = _db.Ingredient_Meal_Days.Where(a => a.ProductId == productId && a.MealId == mealId && a.AddedAt.Date == dateTime.GetValueOrDefault().Date).FirstOrDefault();
+                Ingredient_Meal_Day? result = _db.Ingredient_Meal_Days.FirstOrDefault(a => a.ProductId == productId && a.MealId == mealId && a.AddedAt.Date == dateTime.GetValueOrDefault().Date);
                 return result; 
             } catch (Exception e)
             {
@@ -92,9 +92,9 @@ namespace Diabetic.Data.Repositories
             try
             {
                 List<Ingredient_Meal_Day> selectedIngredients = new List<Ingredient_Meal_Day>();
-                foreach (var item in ingredients)
+                foreach (IngredientsToMealDTO item in ingredients)
                 {
-                    var ingredient = new Ingredient_Meal_Day();
+                    Ingredient_Meal_Day ingredient = new Ingredient_Meal_Day();
                     ingredient.MealId = item.SelectedMealId;
                     ingredient.ProductId = item.SelectedProductId;
                     ingredient.AddedAt = dateTime;

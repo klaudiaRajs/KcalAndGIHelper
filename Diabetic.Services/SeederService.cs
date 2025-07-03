@@ -11,7 +11,7 @@ namespace Diabetic.Services
     {
         public static void GenerateSeederForRecipeCreate(Recipe recipe, List<Recipe_Ingredients> ingredients)
         {
-            var path = "@path";
+            string path = "@path";
 
             string content = "new Recipe { Id = " +  recipe.Id +  ", Name = \"" + recipe.Name + "\"}," + Environment.NewLine;
             content += "/**" + recipe.Name + "*/";
@@ -31,7 +31,7 @@ namespace Diabetic.Services
 
         public static void GenerateSeederForProductCreate(Product product)
         {
-            var path = "@path";
+            string path = "@path";
 
             string content = 
                 "new Product { Id = " + product.Id 

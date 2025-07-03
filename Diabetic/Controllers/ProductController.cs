@@ -89,15 +89,15 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Create(ProductViewModel productViewModel)
         {
-            var product = productViewModel.Product;
-            var result = _productRepository.Create(product); 
+            Product product = productViewModel.Product;
+            bool result = _productRepository.Create(product); 
             SeederService.GenerateSeederForProductCreate(product);
             return RedirectToAction("Index"); 
         }
         [Authorize]
         public IActionResult Details(int id)
         {
-            var product = _productRepository.GetById(id); 
+            Product product = _productRepository.GetById(id); 
             _productViewModel.Product = product;
             return View("Create", _productViewModel);
         }
@@ -105,8 +105,8 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Details(ProductViewModel model)
         {
-            var product = model.Product;
-            var result = _productRepository.Update(product);
+            Product product = model.Product;
+            bool result = _productRepository.Update(product);
             SeederService.GenerateSeederForProductCreate(product);
             return RedirectToAction("Index");
         }
@@ -114,14 +114,14 @@ namespace Diabetic.Controllers
         [Authorize]
         public IActionResult Remove(int id)
         {
-            var result = _productRepository.Delete(id);
+            bool result = _productRepository.Delete(id);
             return RedirectToAction("Index"); 
         }
 
         [HttpGet]
         public IActionResult Products(string prefix)
         {
-            var products = _productRepository.GetAll().Where(a => a.ProductName.StartsWith(prefix)).ToList();
+            List<IngredientDTO> products = _productRepository.GetAll().Where(a => a.ProductName.StartsWith(prefix)).ToList();
             return Json(products);
         }
     }

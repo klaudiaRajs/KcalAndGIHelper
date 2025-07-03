@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Diabetic.Services;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Diabetic.Data.Repositories
 {
@@ -36,7 +38,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                foreach (var ingredient in selectedMeals)
+                foreach (int ingredient in selectedMeals)
                 {
                     MealRecipe entity = new MealRecipe { MealsId = ingredient, RecipesId = id};
                     _db.MealRecipes.Add(entity);                    
@@ -68,19 +70,19 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var products = ingredients.Select(a => a.Id).ToList();
-                var grams = ingredients.Select(a => a.Grams).ToList();
+                List<int> products = ingredients.Select(a => a.Id).ToList();
+                List<int> grams = ingredients.Select(a => a.Grams).ToList();
 
                 var recipeIdsWithTheSameAmountOfProducts = _db.Recipe_Ingredients.GroupBy(a => a.RecipeId, (a, b) => new { RecipeId = a, NumberOfProducts = b.Count() }).Where(x => x.NumberOfProducts == products.Count() && x.RecipeId != recipeDayId).ToList();
 
-                var newRecipeIdsWithTheSameAmountOfProducts = recipeIdsWithTheSameAmountOfProducts.Select(a => a.RecipeId).ToList();
+                List<int> newRecipeIdsWithTheSameAmountOfProducts = recipeIdsWithTheSameAmountOfProducts.Select(a => a.RecipeId).ToList();
 
-                var result = _db.Recipe_Ingredients.Where(a => products.Contains(a.ProductId) && grams.Contains(a.Amount) && a.RecipeId != recipeId).ToList();
+                List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Where(a => products.Contains(a.ProductId) && grams.Contains(a.Amount) && a.RecipeId != recipeId).ToList();
 
-                var recipeIngredietWithTheSameAmountOfProducts = _db.Recipe_Ingredients.Where(a => newRecipeIdsWithTheSameAmountOfProducts.Contains(a.RecipeId)).ToList();
+                List<Recipe_Ingredients> recipeIngredietWithTheSameAmountOfProducts = _db.Recipe_Ingredients.Where(a => newRecipeIdsWithTheSameAmountOfProducts.Contains(a.RecipeId)).ToList();
 
                 List<RecipeDTO> fullRecipes = new List<RecipeDTO>();
-                foreach (var recipe in recipeIngredietWithTheSameAmountOfProducts)
+                foreach (Recipe_Ingredients recipe in recipeIngredietWithTheSameAmountOfProducts)
                 {
                     if (!fullRecipes.Where(a => a.Id == recipe.RecipeId).Any())
                     {
@@ -89,9 +91,9 @@ namespace Diabetic.Data.Repositories
                 }
 
                 int? extractedRecipeId = null;
-                foreach (var recipe in fullRecipes)
+                foreach (RecipeDTO recipe in fullRecipes)
                 {
-                    foreach (var ingredient in recipe.Ingredients)
+                    foreach (IngredientDTO ingredient in recipe.Ingredients)
                     {
                         if (!products.Contains(ingredient.ProductId))
                         {
@@ -111,7 +113,7 @@ namespace Diabetic.Data.Repositories
 
                 if (extractedRecipeId != null)
                 {
-                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
+                    Day_Recipe? dietDay = _db.Day_Recipes.FirstOrDefault(a => a.Id == recipeDayId);
                     if (dietDay != null)
                     {
                         switch (ingredients.FirstOrDefault().MealId)
@@ -139,13 +141,13 @@ namespace Diabetic.Data.Repositories
                 }
                 else
                 {
-                    var name = title + "-Copy";
-                    var recipe = new Recipe { Name = name.ToString() };
+                    string name = title + "-Copy";
+                    Recipe recipe = new Recipe { Name = name };
                     _db.Recipes.Add(recipe);
                     _db.SaveChanges();
 
                     List<Recipe_Ingredients> ingredientsToAdd = new List<Recipe_Ingredients>();
-                    foreach (var itm in ingredients)
+                    foreach (SelectionDTO itm in ingredients)
                     {
                         ingredientsToAdd.Add(new Recipe_Ingredients() { ProductId = itm.Id, Amount = itm.Grams, RecipeId = recipe.Id });
                     }
@@ -153,7 +155,7 @@ namespace Diabetic.Data.Repositories
                     _db.Recipe_Ingredients.AddRange(ingredientsToAdd);
                     _db.SaveChanges();
 
-                    var dietDay = _db.Day_Recipes.Where(a => a.Id == recipeDayId).FirstOrDefault();
+                    Day_Recipe? dietDay = _db.Day_Recipes.FirstOrDefault(a => a.Id == recipeDayId);
                     switch (ingredients.FirstOrDefault().MealId)
                     {
                         case 1:
@@ -190,20 +192,20 @@ namespace Diabetic.Data.Repositories
             try
             {
                 List<RecipeDTO> recipes = new List<RecipeDTO>();
-                var result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).ToList();
+                List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).ToList();
 
-                foreach (var item in result)
+                foreach (Recipe_Ingredients item in result)
                 {
-                    var recipe = recipes.Where(a => a.Id == item.RecipeId).FirstOrDefault();
+                    RecipeDTO? recipe = recipes.FirstOrDefault(a => a.Id == item.RecipeId);
                     if (recipe != null)
                     {
-                        recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount });
+                        recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, GL = GlicemicIndexHelper.GetGlOnIngredient(item) });
                     }
                     else
                     {
-                        var newRecipe = new RecipeDTO();
+                        RecipeDTO newRecipe = new RecipeDTO();
                         newRecipe.Id = item.RecipeId;
-                        newRecipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount });
+                        newRecipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, GL = GlicemicIndexHelper.GetGlOnIngredient(item)  });
                         newRecipe.Name = item.Recipe.Name;
                         recipes.Add(newRecipe);
                     }
@@ -220,10 +222,10 @@ namespace Diabetic.Data.Repositories
         public IEnumerable<RecipeDTO> GetByMeal(int id)
         {
             List<RecipeDTO> recipes = new List<RecipeDTO>();
-            var relation = _db.MealRecipes.Where(c => c.MealsId == id).ToList();
-            foreach (var item in relation)
+            List<MealRecipe> relation = _db.MealRecipes.Where(c => c.MealsId == id).ToList();
+            foreach (MealRecipe item in relation)
             {
-                var result = _db.Recipes.Where(a => a.Id == item.RecipesId).FirstOrDefault();
+                Recipe? result = _db.Recipes.FirstOrDefault(a => a.Id == item.RecipesId);
                 recipes.Add(new RecipeDTO { Id = result.Id, Name = result.Name });
             }
             return recipes;
@@ -247,8 +249,8 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var relation = _db.MealRecipes.Where(c => c.MealsId == 3).Select(a => a.RecipesId).ToList();
-                var recipes = _db.Recipes
+                List<int> relation = _db.MealRecipes.Where(c => c.MealsId == 3).Select(a => a.RecipesId).ToList();
+                List<RecipeDTO> recipes = _db.Recipes
                     .Where(a => !relation.Contains(a.Id))
                     .Include(a => a.Recipe_Ingredients)
                     .ThenInclude(a => a.Product)
@@ -264,20 +266,20 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public RecipeDTO? GetRecipeById(int? id)
+        public RecipeDTO GetRecipeById(int? id)
         {
             if (id == null)
             {
                 return new RecipeDTO();
             }
             RecipeDTO recipe = new RecipeDTO();
-            var result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
+            List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
 
-            foreach (var item in result)
+            foreach (Recipe_Ingredients item in result)
             {
                 recipe.Id = item.RecipeId;
                 recipe.Name = item.Recipe.Name;
-                recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount });
+                recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, GL = GlicemicIndexHelper.GetGlOnIngredient(item) });
             }
             return recipe;
         }
@@ -286,7 +288,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var result = _db.Recipes.Where(a => a.Id == recipe.Id).FirstOrDefault();
+                Recipe? result = _db.Recipes.FirstOrDefault(a => a.Id == recipe.Id);
                 _db.Remove(result);
                 _db.SaveChanges();
                 return true;

@@ -7,23 +7,18 @@ namespace Diabetic.Controllers
 {
     public class DietDayController : BaseController
     {
-        private readonly IRecipeRepository? _recipeRepository;
-        private IDietDayRepository? _dietDayRepository { get; }
+        private IDietDayRepository _dietDayRepository { get; }
         public DietDayController(
             IRecipeRepository recipeRepository, 
             IProductRepository productRepository, 
-            ICategoryRepository categoryRepository, IMealRepository mealRepository = null) 
+            ICategoryRepository categoryRepository, 
+            IDietDayRepository dietDayRepository, 
+            IMealRepository? mealRepository = null) 
             : base(recipeRepository, productRepository, categoryRepository, mealRepository)
         {
-        }
-        /*
-        public DietDayController(IDietDayRepository dietDayRepository, IRecipeRepository recipeRepository)
-        {
             _dietDayRepository = dietDayRepository;
-            this._recipeRepository = recipeRepository;
+            
         }
-        */
-
 
         public IActionResult Index()
         {
@@ -72,7 +67,7 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Create(DayDietViewModel model)
         {
-            var result = _dietDayRepository.Create(model.RecipesForDay);
+            bool result = _dietDayRepository.Create(model.RecipesForDay);
             return RedirectToAction("Index");
         }
 
@@ -108,7 +103,7 @@ namespace Diabetic.Controllers
                 return View("Error");
             }
 
-            var result = _dietDayRepository.Update(day.RecipesForDay, day.Id);
+            bool result = _dietDayRepository.Update(day.RecipesForDay, day.Id);
             return RedirectToAction("Index"); 
 
         }
@@ -116,7 +111,7 @@ namespace Diabetic.Controllers
         {
             DayDietViewModel viewModel = new DayDietViewModel();
             List<IngredientDTO> productsToShop = new List<IngredientDTO>();
-            foreach (var dayId in daysIds)
+            foreach (int dayId in daysIds)
             {
                 viewModel.RecipesForDay = _dietDayRepository.GetDay(dayId);
                 LoadAllRecipesForDayByDayId(viewModel);

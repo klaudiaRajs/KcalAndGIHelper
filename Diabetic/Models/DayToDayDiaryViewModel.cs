@@ -11,10 +11,10 @@ namespace Diabetic.Models
         {
             get
             {
-                var total = 0;
-                foreach (var item in MealsWithIngredients)
+                int total = 0;
+                foreach (MealDTO item in MealsWithIngredients)
                 {
-                    foreach (var ingredient in item.Ingredients)
+                    foreach (IngredientDTO ingredient in item.Ingredients)
                     {
                         total += (int)ingredient.Kcals;
                     }
@@ -27,10 +27,10 @@ namespace Diabetic.Models
         {
             get
             {
-                var total = 0;
-                foreach (var item in MealsWithIngredients)
+                int total = 0;
+                foreach (MealDTO item in MealsWithIngredients)
                 {
-                    foreach (var ingredient in item.Ingredients)
+                    foreach (IngredientDTO ingredient in item.Ingredients)
                     {
                         total += (int)ingredient.GL;
                     }
@@ -41,11 +41,11 @@ namespace Diabetic.Models
 
         public int TotalKcalsPerMeal(int id)
         {
-            var total = 0;
-            var items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
-            foreach (var item in items)
+            int total = 0;
+            List<MealDTO> items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
+            foreach (MealDTO item in items)
             {
-                foreach (var ingredient in item.Ingredients)
+                foreach (IngredientDTO ingredient in item.Ingredients)
                 {
                     total += (int)ingredient.Kcals;
                 }
@@ -55,11 +55,11 @@ namespace Diabetic.Models
 
         public int TotalGLPerMeal(int id)
         {
-            var total = 0;
-            var items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
-            foreach (var item in items)
+            int total = 0;
+            List<MealDTO> items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
+            foreach (MealDTO item in items)
             {
-                foreach (var ingredient in item.Ingredients)
+                foreach (IngredientDTO ingredient in item.Ingredients)
                 {
                     total += (int)ingredient.GL;
                 }

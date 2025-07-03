@@ -9,10 +9,10 @@ namespace Diabetic.Controllers
     {
         protected readonly IProductRepository _productRepository;
         protected readonly ICategoryRepository _categoryRepository;
-        protected readonly IMealRepository _mealRepository;
+        protected readonly IMealRepository? _mealRepository;
         protected readonly IRecipeRepository _recipeRepository;
 
-        public BaseController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IMealRepository mealRepository = null)
+        public BaseController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IMealRepository? mealRepository = null)
         {
             _recipeRepository = recipeRepository;
             _productRepository = productRepository;

@@ -11,7 +11,7 @@ namespace Diabetic.Controllers
 {
     public class RecipeController : BaseController
     {
-        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IMealRepository mealRepository)
+        public RecipeController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IMealRepository? mealRepository)
             : base(recipeRepository, productRepository, categoryRepository, mealRepository) { }
 
         public IActionResult Index()
@@ -60,12 +60,12 @@ namespace Diabetic.Controllers
                 return View(model);
             }
             Recipe newRecipe = new Recipe() { Name = model.Recipe.Name };
-            var result = _recipeRepository.Create(newRecipe);
+            bool result = _recipeRepository.Create(newRecipe);
             _recipeRepository.AssignRecipeToMeals(newRecipe.Id, model.SelectedMeals);
 
             List<Recipe_Ingredients> ingredients = new List<Recipe_Ingredients>();
-            var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
-            foreach (var item in selectedIngredients)
+            List<SelectedCheckboxViewModel> selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+            foreach (SelectedCheckboxViewModel item in selectedIngredients)
             {
                 Recipe_Ingredients ingredient = new Recipe_Ingredients { Amount = item.Grams, ProductId = (int)item.Id, RecipeId = newRecipe.Id };
                 ingredients.Add(ingredient);
@@ -78,7 +78,7 @@ namespace Diabetic.Controllers
 
         public IActionResult Remove(int id)
         {
-            var recipe = _recipeRepository.GetRecipeById(id);
+            RecipeDTO? recipe = _recipeRepository.GetRecipeById(id);
             if (recipe == null)
                 return NotFound();
             bool result = _recipeRepository.Remove(recipe);
@@ -95,7 +95,7 @@ namespace Diabetic.Controllers
             RecipeViewModel model = new RecipeViewModel();
             model.Categories = _categoryRepository.GetAll();
 
-            var recipe = _recipeRepository.GetRecipeById(id);
+            RecipeDTO? recipe = _recipeRepository.GetRecipeById(id);
             if (recipe == null)
             {
                 return NotFound();
@@ -127,11 +127,11 @@ namespace Diabetic.Controllers
         private RecipeViewModel SetCheckBoxBasedOnIngredients(RecipeViewModel model, int id)
         {
             
-            var ingredients = _recipeRepository.GetIngredientsByRecipe(id);
+            List<Recipe_Ingredients> ingredients = _recipeRepository.GetIngredientsByRecipe(id);
             for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
             {
                 SelectedCheckboxViewModel? item = model.SelectedCheckboxes[i];
-                var ingredient = ingredients.Where(a => a.ProductId == item.Id).FirstOrDefault();
+                Recipe_Ingredients? ingredient = ingredients.FirstOrDefault(a => a.ProductId == item.Id);
                 if (ingredient == null)
                 {
                     continue;
@@ -140,6 +140,7 @@ namespace Diabetic.Controllers
                 {
                     model.SelectedCheckboxes[i].IsChecked = true;
                     model.SelectedCheckboxes[i].Grams = ingredient.Amount;
+                    model.SelectedCheckboxes[i].TotalKcal = (ingredient.Product.KcalPer100g/100)*ingredient.Amount;
                 }
             }
             return model; 
@@ -147,11 +148,11 @@ namespace Diabetic.Controllers
 
         private RecipeViewModel SetCheckboxesForModel(RecipeViewModel model)
         {
-            var ingredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+            List<SelectedCheckboxViewModel> ingredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
             for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
             {
                 SelectedCheckboxViewModel? item = model.SelectedCheckboxes[i];
-                var ingredient = ingredients.Where(a => a.Id == item.Id).FirstOrDefault();
+                SelectedCheckboxViewModel? ingredient = ingredients.FirstOrDefault(a => a.Id == item.Id);
                 if (ingredient == null)
                 {
                     continue;
@@ -160,6 +161,7 @@ namespace Diabetic.Controllers
                 {
                     model.SelectedCheckboxes[i].IsChecked = true;
                     model.SelectedCheckboxes[i].Grams = ingredient.Grams;
+                    model.SelectedCheckboxes[i].TotalKcal = (int)((ingredient.Product.KcalPer100g/100)*ingredient.Amount);
                 }
             }
             return model; 
@@ -177,7 +179,7 @@ namespace Diabetic.Controllers
             if( ModelState.IsValid)
             {
 
-                var recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
+                RecipeDTO? recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
                 if (recipe == null)
                 {
                     return NotFound();
@@ -185,20 +187,20 @@ namespace Diabetic.Controllers
 
                 recipe.Name = model.Recipe.Name;
 
-                var currentRecipe = new Recipe { Name = recipe.Name, Id = recipe.Id };
+                Recipe currentRecipe = new Recipe { Name = recipe.Name, Id = recipe.Id };
                 bool result = _recipeRepository.Update(currentRecipe);
 
-                var currentIngredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
-                var newIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+                List<Recipe_Ingredients> currentIngredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
+                List<SelectedCheckboxViewModel> newIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
 
                 List<Recipe_Ingredients> toBeUpdated = new List<Recipe_Ingredients>();
                 List<Recipe_Ingredients> toBeAdded = new List<Recipe_Ingredients>();
                 List<Recipe_Ingredients> toBeRemoved = new List<Recipe_Ingredients>();
 
-                foreach (var old in currentIngredients)
+                foreach (Recipe_Ingredients old in currentIngredients)
                 {
                     bool isToBeUpdated = false;
-                    foreach (var newItem in newIngredients)
+                    foreach (SelectedCheckboxViewModel newItem in newIngredients)
                     {
                         if (old.ProductId == newItem.Id)
                         {
@@ -213,19 +215,19 @@ namespace Diabetic.Controllers
                     }
                 }
 
-                foreach (var item in newIngredients)
+                foreach (SelectedCheckboxViewModel item in newIngredients)
                 {
-                    var itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
-                    var itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
+                    List<Recipe_Ingredients> itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
+                    List<Recipe_Ingredients> itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
 
                     if (!itemToBeUpdated.Any() && !itemToBeRemoved.Any())
                     {
                         toBeAdded.Add(new Recipe_Ingredients { ProductId = (int)item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
                     }
                 }
-                var addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
-                var updatingResult = _recipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
-                var removingResult = _recipeRepository.RemoveIngredientsForRecipe(toBeRemoved);
+                bool addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
+                bool updatingResult = _recipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
+                bool removingResult = _recipeRepository.RemoveIngredientsForRecipe(toBeRemoved);
             }
 
             
@@ -244,7 +246,7 @@ namespace Diabetic.Controllers
             RecipeViewModel model = new RecipeViewModel();
             model.Categories = _categoryRepository.GetAll();
 
-            var recipe = _recipeRepository.GetRecipeById(recipeId);
+            RecipeDTO? recipe = _recipeRepository.GetRecipeById(recipeId);
             if (recipe == null)
             {
                 return NotFound();
@@ -264,8 +266,8 @@ namespace Diabetic.Controllers
         public IActionResult ChangeIngredients(RecipeViewModel model)
         {
             List<SelectionDTO> selections = new List<SelectionDTO>();
-            var selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
-            foreach(var itm in selectedIngredients)
+            List<SelectedCheckboxViewModel> selectedIngredients = model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
+            foreach(SelectedCheckboxViewModel itm in selectedIngredients)
             {
                 selections.Add(new SelectionDTO { Grams =  itm.Grams, Id = (int)itm.Id, MealId = model.Recipe.MealId, RecipeDayId = model.Recipe.RecipeDayId });
             }

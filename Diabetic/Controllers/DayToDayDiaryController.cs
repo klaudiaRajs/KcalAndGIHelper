@@ -5,6 +5,7 @@ using Diabetic.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims; 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace Diabetic.Controllers
 {
@@ -31,7 +32,7 @@ namespace Diabetic.Controllers
         {
             DateTime selectedDate = addedTo == null ? DateTime.Now : DateTime.Parse(addedTo); 
             
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _viewModel.Meals = _mealRepository.GetAll();
             _viewModel.MealsWithIngredients = _dayToDayDiaryRepository.GetAllByDate(userId, selectedDate);
             return View(_viewModel);
@@ -53,7 +54,7 @@ namespace Diabetic.Controllers
         {
             DateTime dateTime = DateTime.Parse(addedTo);
             _viewModel.GetDate = dateTime;
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             List<IngredientsToMealDTO> ingredients = MapAddViewModelFromFormCollection(form, userId); 
             bool result = _dayToDayDiaryRepository.InsertIngredients(ingredients, dateTime);
             return RedirectToAction("Today"); 
@@ -68,7 +69,7 @@ namespace Diabetic.Controllers
                 ingredients.Add(new IngredientsToMealDTO());
             }
 
-            foreach (var item in form)
+            foreach (KeyValuePair<string, StringValues> item in form)
             {
                 
                 if (nameof(IngredientsToMealDTO.SelectedMealId) == item.Key)
@@ -76,7 +77,7 @@ namespace Diabetic.Controllers
                     for (int i = 0; i < item.Value.Count; i++)
                     {
                         string? value = item.Value[i];
-                        var viewModel = ingredients.ElementAt(i);
+                        IngredientsToMealDTO viewModel = ingredients.ElementAt(i);
                         viewModel.SelectedMealId = int.Parse(value);
                     }
                 }
@@ -85,7 +86,7 @@ namespace Diabetic.Controllers
                     for (int i = 0; i < item.Value.Count; i++)
                     {
                         string? value = item.Value[i];
-                        var viewModel = ingredients.ElementAt(i);
+                        IngredientsToMealDTO viewModel = ingredients.ElementAt(i);
                         viewModel.Amount = int.Parse(value);
                     }
                 }
@@ -94,10 +95,10 @@ namespace Diabetic.Controllers
                     for (int i = 0; i < item.Value.Count; i++)
                     {
                         string? value = item.Value[i];
-                        var viewModel = ingredients.ElementAt(i);
+                        IngredientsToMealDTO viewModel = ingredients.ElementAt(i);
                         viewModel.UserId = userId; 
                         viewModel.SelectedProductId = int.Parse(value);
-                        var product = _productRepository.GetById(viewModel.SelectedProductId);
+                        Product product = _productRepository.GetById(viewModel.SelectedProductId);
                         viewModel.Products.Add(new IngredientDTO { Product = product, Amount = viewModel.Amount });
 
                     }
@@ -121,7 +122,7 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult ForDate(DayToDayDiaryViewModel model)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _viewModel.GetDate = model.GetDate; 
             _viewModel.Meals = _mealRepository.GetAll();
             _viewModel.MealsWithIngredients = _dayToDayDiaryRepository.GetAllByDate(userId, model.GetDate);

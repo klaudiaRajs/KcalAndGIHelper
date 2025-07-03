@@ -1,8 +1,7 @@
-﻿@using Diabetic.Controllers
-@model RecipeViewModel
+﻿@model RecipeViewModel
 
 @{
-    var url = Model.Recipe.Id == 0 ? Url.Action("Create", "Recipe") : Url.Action("Edit", "Recipe");
+    string? url = Model.Recipe.Id == 0 ? Url.Action("Create", "Recipe") : Url.Action("Edit", "Recipe");
     url = Model.IsIngredientBeingSwitched && Model.Recipe.Id != 0 ? Url.Action("ChangeIngredients", "Recipe") : url;
 }
 
@@ -12,88 +11,101 @@
             <label asp-for="@Model.Recipe.TotalKcal"></label>
             <input id="totalRecipe" asp-for="@Model.Recipe.TotalKcal" class="form-control" readonly/>
             <label asp-for="@Model.Recipe.TotalGL"></label>
-            <input id="totalRecipeGL" asp-for="@Model.Recipe.TotalGL" class="form-control" readonly />
+            <input id="totalRecipeGL" asp-for="@Model.Recipe.TotalGL" class="form-control" readonly/>
         </div>
         <div class="mb-3 row">
-            <input hidden asp-for="@Model.Recipe.Id" />
-            <input hidden asp-for="@Model.Recipe.MealId" />
-            <input hidden asp-for="@Model.Recipe.RecipeDayId" />
+            <input hidden asp-for="@Model.Recipe.Id"/>
+            <input hidden asp-for="@Model.Recipe.MealId"/>
+            <input hidden asp-for="@Model.Recipe.RecipeDayId"/>
             <label asp-for="@Model.Recipe.Name"></label>
-            <input asp-for="@Model.Recipe.Name" class="form-control" />
+            <input asp-for="@Model.Recipe.Name" class="form-control"/>
             <span asp-validation-for="@Model.Recipe.Name" class="text-danger"> </span>
         </div>
-        <div class="mb-3 row vh-25">
+        @*<div class="mb-3 row vh-25">
             <label asp-for="@Model.SelectedMeals" />
+            //TODO - this does not work 
             <select class="form-control vh-25" multiple="multiple" asp-for="@Model.SelectedMeals" asp-items="@Model.Meals"></select>
-        </div>
+        </div>*@
 
-        @foreach( Category category in Model.Categories)
+        @foreach (Category category in Model.Categories)
         {
-            <text>
-                <div class="m-2"><h3>@category.Name</h3></div>
-                <div class="row">
-                    @for (var i = 0; i < Model.SelectedCheckboxes.Count(); i++)
-                    {
-                        if (Model.SelectedCheckboxes[i].CategoryId == category.Id)
-                        {
-                            var boxId = "amountBox" + Model.SelectedCheckboxes[i].Id;
-                            var totalBox = "totalBox" + Model.SelectedCheckboxes[i].Id;
-                            var isDisplayed = Model.SelectedCheckboxes[i].IsChecked ? "block" : "none";
-                            <text>
-                                <div class="col-auto">
-                                    <div>
-                                        <input class="form-number-input" asp-for="@Model.SelectedCheckboxes[i].IsChecked" type="checkbox" onclick="toggleAmount(@boxId)">
-                                        <input hidden asp-for="@Model.SelectedCheckboxes[i].Id" />
-                                        <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].IsChecked">@Model.SelectedCheckboxes[i].Name</label>
-                                    </div>
-                                    <div id="@boxId" style="display: @isDisplayed">
-                                        <div>
-                                            <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].Grams">Amount: </label>
-                                            <input class="form-control-sm " asp-for="@Model.SelectedCheckboxes[i].Grams" 
-                                            oninput="updateTotal(this, @totalBox, @Model.SelectedCheckboxes[i].Product.KcalPer100g, @Model.SelectedCheckboxes[i].Product.GI, @Model.SelectedCheckboxes[i].Product.CarbsPer100g)" />
-                                        </div>
-                                        <div>
-                                            <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].TotalKcal">Selected kcals: </label>
-                                            <input id="@totalBox" class="form-control-sm total-kcal" asp-for="@Model.SelectedCheckboxes[i].TotalKcal" readonly>
-                                        </div>
-                                        <div>
-                                            <label class="form-check-label" asp-for="@Model.SelectedCheckboxes[i].GL">Ładunek glikemiczny: </label>
-                                            <input id="@totalBox" class="form-control-sm total-gl" asp-for="@Model.SelectedCheckboxes[i].GL" readonly>
-                                   
-                                        </div>
-                                    </div>
-                         
+            Model.CurrentCategory = category;
+            Model.CurrentlySelectedCheckboxes = Model.SelectedCheckboxes.Where(a => a.CategoryId == category.Id).ToList();
+            <div class="m-2">
+                <h3>@category.Name</h3></div>
+            <div class="row">
+
+                <text>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#productGroupModal-@category.Id">
+                            Otwórz grupę produktów - @category.Name
+                        </button>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="productGroupModal-@category.Id" tabindex="-1"
+                         aria-labelledby="productGroupModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="productGroupModalLabel">Grupa Produktów</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
-                            </text>
-                        }
+                                <div class="modal-body">
+                                    @Html.Partial("_productGroup", Model)
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </text>
+            </div>
+            <div id="summary-@category.Id">
+                @{
+                    List<SelectedCheckboxViewModel> selectedProducts = Model.CurrentlySelectedCheckboxes.Where(a => a.Grams != 0).ToList();
+                    foreach (SelectedCheckboxViewModel product in selectedProducts)
+                    {
+                        int totalKcal = product.Grams * (@product.Product.KcalPer100g / 100);
+                        <p>@product.Name : @product.Grams ( @totalKcal ) </p>
                     }
-                </div>
-            </text>
+                }
+            </div>
         }
         <button type="submit" class="btn btn-primary mt-5">Save</button>
     </form>
 </div>
 <script>
-    function updateTotal(element, id, kcalPer100g, productGI, carbsPer100g ) { 
-        var amount = element.value; 
-        id[0].value = Math.round((element.value / 100) * kcalPer100g); 
-        id[1].value = Math.floor( (productGI * (carbsPer100g * (amount/100) ) )   / 100); 
-        countTotal(); 
+    function updateTotal(element, id, kcalPer100g, productGI, carbsPer100g, categoryId) {
+        let amount = element.value;
+        id[0].value = Math.round((element.value / 100) * kcalPer100g);
+        id[1].value = Math.floor((productGI * (carbsPer100g * (amount / 100))) / 100);
+        countTotal();
         countTotalGL();
         setIndividualGlBackgrounds();
         setTotalGlBackground();
+        addItemToSummaryBelowGroup(categoryId);
     }
 
-    function countTotal() { 
-        var items = $(".total-kcal:visible"); 
-        var total = 0; 
-        for (var i = 0; i < items.length; i++ ){
-            var kcals = parseInt(items[i].value); 
+    function addItemToSummaryBelowGroup(categoryId) {
+        let summary = document.getElementById("summary-" + categoryId);
+        
+        summary.innerHTML = summary.innerHTML + "<p>Test</p>";
+    }
+
+    function countTotal() {
+        var items = $(".total-kcal:visible");
+        var total = 0;
+        for (var i = 0; i < items.length; i++) {
+            var kcals = parseInt(items[i].value);
             if (kcals != 0) {
-                total += kcals; 
-            }            
+                total += kcals;
+            }
         }
-        ($("#totalRecipe")[0]).value = total; 
+        ($("#totalRecipe")[0]).value = total;
     }
 
     function countTotalGL() {
@@ -116,8 +128,9 @@
             element.style.display = "none";
         }
     }
+
     $(function () {
-        setIndividualGlBackgrounds(); 
+        setIndividualGlBackgrounds();
         setTotalGlBackground();
     });
 

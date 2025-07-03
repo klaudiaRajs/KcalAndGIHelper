@@ -21,7 +21,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var days = _db.Day_Recipes.Select(a => new DayDietDTO
+                List<DayDietDTO> days = _db.Day_Recipes.Select(a => new DayDietDTO
                 {
                     Id = a.Id,
                     BreakfastId = a.BreakfastRecipeId,
@@ -43,7 +43,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                var day = _db.Day_Recipes.Where(a => a.Id == id).Select(a => new DayDietDTO
+                DayDietDTO? day = _db.Day_Recipes.Where(a => a.Id == id).Select(a => new DayDietDTO
                 {
                     Id = a.Id,
                     BreakfastId = a.BreakfastRecipeId,
@@ -88,7 +88,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                Day_Recipe day_Recipe = _db.Day_Recipes.Where(a => a.Id == day.Id).FirstOrDefault();
+                Day_Recipe day_Recipe = _db.Day_Recipes.FirstOrDefault(a => a.Id == day.Id);
                 _db.Remove(day_Recipe);
                 _db.SaveChanges();
                 return true;
@@ -107,7 +107,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                Day_Recipe day_Recipe = _db.Day_Recipes.Where(a => a.Id == id).FirstOrDefault();
+                Day_Recipe day_Recipe = _db.Day_Recipes.FirstOrDefault(a => a.Id == id);
                 day_Recipe.BreakfastRecipeId = day.BreakfastId;
                 day_Recipe.LunchRecipeId = day.LunchId; 
                 day_Recipe.DinnerRecipeId = day.DinnerId;

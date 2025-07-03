@@ -1,8 +1,8 @@
 ﻿@model DayDietViewModel
 
 @{
-    var url = Model.Id == 0 ? Url.Action("Create", "DietDay") : Url.Action("Update", "DietDay");
-    var buttonText = Model.Id == 0 ? "Create" : "Update";
+    string? url = Model.Id == 0 ? Url.Action("Create", "DietDay") : Url.Action("Update", "DietDay");
+    string buttonText = Model.Id == 0 ? "Create" : "Update";
 }
 
 <form method="post" action="@url">
