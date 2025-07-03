@@ -24,7 +24,7 @@ namespace Diabetic.Models
         {
             get
             {
-                return Math.Floor((Product.GI * (Product.CarbsPer100g * (Grams/100)) / 100)); 
+                return Math.Floor((Product.Gi * (Product.CarbsPer100g * (Grams/100)) / 100)); 
             }
             set { }
         }

@@ -8,7 +8,7 @@
                 <th scope="col">#</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
-                <th scope="col" class="text-center">@nameof(Model.Product.GI)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.Gi)</th>
                 <th scope="col">@nameof(Model.Product.GramsPerPortion)</th>
                 <th scope="col" class="text-center">ŁG</th>
                 <th scope="col">Action</th>
@@ -27,9 +27,9 @@
                     <td class="text-center">
                         @ingredient.Product.KcalPer100g
                     </td>
-                    <td class="@ingredient.GetGIRating() text-center"> @ingredient.Product.GI </td>
+                    <td class="@ingredient.GetGiRating() text-center"> @ingredient.Product.Gi </td>
                     <td class="col col-lg-1 text-center">@ingredient.Product.GramsPerPortion</td>
-                    <td class="@ingredient.GetGLRating() text-center"> @ingredient.GL </td>
+                    <td class="@ingredient.GetGLRating() text-center"> @ingredient.Gl </td>
                     <td class="col col-lg-3">
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Details</a>
                         <a asp-controller="Product" asp-action="Remove" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Delete</a>

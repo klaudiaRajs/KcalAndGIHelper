@@ -50,8 +50,10 @@ namespace Diabetic.Controllers
         {
             DayDietViewModel viewModel = new DayDietViewModel();
             viewModel.RecipesForDay = _dietDayRepository.GetDay(id);
-            LoadAllRecipesForDayByDayId(viewModel);
 
+            LoadAllRecipesForDayByDayId(viewModel);
+            viewModel.SetTotalKcals(); 
+            viewModel.SetTotalGL();
             return View(viewModel);
         }
 
@@ -188,7 +190,5 @@ namespace Diabetic.Controllers
                 viewModel.RecipesForDay.Supper.RecipeDayId = viewModel.RecipesForDay.Id;
             }
         }
-
-
     }
 }

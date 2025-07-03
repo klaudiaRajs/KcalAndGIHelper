@@ -48,31 +48,31 @@ namespace Diabetic.Controllers
             }
             if(productViewModel.Green == true && productViewModel.Orange == true && productViewModel.Red == true)
             {
-                products = products.Where(a => a.Product.GI <= productViewModel._maxGreen || a.Product.GI > productViewModel._maxGreen && a.Product.GI <= productViewModel._maxOrange || a.Product.GI > productViewModel._maxOrange); 
+                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen || a.Product.Gi > productViewModel._maxGreen && a.Product.Gi <= productViewModel._maxOrange || a.Product.Gi > productViewModel._maxOrange); 
             } 
             else if (productViewModel.Green == true && productViewModel.Orange == true)
             {
-                products = products.Where(a => a.Product.GI <= productViewModel._maxGreen || a.Product.GI > productViewModel._maxGreen && a.Product.GI <= productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen || a.Product.Gi > productViewModel._maxGreen && a.Product.Gi <= productViewModel._maxOrange);
             }
             else if (productViewModel.Green == true && productViewModel.Red == true)
             {
-                products = products.Where(a => a.Product.GI <= productViewModel._maxGreen || a.Product.GI > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen || a.Product.Gi > productViewModel._maxOrange);
             }
             else if (productViewModel.Red == true && productViewModel.Orange == true)
             {
-                products = products.Where(a => a.Product.GI > productViewModel._maxGreen && a.Product.GI <= productViewModel._maxOrange || a.Product.GI > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi > productViewModel._maxGreen && a.Product.Gi <= productViewModel._maxOrange || a.Product.Gi > productViewModel._maxOrange);
             }
             else if (productViewModel.Green == true)
             {
-                products = products.Where(a => a.Product.GI <= productViewModel._maxGreen);
+                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen);
             }
             else if(productViewModel.Orange == true)
             {
-                products = products.Where(a => a.Product.GI <= productViewModel._maxOrange || a.Product.GI > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi <= productViewModel._maxOrange || a.Product.Gi > productViewModel._maxOrange);
             }
             else if( productViewModel.Red == true)
             {
-                products = products.Where(a => a.Product.GI > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi > productViewModel._maxOrange);
             }
 
             _productViewModel.Products = products.ToList();

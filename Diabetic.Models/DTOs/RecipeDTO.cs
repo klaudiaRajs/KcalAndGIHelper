@@ -33,7 +33,7 @@ namespace Diabetic.Models.DTOs
                 double totalGL = 0;
                 Ingredients.ForEach(item =>
                 {
-                    totalGL += item.GL;
+                    totalGL += item.Gl;
                 });
                 return totalGL;
             }

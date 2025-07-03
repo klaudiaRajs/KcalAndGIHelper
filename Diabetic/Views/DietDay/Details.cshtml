@@ -1,6 +1,8 @@
 ﻿@model DayDietViewModel
 
-<div class="container"> 
+<div class="container">
+    <h4> Kcals dla dnia: @Model.SelectedKcals </h4>
+    <h4> GL dla dnia: @Model.SelectedGL </h4>
 
     <h2>Śniadanie: @Model.RecipesForDay.Breakfast.Name (@Model.RecipesForDay.Breakfast.TotalKcal)</h2>
     @await Html.PartialAsync("_recipe.cshtml", Model.RecipesForDay.Breakfast)
@@ -13,6 +15,4 @@
 
     <h2>Kolacja: @Model.RecipesForDay.Supper.Name (@Model.RecipesForDay.Supper.TotalKcal)</h2>
     @await Html.PartialAsync("_recipe.cshtml", Model.RecipesForDay.Supper)
-
-
 </div>

@@ -32,7 +32,7 @@ namespace Diabetic.Models
                 {
                     foreach (IngredientDTO ingredient in item.Ingredients)
                     {
-                        total += (int)ingredient.GL;
+                        total += (int)ingredient.Gl;
                     }
                 }
                 return total;
@@ -61,7 +61,7 @@ namespace Diabetic.Models
             {
                 foreach (IngredientDTO ingredient in item.Ingredients)
                 {
-                    total += (int)ingredient.GL;
+                    total += (int)ingredient.Gl;
                 }
             }
             return total;

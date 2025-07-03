@@ -199,13 +199,13 @@ namespace Diabetic.Data.Repositories
                     RecipeDTO? recipe = recipes.FirstOrDefault(a => a.Id == item.RecipeId);
                     if (recipe != null)
                     {
-                        recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, GL = GlicemicIndexHelper.GetGlOnIngredient(item) });
+                        recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, Gl = GlicemicIndexHelper.GetGlOnIngredient(item) });
                     }
                     else
                     {
                         RecipeDTO newRecipe = new RecipeDTO();
                         newRecipe.Id = item.RecipeId;
-                        newRecipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, GL = GlicemicIndexHelper.GetGlOnIngredient(item)  });
+                        newRecipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, Gl = GlicemicIndexHelper.GetGlOnIngredient(item)  });
                         newRecipe.Name = item.Recipe.Name;
                         recipes.Add(newRecipe);
                     }
@@ -279,7 +279,7 @@ namespace Diabetic.Data.Repositories
             {
                 recipe.Id = item.RecipeId;
                 recipe.Name = item.Recipe.Name;
-                recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, GL = GlicemicIndexHelper.GetGlOnIngredient(item) });
+                recipe.Ingredients.Add(new IngredientDTO { Product = item.Product, Amount = item.Amount, Gl = GlicemicIndexHelper.GetGlOnIngredient(item) });
             }
             return recipe;
         }

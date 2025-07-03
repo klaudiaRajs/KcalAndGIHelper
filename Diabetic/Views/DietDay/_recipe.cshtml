@@ -1,4 +1,5 @@
-﻿@model RecipeDTO
+﻿@using Diabetic.Services
+@model RecipeDTO
 
 
 <table class="table table-dark">
@@ -8,7 +9,8 @@
             <th scope="col">Ingredient name</th>
             <th scope="col">Amount</th>
             <th scope="col">Kcal</th>
-            <th scope="col" class="col col-lg-2">GI</th>
+            <th scope="col" class="col col-lg-1">GI</th>
+            <th scope="col" class="col col-lg-2">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -19,30 +21,17 @@
                 <td>@item.Product.Name</td>
                 <td>@item.Amount</td>
                 <td>@item.Kcals </td>
-                @if (Model.IsGreen(item.Product.GI))
-                {
-                    <text>
-                    <td class="table-success"> @item.Product.GI </td>
-                    </text>
-                }
-                @if (Model.IsOrange(item.Product.GI))
-                {
-                    <text>
-                    <td class="table-warning"> @item.Product.GI </td>
-                    </text>
-                }
-                @if (Model.IsRed(item.Product.GI))
-                {
-                    <text>
-                    <td class="table-danger"> @item.Product.GI </td>
-                    </text>
-                }
+                <td> @GlicemicIndexHelper.GetGlOnIngredient(item) </td>
+                <td></td>
             </tr>
         }
         <tr>
             <td class="text-bg-primary"></td>
             <td class="text-bg-primary align-middle" colspan="2">Total: </td>
             <td class="text-bg-primary align-middle">@Model.TotalKcal</td>
+            <td class="@BaseDTO.GetDayGLRating(Model.TotalGL)">
+                @Model.TotalGL
+            </td>
             <td><a asp-controller="Recipe" asp-action="ChangeIngredients" asp-route-recipeId="@Model.Id" asp-route-mealId="@Model.MealId" asp-route-recipeDayId="@Model.RecipeDayId" class="btn btn-primary">Change ingredients</a></td>
         </tr>
     </tbody>

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Diabetic.Models.DTOs.Interfaces;
 
 namespace Diabetic.Models
 {
-    public class Recipe_Ingredients
+    public class Recipe_Ingredients : IIngredient
     {
         public int Id { get; set; }
         public int RecipeId { get; set; }

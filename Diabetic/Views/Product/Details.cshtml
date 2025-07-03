@@ -7,7 +7,7 @@
                 <th scope="col">#</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
-                <th scope="col" class="text-center">@nameof(Model.Product.GI)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.Gi)</th>
                 <th scope="col">@nameof(Model.Product.GramsPerPortion)</th>
                 <th scope="col" class="text-center">ŁG</th>
                 <th scope="col">Action</th>
@@ -26,41 +26,41 @@
                     <td class="text-center">
                         @ingredient.Product.KcalPer100g
                     </td>
-                    @if (Model.IsGreenGI(ingredient.Product.GI))
+                    @if (Model.IsGreenGI(ingredient.Product.Gi))
                     {
                         <text>
-                        <td class="table-success text-center"> @ingredient.Product.GI </td>
+                        <td class="table-success text-center"> @ingredient.Product.Gi </td>
                         </text>
                     }
-                    @if (Model.IsOrangeGI(ingredient.Product.GI))
+                    @if (Model.IsOrangeGI(ingredient.Product.Gi))
                     {
                         <text>
-                        <td class="table-warning text-center"> @ingredient.Product.GI </td>
+                        <td class="table-warning text-center"> @ingredient.Product.Gi </td>
                         </text>
                     }
-                    @if (Model.IsRedGI(ingredient.Product.GI))
+                    @if (Model.IsRedGI(ingredient.Product.Gi))
                     {
                         <text>
-                        <td class="table-danger text-center"> @ingredient.Product.GI </td>
+                        <td class="table-danger text-center"> @ingredient.Product.Gi </td>
                         </text>
                     }
                     <td class="col col-lg-1 text-center">@ingredient.Product.GramsPerPortion</td>
-                    @if (Model.IsGreenLG((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100))
+                    @if (Model.IsGreenLG((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100))
                     {
                         <text>
-                        <td class="table-success text-center"> @(Math.Round(((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100), 1)) </td>
+                        <td class="table-success text-center"> @(Math.Round(((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100), 1)) </td>
                         </text>
                     }
-                    @if (Model.IsOrangeLG((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100))
+                    @if (Model.IsOrangeLG((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100))
                     {
                         <text>
-                        <td class="table-warning text-center"> @(Math.Floor((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100)) </td>
+                        <td class="table-warning text-center"> @(Math.Floor((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100)) </td>
                         </text>
                     }
-                    @if (Model.IsRedLG((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100))
+                    @if (Model.IsRedLG((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100))
                     {
                         <text>
-                        <td class="table-danger text-center"> @(Math.Floor((ingredient.Product.GI * ingredient.Product.CarbsPer100g) / 100)) </td>
+                        <td class="table-danger text-center"> @(Math.Floor((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100)) </td>
                         </text>
                     }
                     <td class="col col-lg-3">

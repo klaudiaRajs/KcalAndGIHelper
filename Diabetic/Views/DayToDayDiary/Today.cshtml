@@ -49,11 +49,11 @@
                                                 <td>
                                                     @ingredient.Kcals
                                                 </td>
-                                                <td class="@ingredient.GetGIRating()">
-                                                    @ingredient.Product.GI
+                                                <td class="@ingredient.GetGiRating()">
+                                                    @ingredient.Product.Gi
                                                 </td>
                                                 <td class="@ingredient.GetGLRating()">
-                                                    @ingredient.GL
+                                                    @ingredient.Gl
                                                 </td>
                                                 <td class="col">
                                                     <a asp-controller="DayToDayDiary" asp-action="Remove" asp-route-productId="@ingredient.Product.Id"

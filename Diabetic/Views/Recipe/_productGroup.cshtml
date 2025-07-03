@@ -20,7 +20,7 @@
                     <div>
                         <label class="form-check-label" asp-for="@item.Grams">Amount: </label>
                         <input class="form-control-sm " asp-for="@item.Grams"
-                               oninput="updateTotal(this, @totalBox, @item.Product.KcalPer100g, @item.Product.GI, @item.Product.CarbsPer100g, @Model.CurrentCategory.Id)"/>
+                               oninput="updateTotal(this, @totalBox, @item.Product.KcalPer100g, @item.Product.Gi, @item.Product.CarbsPer100g, @Model.CurrentCategory.Id)"/>
                     </div>
                     <div>
                         <label class="form-check-label" asp-for="@item.TotalKcal">Selected kcals: </label>

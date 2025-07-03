@@ -1,11 +1,15 @@
-﻿using Diabetic.Models;
+﻿using Diabetic.Models.DTOs.Interfaces;
 
 namespace Diabetic.Services;
 
-public class GlicemicIndexHelper
+public static class GlicemicIndexHelper
 {
-    public static int GetGlOnIngredient(Recipe_Ingredients item)
+    public static int GetGlOnIngredient(IIngredient item)
     {
-        return (int)Math.Floor((item.Product.GI * item.Product.CarbsPer100g) / 100); 
+        double carbs = item.Product.CarbsPer100g * item.Amount / 100.0;
+        double glycemicLoad = (item.Product.Gi * carbs) / 100.0;
+        int glycemicLoadRounded = (int)Math.Floor(glycemicLoad);
+
+        return glycemicLoadRounded; 
     }
 }

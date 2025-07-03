@@ -42,7 +42,7 @@ namespace Diabetic.Services
                 + ", Fat = " + product.Fat 
                 + ", Sugar = " + product.Sugar 
                 + ", Fibre = " + product.Fibre 
-                + ", GI = " + product.GI 
+                + ", GI = " + product.Gi 
                 + ", CategoryId = " + product.CategoryId 
                 + ", GramsPerPortion = " + product.GramsPerPortion 
                 + "}," + Environment.NewLine;
