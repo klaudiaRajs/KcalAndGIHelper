@@ -79,21 +79,21 @@
     </form>
 </div>
 <script>
-    function updateTotal(element, id, kcalPer100g, productGI, carbsPer100g, categoryId) {
+    function updateTotal(element, kcalElement, glElement, kcalPer100g, productGI, carbsPer100g, categoryId, productName) {
         let amount = element.value;
-        id[0].value = Math.round((element.value / 100) * kcalPer100g);
-        id[1].value = Math.floor((productGI * (carbsPer100g * (amount / 100))) / 100);
+        let kcals = getKcalsForAmount(amount,  kcalPer100g);
+        kcalElement.innerHTML = kcals;
+        glElement.innerHTML = getGlycemicIndexForAmount(amount,  productGI, carbsPer100g);
         countTotal();
         countTotalGL();
         setIndividualGlBackgrounds();
         setTotalGlBackground();
-        addItemToSummaryBelowGroup(categoryId);
+        addItemToSummaryBelowGroup(categoryId, productName, kcals, amount);
     }
 
-    function addItemToSummaryBelowGroup(categoryId) {
-        let summary = document.getElementById("summary-" + categoryId);
-        
-        summary.innerHTML = summary.innerHTML + "<p>Test</p>";
+    function addItemToSummaryBelowGroup(categoryId, productName, kcal, amount) {
+        let summary = document.getElementById("summary-" + categoryId);        
+        summary.innerHTML = summary.innerHTML + "<p>" + productName + ": " + amount + "gr (" + kcal + "kcal) </p>";
     }
 
     function countTotal() {
