@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Diabetic.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Diabetic.Models
 {
@@ -14,18 +15,12 @@ namespace Diabetic.Models
         public string ProductId { get; set; }
         public int TotalKcal
         {
-            get
-            {
-                return Product.KcalPer100g * (Grams / 100);
-            }
+            get => IndexHelper.GetKcalsForProduct(Product, Grams);
             set { }
         }
         public double GL
         {
-            get
-            {
-                return Math.Floor((Product.Gi * (Product.CarbsPer100g * (Grams/100)) / 100)); 
-            }
+            get => IndexHelper.GetGlOnIngredient(Product, Grams);
             set { }
         }
     }

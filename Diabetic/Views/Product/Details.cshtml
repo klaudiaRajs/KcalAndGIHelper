@@ -1,4 +1,5 @@
-﻿@model ProductViewModel
+﻿@using Diabetic.Services
+@model ProductViewModel
 
 <div class="mt-5">
     <table class="table">
@@ -45,22 +46,22 @@
                         </text>
                     }
                     <td class="col col-lg-1 text-center">@ingredient.Product.GramsPerPortion</td>
-                    @if (Model.IsGreenLG((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100))
+                    @if (Model.IsGreenGl(IndexHelper.GetGlOnIngredient(ingredient.Product, ingredient.Amount)))
                     {
                         <text>
-                        <td class="table-success text-center"> @(Math.Round(((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100), 1)) </td>
+                        <td class="table-success text-center"> @(IndexHelper.GetGlOnIngredient(ingredient.Product, ingredient.Amount))</td>
                         </text>
                     }
-                    @if (Model.IsOrangeLG((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100))
+                    @if (Model.IsOrangeGl(IndexHelper.GetGlOnIngredient(ingredient.Product, ingredient.Amount)))
                     {
                         <text>
-                        <td class="table-warning text-center"> @(Math.Floor((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100)) </td>
+                        <td class="table-warning text-center"> @(IndexHelper.GetGlOnIngredient(ingredient.Product, ingredient.Amount)) </td>
                         </text>
                     }
-                    @if (Model.IsRedLG((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100))
+                    @if (Model.IsRedGl(IndexHelper.GetGlOnIngredient(ingredient.Product, ingredient.Amount)))
                     {
                         <text>
-                        <td class="table-danger text-center"> @(Math.Floor((ingredient.Product.Gi * ingredient.Product.CarbsPer100g) / 100)) </td>
+                        <td class="table-danger text-center"> @(IndexHelper.GetGlOnIngredient(ingredient.Product, ingredient.Amount)) </td>
                         </text>
                     }
                     <td class="col col-lg-3">

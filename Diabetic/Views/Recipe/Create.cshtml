@@ -1,4 +1,6 @@
-﻿@model RecipeViewModel
+﻿@using Diabetic.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model RecipeViewModel
 
 @{
     string? url = Model.Recipe.Id == 0 ? Url.Action("Create", "Recipe") : Url.Action("Edit", "Recipe");
@@ -69,8 +71,9 @@
                     List<SelectedCheckboxViewModel> selectedProducts = Model.CurrentlySelectedCheckboxes.Where(a => a.Grams != 0).ToList();
                     foreach (SelectedCheckboxViewModel product in selectedProducts)
                     {
-                        int totalKcal = product.Grams * (@product.Product.KcalPer100g / 100);
-                        <p>@product.Name : @product.Grams ( @totalKcal ) </p>
+                        int totalKcal = IndexHelper.GetKcalsForProduct(product.Product, product.Grams);
+                        int totalGl = IndexHelper.GetGlOnIngredient(product.Product, product.Grams);
+                        <p>@product.Name : @product.Grams (@totalKcal kcal, GL: @totalGl) </p>
                     }
                 }
             </div>

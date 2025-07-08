@@ -25,17 +25,17 @@
             return gI > _maxOrange;
         }
 
-        public bool IsGreenLG(double gI)
+        public bool IsGreenGl(double gI)
         {
             return gI <= _maxGreenLG;
         }
 
-        public bool IsOrangeLG(double gI)
+        public bool IsOrangeGl(double gI)
         {
             return (gI > _maxGreenLG && gI <= _maxOrangeLG);
         }
 
-        public bool IsRedLG(double gI)
+        public bool IsRedGl(double gI)
         {
             return gI > _maxOrangeLG;
         }

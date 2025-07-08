@@ -140,7 +140,7 @@ namespace Diabetic.Controllers
                 {
                     model.SelectedCheckboxes[i].IsChecked = true;
                     model.SelectedCheckboxes[i].Grams = ingredient.Amount;
-                    model.SelectedCheckboxes[i].TotalKcal = (ingredient.Product.KcalPer100g/100)*ingredient.Amount;
+                    model.SelectedCheckboxes[i].TotalKcal = IndexHelper.GetKcalsForProduct(ingredient.Product, ingredient.Amount);
                 }
             }
             return model; 
@@ -161,7 +161,7 @@ namespace Diabetic.Controllers
                 {
                     model.SelectedCheckboxes[i].IsChecked = true;
                     model.SelectedCheckboxes[i].Grams = ingredient.Grams;
-                    model.SelectedCheckboxes[i].TotalKcal = (int)((ingredient.Product.KcalPer100g/100)*ingredient.Amount);
+                    model.SelectedCheckboxes[i].TotalKcal = IndexHelper.GetKcalsForProduct(ingredient.Product, (int)Math.Floor(ingredient.Amount));
                 }
             }
             return model; 
@@ -204,7 +204,7 @@ namespace Diabetic.Controllers
                     {
                         if (old.ProductId == newItem.Id)
                         {
-                            toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = (int)newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
+                            toBeUpdated.Add(new Recipe_Ingredients { Id = old.Id, ProductId = newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id });
                             isToBeUpdated = true;
                             break;
                         }
