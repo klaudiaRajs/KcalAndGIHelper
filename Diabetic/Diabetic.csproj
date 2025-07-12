@@ -26,5 +26,9 @@
 	  <ProjectReference Include="..\Diabetic.Data\Diabetic.Data.csproj" />
 	  <ProjectReference Include="..\Diabetic.Services\Diabetic.Services.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="wwwroot\js\recipe\recipe.js" />
+	</ItemGroup>
 
 </Project>

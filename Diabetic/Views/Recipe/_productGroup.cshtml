@@ -1,28 +1,43 @@
 ﻿@model RecipeViewModel
 
+@{
+    string totalRecipeKcalBox = "totalRecipeKcalBox" + Model.CurrentCategory.Id;
+    string totalRecipeGlBox = "totalRecipeGlBox" + Model.CurrentCategory.Id;
+}
+
 <p> @Model.CurrentCategory.Name </p>
+<div class="border rounded">
+    <p class="mb-0"> Current total recipe: </p>
+    <p class="mb-0" id="@totalRecipeKcalBox">@Model.Recipe.TotalKcal </p>
+    <p class="mb-0" id="@totalRecipeGlBox">GL: @Model.Recipe.TotalGL </p>
+</div>
+
 @{
     foreach (SelectedCheckboxViewModel item in Model.CurrentlySelectedCheckboxes)
     {
         string boxId = "amountBox" + item.Id;
+        string inputId = "amountInput" + item.Id; 
         string totalKcalBox = "totalBox" + item.Id + "Kcal";
         string totalGlBox = "totalBox" + item.Id + "Gl";
         string isDisplayed = item.IsChecked ? "block" : "none";
+        string checkBoxId = "checkBox" + item.Id;
         <text>
             <div class="col-auto">
                 <div>
-                    <input class="form-number-input" asp-for="@item.IsChecked" type="checkbox"
+                    <input class="form-number-input" asp-for="@item.IsChecked" type="checkbox" id="@checkBoxId"
                            onclick="toggleAmount(@boxId)">
                     <input hidden asp-for="@item.Id"/>
                     <label class="form-check-label"
-                           asp-for="@item.IsChecked">@item.Name</label>
+                           asp-for="@item.IsChecked">@item.Name (@item.Product.CarbsPer100g /100g)</label>
                 </div>
                 <div id="@boxId" style="display: @isDisplayed">
                     <div>
-                        <p >Selected kcals: <span id="@totalKcalBox"> @item.TotalKcal </span> Selected GL: <span id="@totalGlBox"> @item.GL </span></p>
+                        <p >Selected kcals: <span id="@totalKcalBox"> @item.TotalKcal </span> Selected GL: <span id="@totalGlBox"> @item.Gl </span></p>
                         <label class="form-check-label" asp-for="@item.Grams">Amount: </label>
-                        <input class="form-control-sm " asp-for="@item.Grams"
+                        <input class="form-control-sm " asp-for="@item.Grams" id="@inputId"
                                onfocusout="updateTotal(this, @totalKcalBox, @totalGlBox, @item.Product.KcalPer100g, @item.Product.Gi, @item.Product.CarbsPer100g, @Model.CurrentCategory.Id, '@item.Product.Name')"/>
+                        <div id="addProductToRecipeButton" class="btn btn-primary" onclick="addProductToRecipe(@item.Product.Id, @Model.Recipe.Id, '@inputId', '@Model.CurrentCategory.Id')">+</div>
+                        <div id="removeProductFromRecipeButton" class="btn btn-primary" onclick="removeProductFromRecipe(@item.Product.Id, @Model.Recipe.Id, '@Model.CurrentCategory.Id', @totalKcalBox, @totalGlBox)">-</div>
                     </div>
                 </div>
             </div>

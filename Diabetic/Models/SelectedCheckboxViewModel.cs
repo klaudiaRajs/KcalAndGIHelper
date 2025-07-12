@@ -1,5 +1,4 @@
-﻿using Diabetic.Services;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Diabetic.Models.Helpers;
 
 namespace Diabetic.Models
 {
@@ -18,7 +17,7 @@ namespace Diabetic.Models
             get => IndexHelper.GetKcalsForProduct(Product, Grams);
             set { }
         }
-        public double GL
+        public double Gl
         {
             get => IndexHelper.GetGlOnIngredient(Product, Grams);
             set { }

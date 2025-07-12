@@ -71,9 +71,7 @@
                     List<SelectedCheckboxViewModel> selectedProducts = Model.CurrentlySelectedCheckboxes.Where(a => a.Grams != 0).ToList();
                     foreach (SelectedCheckboxViewModel product in selectedProducts)
                     {
-                        int totalKcal = IndexHelper.GetKcalsForProduct(product.Product, product.Grams);
-                        int totalGl = IndexHelper.GetGlOnIngredient(product.Product, product.Grams);
-                        <p>@product.Name : @product.Grams (@totalKcal kcal, GL: @totalGl) </p>
+                        <p>@product.Name : @product.Grams (@product.TotalKcal kcal, GL: @product.Gl) </p>
                     }
                 }
             </div>
@@ -81,84 +79,6 @@
         <button type="submit" class="btn btn-primary mt-5">Save</button>
     </form>
 </div>
-<script>
-    function updateTotal(element, kcalElement, glElement, kcalPer100g, productGI, carbsPer100g, categoryId, productName) {
-        let amount = element.value;
-        let kcals = getKcalsForAmount(amount,  kcalPer100g);
-        kcalElement.innerHTML = kcals;
-        glElement.innerHTML = getGlycemicIndexForAmount(amount,  productGI, carbsPer100g);
-        countTotal();
-        countTotalGL();
-        setIndividualGlBackgrounds();
-        setTotalGlBackground();
-        addItemToSummaryBelowGroup(categoryId, productName, kcals, amount);
-    }
+<script src="~/js/recipe/recipe.js"></script>
+  
 
-    function addItemToSummaryBelowGroup(categoryId, productName, kcal, amount) {
-        let summary = document.getElementById("summary-" + categoryId);        
-        summary.innerHTML = summary.innerHTML + "<p>" + productName + ": " + amount + "gr (" + kcal + "kcal) </p>";
-    }
-
-    function countTotal() {
-        var items = $(".total-kcal:visible");
-        var total = 0;
-        for (var i = 0; i < items.length; i++) {
-            var kcals = parseInt(items[i].value);
-            if (kcals != 0) {
-                total += kcals;
-            }
-        }
-        ($("#totalRecipe")[0]).value = total;
-    }
-
-    function countTotalGL() {
-        var items = $(".total-gl:visible");
-        var total = 0;
-        for (var i = 0; i < items.length; i++) {
-            var gl = parseInt(items[i].value);
-
-            if (gl != 0) {
-                total += gl;
-            }
-        }
-        ($("#totalRecipeGL")[0]).value = total;
-    }
-
-    function toggleAmount(element) {
-        if (element.style.display === "none") {
-            element.style.display = "block";
-        } else {
-            element.style.display = "none";
-        }
-    }
-
-    $(function () {
-        setIndividualGlBackgrounds();
-        setTotalGlBackground();
-    });
-
-    function setTotalGlBackground() {
-        var totalRecipeGL = $("#totalRecipeGL")[0];
-        if (totalRecipeGL.value <= 79) {
-            $("#totalRecipeGL")[0].style.backgroundColor = "green";
-        } else if (totalRecipeGL.value <= 119) {
-            $("#totalRecipeGL")[0].style.backgroundColor = "orange";
-        } else {
-            $("#totalRecipeGL")[0].style.backgroundColor = "red";
-        }
-    }
-
-    function setIndividualGlBackgrounds() {
-        var items = $(".total-gl:visible");
-        for (var i = 0; i < items.length; i++) {
-            var item = parseFloat(items[i].value);
-            if (item <= 10) {
-                items[i].style.backgroundColor = "green";
-            } else if (item <= 39) {
-                items[i].style.backgroundColor = "orange";
-            } else {
-                items[i].style.backgroundColor = "red";
-            }
-        }
-    }
-</script>

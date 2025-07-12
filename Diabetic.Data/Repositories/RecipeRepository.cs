@@ -3,13 +3,7 @@ using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Diabetic.Services;
-using Microsoft.VisualBasic.CompilerServices;
+using Diabetic.Models.Helpers;
 
 namespace Diabetic.Data.Repositories
 {
@@ -47,6 +41,35 @@ namespace Diabetic.Data.Repositories
                 return true;
             }
             catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool UpsertIngredientToRecipe(RecipeDTO recipe, Recipe_Ingredients ingredient)
+        {
+            try
+            {
+                Recipe? recipeEntity = _db.Recipes.FirstOrDefault(a => a.Id == recipe.Id);
+                Recipe_Ingredients? recipeIngredient = _db.Recipe_Ingredients.FirstOrDefault(a => a.ProductId == ingredient.ProductId && a.RecipeId == recipe.Id);
+                if (recipeEntity != null)
+                {
+                    ingredient.RecipeId = recipeEntity.Id;
+                    if (recipeIngredient != null)
+                    {
+                        recipeIngredient.Amount = ingredient.Amount; 
+                        _db.Recipe_Ingredients.Update(recipeIngredient);
+                    }
+                    else
+                    {
+                        _db.Recipe_Ingredients.Add(ingredient);
+                    }
+                    _db.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
@@ -243,6 +266,18 @@ namespace Diabetic.Data.Repositories
             }
         }
 
+        public List<Recipe_Ingredients> GetIngredientsEntryForRecipeAndProduct(int recipeId, int productId)
+        {
+            try
+            {
+                return _db.Recipe_Ingredients.Where(a => a.RecipeId == recipeId && a.ProductId == productId).ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<Recipe_Ingredients>();
+            }
+        }
+
         //TODO Poprawić zjebaną relacją!! 
 
         public IEnumerable<RecipeDTO> GetNonDinnerRecipes()
@@ -273,6 +308,7 @@ namespace Diabetic.Data.Repositories
                 return new RecipeDTO();
             }
             RecipeDTO recipe = new RecipeDTO();
+            recipe.Id = (int)id;
             List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
 
             foreach (Recipe_Ingredients item in result)

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Diabetic.Models.Helpers;
 
 namespace Diabetic.Models.DTOs
 {
@@ -12,6 +13,18 @@ namespace Diabetic.Models.DTOs
         public int RecipeDayId { get; set; }
         public List<IngredientDTO> Ingredients { get; set; } = new List<IngredientDTO>();
         public IEnumerable<Recipe_Ingredients> Recipe_Ingredients { get; set; } = new List<Recipe_Ingredients>();
+        public bool IsNewRecipe { get; set; } = false;
+
+        public IngredientDTO GetIngredientByProduct(Product product, int amount)
+        {
+            return new IngredientDTO
+            {
+                Product = product, 
+                Amount = amount, 
+                Gl = IndexHelper.GetGlOnIngredient(product, amount),
+            };
+        }
+        
         [DisplayName("Selected amount of kcals")]
         public double TotalKcal
         {
