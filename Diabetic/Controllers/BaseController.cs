@@ -7,17 +7,17 @@ namespace Diabetic.Controllers
     [Authorize]
     public class BaseController : Microsoft.AspNetCore.Mvc.Controller
     {
-        protected readonly IProductRepository ProductRepository;
-        protected readonly ICategoryRepository CategoryRepository;
-        protected readonly IMealRepository? MealRepository;
-        protected readonly IRecipeRepository RecipeRepository;
+        protected readonly IProductRepository _productRepository;
+        protected readonly ICategoryRepository _categoryRepository;
+        protected readonly IMealRepository? _mealRepository;
+        protected readonly IRecipeRepository _recipeRepository;
 
         public BaseController(IRecipeRepository recipeRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IMealRepository? mealRepository = null)
         {
-            RecipeRepository = recipeRepository;
-            ProductRepository = productRepository;
-            this.CategoryRepository = categoryRepository;
-            this.MealRepository = mealRepository;
+            _recipeRepository = recipeRepository;
+            _productRepository = productRepository;
+            this._categoryRepository = categoryRepository;
+            this._mealRepository = mealRepository;
         }
     }
 }

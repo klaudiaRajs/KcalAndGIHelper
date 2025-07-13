@@ -15,9 +15,9 @@ namespace Diabetic.Data.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
+        public DbSet<Recipe_Ingredients> Recipe_Ingredients { get; set; }
         public DbSet<Day> Days { get; set; }
-        public DbSet<DayRecipe> DayRecipes { get; set; }
+        public DbSet<Day_Recipe> Day_Recipes { get; set; }
         public DbSet<MealRecipe> MealRecipes { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<IngredientMealDay> IngredientMealDays { get; set; }
@@ -227,51 +227,51 @@ namespace Diabetic.Data.Data
             );
 
             #region Przepisy
-            modelBuilder.Entity<RecipeIngredients>().HasData(
+            modelBuilder.Entity<Recipe_Ingredients>().HasData(
                 //Pieczone podudzia z kurczaka z quinąą i surówką
-                new RecipeIngredients { Id = 3, RecipeId = 2, ProductId = 135, Amount = 180 }, // podudzie z kurczaka 
-                new RecipeIngredients { Id = 4, RecipeId = 2, ProductId = 66, Amount = 50 }, // quinoa
-                new RecipeIngredients { Id = 5, RecipeId = 2, ProductId = 19, Amount = 100 }, // ogórek 
+                new Recipe_Ingredients { Id = 3, RecipeId = 2, ProductId = 135, Amount = 180 }, // podudzie z kurczaka 
+                new Recipe_Ingredients { Id = 4, RecipeId = 2, ProductId = 66, Amount = 50 }, // quinoa
+                new Recipe_Ingredients { Id = 5, RecipeId = 2, ProductId = 19, Amount = 100 }, // ogórek 
 
                 //Jajka, kabanos	
-                new RecipeIngredients { Id = 9, RecipeId = 4, ProductId = 136, Amount = 120 }, //jajko
-                new RecipeIngredients { Id = 10, RecipeId = 4, ProductId = 133, Amount = 45 }, //kabanos
+                new Recipe_Ingredients { Id = 9, RecipeId = 4, ProductId = 136, Amount = 120 }, //jajko
+                new Recipe_Ingredients { Id = 10, RecipeId = 4, ProductId = 133, Amount = 45 }, //kabanos
 
                 //Owoce, jogurt, orzechy	
-                new RecipeIngredients { Id = 11, RecipeId = 5, ProductId = 137, Amount = 100 }, //borówki
-                new RecipeIngredients { Id = 12, RecipeId = 5, ProductId = 88, Amount = 150 }, //jogurt naturalny
-                new RecipeIngredients { Id = 13, RecipeId = 5, ProductId = 138, Amount = 30 }, //mieszanka orzechy
+                new Recipe_Ingredients { Id = 11, RecipeId = 5, ProductId = 137, Amount = 100 }, //borówki
+                new Recipe_Ingredients { Id = 12, RecipeId = 5, ProductId = 88, Amount = 150 }, //jogurt naturalny
+                new Recipe_Ingredients { Id = 13, RecipeId = 5, ProductId = 138, Amount = 30 }, //mieszanka orzechy
 
                 //Pieczona pierś z kurczaka z suszonymi pomidorami, fasolką szparagową i ryżem brązowym
-                new RecipeIngredients { Id = 14, RecipeId = 7, ProductId = 36, Amount = 200 }, //fasolka szparagowa
-                new RecipeIngredients { Id = 15, RecipeId = 7, ProductId = 69, Amount = 50 }, //ryż brązowy
-                new RecipeIngredients { Id = 16, RecipeId = 7, ProductId = 139, Amount = 200 }, //pierś z kurczaka 
-                new RecipeIngredients { Id = 17, RecipeId = 7, ProductId = 37, Amount = 20 }, //suszone pomidory
+                new Recipe_Ingredients { Id = 14, RecipeId = 7, ProductId = 36, Amount = 200 }, //fasolka szparagowa
+                new Recipe_Ingredients { Id = 15, RecipeId = 7, ProductId = 69, Amount = 50 }, //ryż brązowy
+                new Recipe_Ingredients { Id = 16, RecipeId = 7, ProductId = 139, Amount = 200 }, //pierś z kurczaka 
+                new Recipe_Ingredients { Id = 17, RecipeId = 7, ProductId = 37, Amount = 20 }, //suszone pomidory
 
                 //Owsianka z owocami i orzechami	
-                new RecipeIngredients { Id = 18, RecipeId = 8, ProductId = 91, Amount = 100 }, // mleko
-                new RecipeIngredients { Id = 19, RecipeId = 8, ProductId = 67, Amount = 50 }, // płatki owsiane 
-                new RecipeIngredients { Id = 20, RecipeId = 8, ProductId = 137, Amount = 200 }, //borówki
-                new RecipeIngredients { Id = 21, RecipeId = 8, ProductId = 138, Amount = 20 }, //mieszanka orzechy
+                new Recipe_Ingredients { Id = 18, RecipeId = 8, ProductId = 91, Amount = 100 }, // mleko
+                new Recipe_Ingredients { Id = 19, RecipeId = 8, ProductId = 67, Amount = 50 }, // płatki owsiane 
+                new Recipe_Ingredients { Id = 20, RecipeId = 8, ProductId = 137, Amount = 200 }, //borówki
+                new Recipe_Ingredients { Id = 21, RecipeId = 8, ProductId = 138, Amount = 20 }, //mieszanka orzechy
 
                 //Sałatka orzo	
-                new RecipeIngredients { Id = 30, RecipeId = 9, ProductId = 113, Amount = 50 }, //szynka z kurczaka
-                new RecipeIngredients { Id = 22, RecipeId = 9, ProductId = 132, Amount = 10 }, //majonez
-                new RecipeIngredients { Id = 23, RecipeId = 9, ProductId = 19, Amount = 40 }, //ogórek
-                new RecipeIngredients { Id = 24, RecipeId = 9, ProductId = 134, Amount = 25 }, //hummus
-                new RecipeIngredients { Id = 25, RecipeId = 9, ProductId = 81, Amount = 40 }, //chleb
+                new Recipe_Ingredients { Id = 30, RecipeId = 9, ProductId = 113, Amount = 50 }, //szynka z kurczaka
+                new Recipe_Ingredients { Id = 22, RecipeId = 9, ProductId = 132, Amount = 10 }, //majonez
+                new Recipe_Ingredients { Id = 23, RecipeId = 9, ProductId = 19, Amount = 40 }, //ogórek
+                new Recipe_Ingredients { Id = 24, RecipeId = 9, ProductId = 134, Amount = 25 }, //hummus
+                new Recipe_Ingredients { Id = 25, RecipeId = 9, ProductId = 81, Amount = 40 }, //chleb
                 
                 //Kanapki z warzywami i szynką
-                new RecipeIngredients { Id = 26, RecipeId = 10, ProductId = 81, Amount = 40 }, //chleb orkiszowy
-                new RecipeIngredients { Id = 27, RecipeId = 10, ProductId = 113, Amount = 50 }, //szynka z kurczaka
-                new RecipeIngredients { Id = 28, RecipeId = 10, ProductId = 134, Amount = 25 }, //hummus
-                new RecipeIngredients { Id = 29, RecipeId = 10, ProductId = 19, Amount = 40 }, //ogórek
+                new Recipe_Ingredients { Id = 26, RecipeId = 10, ProductId = 81, Amount = 40 }, //chleb orkiszowy
+                new Recipe_Ingredients { Id = 27, RecipeId = 10, ProductId = 113, Amount = 50 }, //szynka z kurczaka
+                new Recipe_Ingredients { Id = 28, RecipeId = 10, ProductId = 134, Amount = 25 }, //hummus
+                new Recipe_Ingredients { Id = 29, RecipeId = 10, ProductId = 19, Amount = 40 }, //ogórek
 
 
                 //Kanapka z warzywami
-                new RecipeIngredients { Id = 6, RecipeId = 6, ProductId = 81, Amount = 80 }, //chleb orkiszowy
-                new RecipeIngredients { Id = 7, RecipeId = 6, ProductId = 23, Amount = 50 }, //pomidor
-                new RecipeIngredients { Id = 8, RecipeId = 6, ProductId = 134, Amount = 25 } //hummus
+                new Recipe_Ingredients { Id = 6, RecipeId = 6, ProductId = 81, Amount = 80 }, //chleb orkiszowy
+                new Recipe_Ingredients { Id = 7, RecipeId = 6, ProductId = 23, Amount = 50 }, //pomidor
+                new Recipe_Ingredients { Id = 8, RecipeId = 6, ProductId = 134, Amount = 25 } //hummus
             );
             #endregion
 
@@ -280,9 +280,9 @@ namespace Diabetic.Data.Data
                 new Day { Id = 2, Name = "Day 2" }
             );
 
-            modelBuilder.Entity<DayRecipe>().HasData(
-                new DayRecipe { Id = 1, DayId = 1, BreakfastRecipeId = 6, LunchRecipeId = 4, DinnerRecipeId = 2, SupperRecipeId = 5},    
-                new DayRecipe { Id = 2, DayId = 2, BreakfastRecipeId = 8, LunchRecipeId = 9, DinnerRecipeId = 7, SupperRecipeId = 10 }
+            modelBuilder.Entity<Day_Recipe>().HasData(
+                new Day_Recipe { Id = 1, DayId = 1, BreakfastRecipeId = 6, LunchRecipeId = 4, DinnerRecipeId = 2, SupperRecipeId = 5},    
+                new Day_Recipe { Id = 2, DayId = 2, BreakfastRecipeId = 8, LunchRecipeId = 9, DinnerRecipeId = 7, SupperRecipeId = 10 }
             );
         }
 

@@ -37,7 +37,7 @@ public class IndexHelperTest
     [InlineData(0, 70, 100, 0)]
     public void GetGlOnIngredient_WithRecipeDto(float carbs, int gi, int amount, int expectedGl)
     {
-        RecipeIngredients ingredient = new RecipeIngredients
+        Recipe_Ingredients ingredient = new Recipe_Ingredients
         {
             Product = new Product
             {

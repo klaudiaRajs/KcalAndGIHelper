@@ -21,8 +21,8 @@ namespace Diabetic.Data.Repositories
             try
             {
                 product.Name = product.Name.ToLower();
-                Db.Products.Add(product);
-                Db.SaveChanges();
+                _db.Products.Add(product);
+                _db.SaveChanges();
                 return true;
             } catch (Exception ex)
             {
@@ -34,9 +34,9 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                Product? product = Db.Products.FirstOrDefault(p => p.Id == id);
-                Db.Products.Remove(product);
-                Db.SaveChanges();
+                Product? product = _db.Products.FirstOrDefault(p => p.Id == id);
+                _db.Products.Remove(product);
+                _db.SaveChanges();
                 return true;
             } catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                return Db.Products.Select(product => new IngredientDto
+                return _db.Products.Select(product => new IngredientDto
                 {
                     Product = product 
                 }).ToList();
@@ -63,7 +63,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                return Db.Products.FirstOrDefault(a => a.Id == id); 
+                return _db.Products.FirstOrDefault(a => a.Id == id); 
             } catch(Exception ex)
             {
                 //Add logging 
@@ -76,8 +76,8 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                Db.Products.Update(product);
-                Db.SaveChanges();
+                _db.Products.Update(product);
+                _db.SaveChanges();
                 return true;
             } catch(Exception ex)
             {

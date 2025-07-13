@@ -21,8 +21,8 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                Db.IngredientMealDays.Add(ingredientMealDay); 
-                Db.SaveChanges();
+                _db.IngredientMealDays.Add(ingredientMealDay); 
+                _db.SaveChanges();
                 return true;
             } catch (Exception ex)
             {
@@ -34,11 +34,11 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                IngredientMealDay? entity = Db.IngredientMealDays.FirstOrDefault(a => a.Id == id);
+                IngredientMealDay? entity = _db.IngredientMealDays.FirstOrDefault(a => a.Id == id);
                 if (entity != null)
                 {
-                    Db.Remove(entity);
-                    Db.SaveChanges();
+                    _db.Remove(entity);
+                    _db.SaveChanges();
                     return true;
                 }
                 return false;
@@ -56,7 +56,7 @@ namespace Diabetic.Data.Repositories
                 {
                     date = DateTime.Now.Date;
                 }
-                List<IngredientMealDay> ingredientsPerDate = Db.IngredientMealDays.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date.Value.Date && record.UserId == userId).ToList();
+                List<IngredientMealDay> ingredientsPerDate = _db.IngredientMealDays.Include(record => record.Meal).Include(record => record.Product).Where(record => record.AddedAt.Date == date.Value.Date && record.UserId == userId).ToList();
                 List<MealDto> mealsWithIngredients = new List<MealDto>();
                 
                 foreach( IngredientMealDay ingredient in ingredientsPerDate )
@@ -79,7 +79,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                IngredientMealDay? result = Db.IngredientMealDays.FirstOrDefault(a => a.ProductId == productId && a.MealId == mealId && a.AddedAt.Date == dateTime.GetValueOrDefault().Date);
+                IngredientMealDay? result = _db.IngredientMealDays.FirstOrDefault(a => a.ProductId == productId && a.MealId == mealId && a.AddedAt.Date == dateTime.GetValueOrDefault().Date);
                 return result; 
             } catch (Exception e)
             {
@@ -102,8 +102,8 @@ namespace Diabetic.Data.Repositories
                     ingredient.UserId = item.UserId;
                     selectedIngredients.Add(ingredient);
                 }
-                Db.IngredientMealDays.AddRange(selectedIngredients);
-                Db.SaveChanges();
+                _db.IngredientMealDays.AddRange(selectedIngredients);
+                _db.SaveChanges();
 
                 return true;
             } catch(Exception e)

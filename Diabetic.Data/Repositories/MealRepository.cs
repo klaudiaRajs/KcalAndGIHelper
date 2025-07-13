@@ -19,7 +19,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                return Db.Meals.ToList(); 
+                return _db.Meals.ToList(); 
             } catch (Exception ex)
             {
                 //TODO add logging 

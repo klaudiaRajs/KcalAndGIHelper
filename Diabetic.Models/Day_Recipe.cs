@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Diabetic.Models
 {
-    public class DayRecipe
+    public class Day_Recipe
     {
         public int Id { get; set; }
         public int? BreakfastRecipeId { get; set; }

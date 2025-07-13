@@ -12,7 +12,7 @@ namespace Diabetic.Models.DTOs
         public int MealId { get; set; }
         public int RecipeDayId { get; set; }
         public List<IngredientDto> Ingredients { get; set; } = new List<IngredientDto>();
-        public IEnumerable<RecipeIngredients> RecipeIngredients { get; set; } = new List<RecipeIngredients>();
+        public IEnumerable<Recipe_Ingredients> RecipeIngredients { get; set; } = new List<Recipe_Ingredients>();
         public bool IsNewRecipe { get; set; } = false;
 
         public IngredientDto GetIngredientByProduct(Product product, int amount)

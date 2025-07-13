@@ -9,13 +9,13 @@ namespace Diabetic.Services
 {
     public class SeederService
     {
-        public static void GenerateSeederForRecipeCreate(Recipe recipe, List<RecipeIngredients> ingredients)
+        public static void GenerateSeederForRecipeCreate(Recipe recipe, List<Recipe_Ingredients> ingredients)
         {
             string path = "@path";
 
             string content = "new Recipe { Id = " +  recipe.Id +  ", Name = \"" + recipe.Name + "\"}," + Environment.NewLine;
             content += "/**" + recipe.Name + "*/";
-            foreach( RecipeIngredients ingredient in ingredients )
+            foreach( Recipe_Ingredients ingredient in ingredients )
             {
                 content += 
                     "new Recipe_Ingredients { Id = " + ingredient.Id 

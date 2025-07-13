@@ -43,7 +43,7 @@ namespace Diabetic.Controllers
             List<IngredientsToMealDto> addToMealViewModels = new List<IngredientsToMealDto>();
             IngredientsToMealDto viewModel = new IngredientsToMealDto();
             viewModel.Meals = _mealRepository.GetAll();
-            viewModel.Products = ProductRepository.GetAll().ToList(); 
+            viewModel.Products = _productRepository.GetAll().ToList(); 
             viewModel.SelectedMealId = mealId;
             addToMealViewModels.Add(viewModel);
             return View(addToMealViewModels);
@@ -98,7 +98,7 @@ namespace Diabetic.Controllers
                         IngredientsToMealDto viewModel = ingredients.ElementAt(i);
                         viewModel.UserId = userId; 
                         viewModel.SelectedProductId = int.Parse(value);
-                        Product product = ProductRepository.GetById(viewModel.SelectedProductId);
+                        Product product = _productRepository.GetById(viewModel.SelectedProductId);
                         viewModel.Products.Add(new IngredientDto { Product = product, Amount = viewModel.Amount });
 
                     }

@@ -12,12 +12,12 @@ namespace Diabetic.Data.Repositories
     {
         
 
-        protected ApplicationDbContext Db;
+        protected ApplicationDbContext _db;
         private IDietDayRepository _repository;
 
         public BaseRepository(ApplicationDbContext db)
         {
-            Db = db;
+            _db = db;
         }
     }
 }

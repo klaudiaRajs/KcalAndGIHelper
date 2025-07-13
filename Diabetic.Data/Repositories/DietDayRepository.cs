@@ -21,7 +21,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                List<DayDietDto> days = Db.DayRecipes.Select(a => new DayDietDto
+                List<DayDietDto> days = _db.Day_Recipes.Select(a => new DayDietDto
                 {
                     Id = a.Id,
                     BreakfastId = a.BreakfastRecipeId,
@@ -43,7 +43,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                DayDietDto? day = Db.DayRecipes.Where(a => a.Id == id).Select(a => new DayDietDto
+                DayDietDto? day = _db.Day_Recipes.Where(a => a.Id == id).Select(a => new DayDietDto
                 {
                     Id = a.Id,
                     BreakfastId = a.BreakfastRecipeId,
@@ -66,15 +66,15 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                DayRecipe entity = new DayRecipe();
+                Day_Recipe entity = new Day_Recipe();
                 entity.BreakfastRecipeId = day.BreakfastId;
                 entity.LunchRecipeId = day.LunchId;
                 entity.DinnerRecipeId = day.DinnerId;
                 entity.SnackRecipeId = day.SnackId;
                 entity.SupperRecipeId = day.SupperId;
 
-                Db.DayRecipes.Add(entity);
-                Db.SaveChanges();
+                _db.Day_Recipes.Add(entity);
+                _db.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -88,9 +88,9 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                DayRecipe dayRecipe = Db.DayRecipes.FirstOrDefault(a => a.Id == day.Id);
-                Db.Remove(dayRecipe);
-                Db.SaveChanges();
+                Day_Recipe dayRecipe = _db.Day_Recipes.FirstOrDefault(a => a.Id == day.Id);
+                _db.Remove(dayRecipe);
+                _db.SaveChanges();
                 return true;
 
             }
@@ -107,14 +107,14 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                DayRecipe dayRecipe = Db.DayRecipes.FirstOrDefault(a => a.Id == id);
+                Day_Recipe dayRecipe = _db.Day_Recipes.FirstOrDefault(a => a.Id == id);
                 dayRecipe.BreakfastRecipeId = day.BreakfastId;
                 dayRecipe.LunchRecipeId = day.LunchId; 
                 dayRecipe.DinnerRecipeId = day.DinnerId;
                 dayRecipe.SnackRecipeId = day.SnackId;
                 dayRecipe.SupperRecipeId = day.SupperId;
-                Db.Update(dayRecipe);
-                Db.SaveChanges();
+                _db.Update(dayRecipe);
+                _db.SaveChanges();
                 return true; 
             }
             catch(Exception e)
