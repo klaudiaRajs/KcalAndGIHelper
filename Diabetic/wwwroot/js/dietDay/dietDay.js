@@ -12,6 +12,7 @@
             $(idGls)[0].value = res.gl
             updateSum(".kcals", "#totalKcals", " kcal, ");
             updateSum(".gls", "#totalGLs");
+
         }
     });
 }
@@ -27,4 +28,5 @@ function updateSum(fieldToUpdate, result, restOfText) {
         }
     }
     ($(result)[0]).innerHTML = total + (restOfText ? restOfText : "");
+    setTotalGlBackground("#totalGLs", total);
 }

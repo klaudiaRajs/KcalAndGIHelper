@@ -9,48 +9,49 @@
 <form method="post" action="@url">
     <input hidden asp-for="@Model.Id" value="@Model.Id" />
     <div class="input-group input-group-sm m-2">
-        <h4> Selected: <span id="totalKcals">@Model.SelectedKcals kcal, </span> <span id="totalGLs">@Model.SelectedGl</span> </h4>
+        <h4> Selected: <span id="totalKcals">@Model.SelectedKcals kcal, </span> <span id="totalGLs" class="p-2">@Model.SelectedGl</span> </h4>
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2 col-2" for="Model.RecipesForDay.BreakfastId">Select Breakfast: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.BreakfastId,
-        new SelectList(Model.Recipes, "Id", "Name"),
-        "Select Breakfast", new { @onchange = "updateTotal(this.value, 'breakfast', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
+            new SelectList(Model.Recipes, "Id", "Name"),
+            "Select Breakfast", new { @onchange = "updateTotal(this.value, 'breakfast', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
         <input class="text-light ml-2 kcals" disabled hidden  id="breakfastKcals" asp-for="@Model.RecipesForDay.Breakfast.TotalKcal" />
         <input class="text-light ml-2 gls" disabled hidden  id="breakfastGLs" asp-for="@Model.RecipesForDay.Breakfast.TotalGl" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2 col-2" for="Model.RecipesForDay.LunchId">Select Lunch: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.LunchId,
-        new SelectList(Model.Recipes, "Id", "Name"),
-        "Select Lunch", new { @onchange = "updateTotal(this.value, 'lunch', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
+            new SelectList(Model.Recipes, "Id", "Name"),
+            "Select Lunch", new { @onchange = "updateTotal(this.value, 'lunch', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
         <input class="text-light ml-2 kcals" disabled hidden  id="lunchKcals" asp-for="@Model.RecipesForDay.Lunch.TotalKcal" />
         <input class="text-light ml-2 gls" disabled  hidden id="lunchGLs" asp-for="@Model.RecipesForDay.Lunch.TotalGl" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2 col-2" for="Model.RecipesForDay.DinnerId">Select Dinner: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.DinnerId,
-        new SelectList(Model.Dinners, "Id", "Name"),
-        "Select Dinner", new { @onchange = "updateTotal(this.value, 'dinner', '" + @urlForGetRecipeKcal + "')", @style = "width:50%; " })
+            new SelectList(Model.Dinners, "Id", "Name"),
+            "Select Dinner", new { @onchange = "updateTotal(this.value, 'dinner', '" + @urlForGetRecipeKcal + "')", @style = "width:50%; " })
         <input class="text-light ml-2 kcals" disabled hidden  id="dinnerKcals" asp-for="@Model.RecipesForDay.Dinner.TotalKcal" />
         <input class="text-light ml-2 gls" disabled hidden  id="dinnerGLs" asp-for="@Model.RecipesForDay.Dinner.TotalGl" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2 col-2" for="Model.RecipesForDay.SnackId">Select Snack: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.SnackId,
-        new SelectList(Model.Recipes, "Id", "Name"),
-        "Select Snack", new { @onchange = "updateTotal(this.value, 'snack', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
+            new SelectList(Model.Recipes, "Id", "Name"),
+            "Select Snack", new { @onchange = "updateTotal(this.value, 'snack', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
         <input class="text-light ml-2 kcals" disabled  hidden id="snackKcals" asp-for="@Model.RecipesForDay.Snack.TotalKcal" />
         <input class="text-light ml-2 gls" disabled hidden  id="snackGLs" asp-for="@Model.RecipesForDay.Snack.TotalGl" />
     </div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2 col-2" for="Model.RecipesForDay.SupperId">Select Supper: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.SupperId,
-        new SelectList(Model.Recipes, "Id", "Name"),
-        "Select Supper", new { @onchange = "updateTotal(this.value, 'supper', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
+            new SelectList(Model.Recipes, "Id", "Name"),
+            "Select Supper", new { @onchange = "updateTotal(this.value, 'supper', '" + @urlForGetRecipeKcal + "')", @style = "width:50%;" })
         <input class="text-light ml-2 kcals" disabled hidden id="supperKcals" asp-for="@Model.RecipesForDay.Supper.TotalKcal" />
         <input class="text-light ml-2 gls" disabled hidden id="supperGLs" asp-for="@Model.RecipesForDay.Snack.TotalGl" />
     </div>
     <button type="submit" class="btn btn-success">@buttonText</button>
 </form>
+<script src="~/js/common.js"></script>
 <script src="~/js/dietDay/dietDay.js"></script>
