@@ -11,7 +11,15 @@
 
 function addItemToSummaryBelowGroup(categoryId, productName, kcal, amount, gl) {
     let summary = document.getElementById("summary-" + categoryId);
-    summary.innerHTML = summary.innerHTML + "<p>" + productName + ": " + amount + "gr (" + kcal + "kcal, GL: " + gl + ") </p>";
+    let messageToAdd = "<p>" + productName + ": " + amount + "gr (" + kcal + "kcal, GL: " + gl + ") </p>"; 
+    let children = summary.children;
+    for (let i = 0; i < children.length; i++) {
+        if (children[i].innerHTML.includes(productName)) {
+            children[i].innerHTML = messageToAdd;
+            return;
+        }
+    }
+    summary.innerHTML += messageToAdd;
 }
 
 function toggleAmount(element) {
