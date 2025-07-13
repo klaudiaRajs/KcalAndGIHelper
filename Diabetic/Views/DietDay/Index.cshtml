@@ -27,16 +27,16 @@
                         <td>
                             <input type="checkbox" id="diet-day-checkbox" name="SelectedDaysIds" value="@day.Id">
                         </td>
-                        <td>
+                        <td class="col col-lg-2">
                             @day.Breakfast.Name (@day.Breakfast.TotalGl)
                         </td>
-                        <td>
+                        <td class="col col-lg-1">
                             @day.Lunch.Name (@day.Lunch.TotalGl)
                         </td>
-                        <td>
+                        <td class="col col-lg-3">
                             @day.Dinner.Name (@day.Dinner.TotalGl)
                         </td>
-                        <td>
+                        <td class="col col-lg-2">
                             @day.Snack?.Name (@day.Snack?.TotalGl)
                         </td>
                         <td>
@@ -45,11 +45,11 @@
                         <td class="@BaseDto.GetDayGlRating(day.TotalGl)">
                             @day.TotalGl
                         </td>
-                        <td class="col col-lg-3">
+                        <td>
                             <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>
                             <a asp-controller="DietDay" asp-action="Update" asp-route-id="@day.Id" class="btn btn-warning">Edit</a>
                             <a asp-controller="DietDay" asp-action="Remove" asp-route-id="@day.Id" class="btn btn-warning">Delete</a>
-                            <a asp-controller="DietDay" asp-action="GenerateShoppingListForOneDay" asp-route-id="@day.Id" class="btn btn-warning">Generate shopping list</a>
+                            <p class="m-0"><a asp-controller="DietDay" asp-action="GenerateShoppingListForOneDay" asp-route-id="@day.Id" class="btn btn-warning mt-2">Generate shopping list</a></p>
                         </td>
                     </tr>
                 }

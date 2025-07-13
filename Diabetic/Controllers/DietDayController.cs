@@ -1,6 +1,7 @@
 ﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
+using Diabetic.Models.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diabetic.Controllers
@@ -27,17 +28,12 @@ namespace Diabetic.Controllers
             foreach (DayDietDto day in viewModel.Days)
             {
                 //TODO Refactor 
-                day.TotalGl = 0;
                 day.Breakfast = _recipeRepository.GetRecipeById(day.BreakfastId);
-                day.TotalGl += day.Breakfast.TotalGl;
                 day.Lunch = _recipeRepository.GetRecipeById(day.LunchId);
-                day.TotalGl += day.Lunch.TotalGl;
                 day.Dinner = _recipeRepository.GetRecipeById(day.DinnerId);
-                day.TotalGl += day.Dinner.TotalGl;
                 day.Supper = _recipeRepository.GetRecipeById(day.SupperId);
-                day.TotalGl += day.Supper.TotalGl;
                 day.Snack = _recipeRepository.GetRecipeById(day.SnackId);
-                day.TotalGl += day.Supper.TotalGl;
+                day.SetTotalKcals();
             }
 
             return View(viewModel);

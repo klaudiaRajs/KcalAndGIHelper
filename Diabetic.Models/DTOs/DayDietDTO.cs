@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Diabetic.Models.Helpers;
 
 namespace Diabetic.Models.DTOs
 {
@@ -21,5 +22,10 @@ namespace Diabetic.Models.DTOs
         public RecipeDto Snack { get; set; } = new RecipeDto();
         public int? SnackId { get; set; }
         public double TotalGl { get; set; }
+
+        public void SetTotalKcals()
+        {
+            TotalGl = IndexHelper.GetGlForDay(this); 
+        }
     }
 }

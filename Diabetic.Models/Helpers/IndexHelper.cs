@@ -38,6 +38,17 @@ public static class IndexHelper
     {
         return recipe.Ingredients.Sum(i => GetGlOnIngredient(i.Product, (int)i.Amount));
     }
+
+    public static int GetGlForDay(DayDietDto dayDiet)
+    {
+        var totalGl = 0;
+        totalGl += GetGlForRecipe(dayDiet.Breakfast);
+        totalGl += GetGlForRecipe(dayDiet.Lunch);
+        totalGl += GetGlForRecipe(dayDiet.Dinner);
+        totalGl += GetGlForRecipe(dayDiet.Snack);
+        totalGl += GetGlForRecipe(dayDiet.Supper);
+        return totalGl;
+    }
     
     private static int RoundToInt(this double value)
     {
