@@ -9,10 +9,10 @@ namespace Diabetic.Data.Repositories.Interfaces
 {
     public interface IDietDayRepository
     {
-        DayDietDTO GetDay(int id); 
-        IEnumerable<DayDietDTO> GetAll();
-        bool Create(DayDietDTO day);
-        bool Update(DayDietDTO day, int id);
-        bool Delete(DayDietDTO day);
+        DayDietDto GetDay(int id); 
+        IEnumerable<DayDietDto> GetAll();
+        bool Create(DayDietDto day);
+        bool Update(DayDietDto day, int id);
+        bool Delete(DayDietDto day);
     }
 }

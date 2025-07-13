@@ -10,7 +10,7 @@ namespace Diabetic.Controllers
     public class ProductController : Controller 
     {
         private readonly IProductRepository _productRepository;
-        private ProductViewModel _productViewModel { get; set; } = new ProductViewModel();
+        private ProductViewModel ProductViewModel { get; set; } = new ProductViewModel();
         private readonly ICategoryRepository _categoryRepository; 
 
         public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository)
@@ -18,18 +18,18 @@ namespace Diabetic.Controllers
 
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
-            _productViewModel.Categories = _categoryRepository.GetAll();
-            _productViewModel.Products = _productRepository.GetAll();
+            ProductViewModel.Categories = _categoryRepository.GetAll();
+            ProductViewModel.Products = _productRepository.GetAll();
         }
         public IActionResult Index()
         {
-            return View(_productViewModel);
+            return View(ProductViewModel);
         }
 
         [HttpPost]
         public IActionResult Index(ProductViewModel productViewModel)
         {
-            IEnumerable<IngredientDTO> products = _productRepository.GetAll(); 
+            IEnumerable<IngredientDto> products = _productRepository.GetAll(); 
             if (productViewModel.Product.Name != null)
             {
                 products = products.Where(a => a.Product.Name.Contains(productViewModel.Product.Name));
@@ -40,43 +40,43 @@ namespace Diabetic.Controllers
             }
             if (productViewModel.CaloryRangeMin != 0)
             {
-                products = products.Where(a => a.Product.KcalPer100g >= productViewModel.CaloryRangeMin); 
+                products = products.Where(a => a.Product.KcalPer100G >= productViewModel.CaloryRangeMin); 
             }
             if (productViewModel.CaloryRangeMax != 0)
             {
-                products = products.Where(a => a.Product.KcalPer100g <= productViewModel.CaloryRangeMax);
+                products = products.Where(a => a.Product.KcalPer100G <= productViewModel.CaloryRangeMax);
             }
             if(productViewModel.Green == true && productViewModel.Orange == true && productViewModel.Red == true)
             {
-                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen || a.Product.Gi > productViewModel._maxGreen && a.Product.Gi <= productViewModel._maxOrange || a.Product.Gi > productViewModel._maxOrange); 
+                products = products.Where(a => a.Product.Gi <= productViewModel.MaxGreen || a.Product.Gi > productViewModel.MaxGreen && a.Product.Gi <= productViewModel.MaxOrange || a.Product.Gi > productViewModel.MaxOrange); 
             } 
             else if (productViewModel.Green == true && productViewModel.Orange == true)
             {
-                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen || a.Product.Gi > productViewModel._maxGreen && a.Product.Gi <= productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi <= productViewModel.MaxGreen || a.Product.Gi > productViewModel.MaxGreen && a.Product.Gi <= productViewModel.MaxOrange);
             }
             else if (productViewModel.Green == true && productViewModel.Red == true)
             {
-                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen || a.Product.Gi > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi <= productViewModel.MaxGreen || a.Product.Gi > productViewModel.MaxOrange);
             }
             else if (productViewModel.Red == true && productViewModel.Orange == true)
             {
-                products = products.Where(a => a.Product.Gi > productViewModel._maxGreen && a.Product.Gi <= productViewModel._maxOrange || a.Product.Gi > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi > productViewModel.MaxGreen && a.Product.Gi <= productViewModel.MaxOrange || a.Product.Gi > productViewModel.MaxOrange);
             }
             else if (productViewModel.Green == true)
             {
-                products = products.Where(a => a.Product.Gi <= productViewModel._maxGreen);
+                products = products.Where(a => a.Product.Gi <= productViewModel.MaxGreen);
             }
             else if(productViewModel.Orange == true)
             {
-                products = products.Where(a => a.Product.Gi <= productViewModel._maxOrange || a.Product.Gi > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi <= productViewModel.MaxOrange || a.Product.Gi > productViewModel.MaxOrange);
             }
             else if( productViewModel.Red == true)
             {
-                products = products.Where(a => a.Product.Gi > productViewModel._maxOrange);
+                products = products.Where(a => a.Product.Gi > productViewModel.MaxOrange);
             }
 
-            _productViewModel.Products = products.ToList();
-            return View(_productViewModel);
+            ProductViewModel.Products = products.ToList();
+            return View(ProductViewModel);
         }
         [Authorize]
         public IActionResult Create()
@@ -98,8 +98,8 @@ namespace Diabetic.Controllers
         public IActionResult Details(int id)
         {
             Product product = _productRepository.GetById(id); 
-            _productViewModel.Product = product;
-            return View("Create", _productViewModel);
+            ProductViewModel.Product = product;
+            return View("Create", ProductViewModel);
         }
         [Authorize]
         [HttpPost]
@@ -121,7 +121,7 @@ namespace Diabetic.Controllers
         [HttpGet]
         public IActionResult Products(string prefix)
         {
-            List<IngredientDTO> products = _productRepository.GetAll().Where(a => a.ProductName.StartsWith(prefix)).ToList();
+            List<IngredientDto> products = _productRepository.GetAll().Where(a => a.ProductName.StartsWith(prefix)).ToList();
             return Json(products);
         }
     }

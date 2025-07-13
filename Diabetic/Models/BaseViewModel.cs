@@ -6,38 +6,38 @@
         public bool Green { get; set; }
         public bool Orange { get; set; }
         public bool Red { get; set; }
-        public int _maxGreen { get; set; } = 39;
-        public int _maxOrange { get; set; } = 55;
-        public int _maxGreenLG { get; set; } = 10;
-        public int _maxOrangeLG { get; set; } = 19; 
-        public bool IsGreenGI(int gI)
+        public int MaxGreen { get; set; } = 39;
+        public int MaxOrange { get; set; } = 55;
+        public int MaxGreenLg { get; set; } = 10;
+        public int MaxOrangeLg { get; set; } = 19; 
+        public bool IsGreenGi(int gI)
         {
-            return gI <= _maxGreen;
+            return gI <= MaxGreen;
         }
 
-        public bool IsOrangeGI(int gI)
+        public bool IsOrangeGi(int gI)
         {
-            return (gI > _maxGreen && gI <= _maxOrange);
+            return (gI > MaxGreen && gI <= MaxOrange);
         }
 
-        public bool IsRedGI(int gI)
+        public bool IsRedGi(int gI)
         {
-            return gI > _maxOrange;
+            return gI > MaxOrange;
         }
 
         public bool IsGreenGl(double gI)
         {
-            return gI <= _maxGreenLG;
+            return gI <= MaxGreenLg;
         }
 
         public bool IsOrangeGl(double gI)
         {
-            return (gI > _maxGreenLG && gI <= _maxOrangeLG);
+            return (gI > MaxGreenLg && gI <= MaxOrangeLg);
         }
 
         public bool IsRedGl(double gI)
         {
-            return gI > _maxOrangeLG;
+            return gI > MaxOrangeLg;
         }
     }
 }

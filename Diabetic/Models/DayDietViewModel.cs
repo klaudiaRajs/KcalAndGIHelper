@@ -7,14 +7,14 @@ namespace Diabetic.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DayDietDTO RecipesForDay { get; set; } = new DayDietDTO();
-        public IEnumerable<DayDietDTO> Days { get; set; }
+        public DayDietDto RecipesForDay { get; set; } = new DayDietDto();
+        public IEnumerable<DayDietDto> Days { get; set; }
 
-        public IEnumerable<RecipeDTO> Recipes { get; set; } = new List<RecipeDTO>();
-        public IEnumerable<RecipeDTO> Breakfasts { get; set; } = new List<RecipeDTO>();
-        public IEnumerable<RecipeDTO> Dinners { get; set; } = new List<RecipeDTO>();
+        public IEnumerable<RecipeDto> Recipes { get; set; } = new List<RecipeDto>();
+        public IEnumerable<RecipeDto> Breakfasts { get; set; } = new List<RecipeDto>();
+        public IEnumerable<RecipeDto> Dinners { get; set; } = new List<RecipeDto>();
         public int SelectedKcals { get; set; } = 0;
-        public int SelectedGL { get; set; } = 0;
+        public int SelectedGl { get; set; } = 0;
 
         public int SetTotalKcals()
         {
@@ -25,20 +25,20 @@ namespace Diabetic.Models
             SelectedKcals += (int)this.RecipesForDay.Supper.TotalKcal;
             return SelectedKcals; 
         }
-        public int SetTotalGL()
+        public int SetTotalGl()
         {
-            SelectedGL += (int)this.RecipesForDay.Breakfast.TotalGL;
-            SelectedGL += (int)this.RecipesForDay.Lunch.TotalGL;
-            SelectedGL += (int)this.RecipesForDay.Dinner.TotalGL;
-            SelectedGL += (int)this.RecipesForDay.Snack.TotalGL;
-            SelectedGL += (int)this.RecipesForDay.Supper.TotalGL;
-            return SelectedGL;
+            SelectedGl += (int)this.RecipesForDay.Breakfast.TotalGl;
+            SelectedGl += (int)this.RecipesForDay.Lunch.TotalGl;
+            SelectedGl += (int)this.RecipesForDay.Dinner.TotalGl;
+            SelectedGl += (int)this.RecipesForDay.Snack.TotalGl;
+            SelectedGl += (int)this.RecipesForDay.Supper.TotalGl;
+            return SelectedGl;
         }
 
-        public List<IngredientDTO> IngredientsForShoppingList { get; set; } = new List<IngredientDTO>();
-        public bool test { get; set; }
+        public List<IngredientDto> IngredientsForShoppingList { get; set; } = new List<IngredientDto>();
+        public bool Test { get; set; }
         public List<int> SelectedDaysIds { get; set; }
-        public ErrorPageDTO ShoppingDaysNotSelected { get; set; } = new ErrorPageDTO
+        public ErrorPageDto ShoppingDaysNotSelected { get; set; } = new ErrorPageDto
         {
             Title = HelperErrorMessages.PlErrorMessageTitle,
             Body = HelperErrorMessages.PlShoppingListNoDaysSelected

@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Diabetic.Models.DTOs
 {
-    public class DayDietDTO
+    public class DayDietDto
     {
         public int Id { get; set; }
-        public RecipeDTO Breakfast { get; set; } = new RecipeDTO();
+        public RecipeDto Breakfast { get; set; } = new RecipeDto();
         public int? BreakfastId { get; set; }
-        public RecipeDTO Lunch { get; set; } = new RecipeDTO();
+        public RecipeDto Lunch { get; set; } = new RecipeDto();
         public int? LunchId { get; set; }
 
-        public RecipeDTO Dinner { get; set; } = new RecipeDTO();
+        public RecipeDto Dinner { get; set; } = new RecipeDto();
         public int? DinnerId { get; set; }
-        public RecipeDTO Supper { get; set; } = new RecipeDTO(); 
+        public RecipeDto Supper { get; set; } = new RecipeDto(); 
         public int? SupperId { get; set; }
-        public RecipeDTO Snack { get; set; } = new RecipeDTO();
+        public RecipeDto Snack { get; set; } = new RecipeDto();
         public int? SnackId { get; set; }
-        public double TotalGL { get; set; }
+        public double TotalGl { get; set; }
     }
 }

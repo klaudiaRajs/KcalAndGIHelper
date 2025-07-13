@@ -1,4 +1,4 @@
-﻿@model List<IngredientDTO>
+﻿@model List<IngredientDto>
 
 <h1>Shopping List</h1>
 
@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (IngredientDTO item in Model)
+        @foreach (IngredientDto item in Model)
         {
             <tr>
                 <td>@item.Product.Name</td>

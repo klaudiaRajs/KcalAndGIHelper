@@ -7,7 +7,7 @@ using Diabetic.Models.DTOs.Interfaces;
 
 namespace Diabetic.Models
 {
-    public class Recipe_Ingredients : IIngredient
+    public class RecipeIngredients : IIngredient
     {
         public int Id { get; set; }
         public int RecipeId { get; set; }

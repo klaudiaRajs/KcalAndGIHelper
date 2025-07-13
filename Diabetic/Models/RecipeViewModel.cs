@@ -5,8 +5,8 @@ namespace Diabetic.Models
 {
     public class RecipeViewModel : BaseViewModel
     {
-        public RecipeDTO Recipe { get; set; } = new RecipeDTO();
-        public List<RecipeDTO> Recipes { get; set; } = new List<RecipeDTO>();
+        public RecipeDto Recipe { get; set; } = new RecipeDto();
+        public List<RecipeDto> Recipes { get; set; } = new List<RecipeDto>();
         public List<SelectedCheckboxViewModel> SelectedCheckboxes { get; set; }
         public List<SelectedCheckboxViewModel> CurrentlySelectedCheckboxes { get; set; }
         public IEnumerable<Category> Categories { get; set; }

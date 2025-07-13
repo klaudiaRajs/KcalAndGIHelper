@@ -1,47 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Diabetic.Models.DTOs
+﻿namespace Diabetic.Models.DTOs
 {
-    public class BaseDTO
+    public class BaseDto
     {
-        public static int _maxGreenGI { get; set; } = 39;
-        public static int _maxOrangeGI { get; set; } = 55;
-        public int _maxGreenLG { get; set; } = 10;
-        public int _maxOrangeLG { get; set; } = 19;
-        public static int _maxDayGreenLG { get; set; } = 79;
-        public static int _maxDayOrangeLG { get; set; } = 119;
-        public static string GetGIRating(int GI, bool showGreen = true)
+        protected static int MaxGreenGi { get; set; } = 39;
+        protected static int MaxOrangeGi { get; set; } = 55;
+        protected int MaxGreenLg { get; set; } = 10;
+        protected int MaxOrangeLg { get; set; } = 19;
+        private static int MaxDayGreenGl { get; set; } = 79;
+        private static int MaxDayOrangeGl { get; set; } = 119;
+        public static string GetGiRating(int gi, bool showGreen = true)
         {
-            if (GI > _maxGreenGI && GI <= _maxOrangeGI)
+            if (gi > MaxGreenGi && gi <= MaxOrangeGi)
             {
                 return "table-warning";
             }
-            if (GI <= _maxGreenGI & showGreen)
+            if (gi <= MaxGreenGi & showGreen)
             {
                 return "table-success";
             }
-            if (GI > _maxOrangeGI)
+            if (gi > MaxOrangeGi)
             {
                 return "table-danger";
             }
             return "";
         }
 
-        public static string GetDayGLRating(double dayGl)
+        public static string GetDayGlRating(double dayGl)
         {
-            if (dayGl > _maxDayGreenLG && dayGl <= _maxDayOrangeLG)
+            if (dayGl > MaxDayGreenGl && dayGl <= MaxDayOrangeGl)
             {
                 return "table-warning";
             }
-            if (dayGl <= _maxDayGreenLG)
+            if (dayGl <= MaxDayGreenGl)
             {
                 return "table-success";
             }
-            if (dayGl > _maxDayOrangeLG)
+            if (dayGl > MaxDayOrangeGl)
             {
                 return "table-danger";
             }

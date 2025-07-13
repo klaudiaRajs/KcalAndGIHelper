@@ -17,11 +17,11 @@ namespace Diabetic.Data.Repositories
         {
         }
 
-        public IEnumerable<DayDietDTO> GetAll()
+        public IEnumerable<DayDietDto> GetAll()
         {
             try
             {
-                List<DayDietDTO> days = _db.Day_Recipes.Select(a => new DayDietDTO
+                List<DayDietDto> days = Db.DayRecipes.Select(a => new DayDietDto
                 {
                     Id = a.Id,
                     BreakfastId = a.BreakfastRecipeId,
@@ -35,15 +35,15 @@ namespace Diabetic.Data.Repositories
             } catch(Exception ex)
             {
                 //TODO zrób logowanie do pliku 
-                return new List<DayDietDTO>(); 
+                return new List<DayDietDto>(); 
             }
         }
 
-        public DayDietDTO GetDay(int id)
+        public DayDietDto GetDay(int id)
         {
             try
             {
-                DayDietDTO? day = _db.Day_Recipes.Where(a => a.Id == id).Select(a => new DayDietDTO
+                DayDietDto? day = Db.DayRecipes.Where(a => a.Id == id).Select(a => new DayDietDto
                 {
                     Id = a.Id,
                     BreakfastId = a.BreakfastRecipeId,
@@ -62,19 +62,19 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public bool Create(DayDietDTO day)
+        public bool Create(DayDietDto day)
         {
             try
             {
-                Day_Recipe entity = new Day_Recipe();
+                DayRecipe entity = new DayRecipe();
                 entity.BreakfastRecipeId = day.BreakfastId;
                 entity.LunchRecipeId = day.LunchId;
                 entity.DinnerRecipeId = day.DinnerId;
                 entity.SnackRecipeId = day.SnackId;
                 entity.SupperRecipeId = day.SupperId;
 
-                _db.Day_Recipes.Add(entity);
-                _db.SaveChanges();
+                Db.DayRecipes.Add(entity);
+                Db.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -84,13 +84,13 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public bool Delete(DayDietDTO day)
+        public bool Delete(DayDietDto day)
         {
             try
             {
-                Day_Recipe day_Recipe = _db.Day_Recipes.FirstOrDefault(a => a.Id == day.Id);
-                _db.Remove(day_Recipe);
-                _db.SaveChanges();
+                DayRecipe dayRecipe = Db.DayRecipes.FirstOrDefault(a => a.Id == day.Id);
+                Db.Remove(dayRecipe);
+                Db.SaveChanges();
                 return true;
 
             }
@@ -103,18 +103,18 @@ namespace Diabetic.Data.Repositories
 
         }
 
-        public bool Update(DayDietDTO day, int id)
+        public bool Update(DayDietDto day, int id)
         {
             try
             {
-                Day_Recipe day_Recipe = _db.Day_Recipes.FirstOrDefault(a => a.Id == id);
-                day_Recipe.BreakfastRecipeId = day.BreakfastId;
-                day_Recipe.LunchRecipeId = day.LunchId; 
-                day_Recipe.DinnerRecipeId = day.DinnerId;
-                day_Recipe.SnackRecipeId = day.SnackId;
-                day_Recipe.SupperRecipeId = day.SupperId;
-                _db.Update(day_Recipe);
-                _db.SaveChanges();
+                DayRecipe dayRecipe = Db.DayRecipes.FirstOrDefault(a => a.Id == id);
+                dayRecipe.BreakfastRecipeId = day.BreakfastId;
+                dayRecipe.LunchRecipeId = day.LunchId; 
+                dayRecipe.DinnerRecipeId = day.DinnerId;
+                dayRecipe.SnackRecipeId = day.SnackId;
+                dayRecipe.SupperRecipeId = day.SupperId;
+                Db.Update(dayRecipe);
+                Db.SaveChanges();
                 return true; 
             }
             catch(Exception e)

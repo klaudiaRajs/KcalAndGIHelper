@@ -11,12 +11,12 @@
                         <th scope="col">#</th>
                         <th scope="col">@nameof(Model.Recipe.Name)</th>
                         <th scope="col">@nameof(Model.Recipe.TotalKcal)</th>
-                        <th scope="col">@nameof(Model.Recipe.TotalGL)</th>
+                        <th scope="col">@nameof(Model.Recipe.TotalGl)</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (RecipeDTO recipe in Model.Recipes)
+                    @foreach (RecipeDto recipe in Model.Recipes)
                     {
                         <tr>
                             <th scope="row">
@@ -28,8 +28,8 @@
                             <td>
                                 @recipe.TotalKcal
                             </td>
-                            <td class="@BaseDTO.GetDayGLRating(recipe.TotalGL)">
-                                @recipe.TotalGL
+                            <td class="@BaseDto.GetDayGlRating(recipe.TotalGl)">
+                                @recipe.TotalGl
                             </td>
                             <td class="col col-lg-3">
                                 <a asp-controller="Recipe" asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-warning">Details</a>

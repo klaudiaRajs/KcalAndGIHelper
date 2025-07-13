@@ -2,7 +2,7 @@
 
 namespace Diabetic.Models.DTOs
 {
-    public class IngredientDTO : BaseDTO, IIngredient
+    public class IngredientDto : BaseDto, IIngredient
     {
         public Product Product { get; set; }
         public int Amount { get; set; }
@@ -10,7 +10,7 @@ namespace Diabetic.Models.DTOs
         {
             get
             {
-                return Math.Round((Product.KcalPer100g * ((double)Amount / (double)100)));
+                return Math.Round((Product.KcalPer100G * ((double)Amount / (double)100)));
             }
         }
 
@@ -21,32 +21,32 @@ namespace Diabetic.Models.DTOs
 
         public string GetGiRating()
         {
-            if (Product.Gi > _maxGreenGI && Product.Gi <= _maxOrangeGI)
+            if (Product.Gi > MaxGreenGi && Product.Gi <= MaxOrangeGi)
             {
                 return "table-warning";
             }
-            if (Product.Gi <= _maxGreenGI)
+            if (Product.Gi <= MaxGreenGi)
             {
                 return "table-success";
             }
-            if (Product.Gi > _maxOrangeGI)
+            if (Product.Gi > MaxOrangeGi)
             {
                 return "table-danger";
             }
             return "";
         }
 
-        public string GetGLRating()
+        public string GetGlRating()
         {
-            if (Gl > _maxGreenLG && Gl <= _maxOrangeLG)
+            if (Gl > MaxGreenLg && Gl <= MaxOrangeLg)
             {
                 return "table-warning";
             }
-            if (Gl <= _maxGreenLG)
+            if (Gl <= MaxGreenLg)
             {
                 return "table-success";
             }
-            if (Gl > _maxOrangeLG)
+            if (Gl > MaxOrangeLg)
             {
                 return "table-danger";
             }

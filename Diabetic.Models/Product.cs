@@ -10,8 +10,8 @@ namespace Diabetic.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int KcalPer100g { get; set; }
-        public double CarbsPer100g { get; set; }
+        public int KcalPer100G { get; set; }
+        public double CarbsPer100G { get; set; }
         public double Protein { get; set; }
         public double Fat { get; set; }
         public double Sugar { get; set; }

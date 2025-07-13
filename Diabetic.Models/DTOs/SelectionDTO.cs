@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Diabetic.Models.DTOs
 {
-    public class SelectionDTO
+    public class SelectionDto
     {
         public int Id { get; set; }
         public bool IsChecked { get; set; }
@@ -20,15 +20,15 @@ namespace Diabetic.Models.DTOs
         {
             get
             {
-                return Product.KcalPer100g * (Grams / 100);
+                return Product.KcalPer100G * (Grams / 100);
             }
             set { }
         }
-        public double GL
+        public double Gl
         {
             get
             {
-                return Math.Floor((Product.Gi * (Product.CarbsPer100g * (Grams / 100)) / 100));
+                return Math.Floor((Product.Gi * (Product.CarbsPer100G * (Grams / 100)) / 100));
             }
             set { }
         }

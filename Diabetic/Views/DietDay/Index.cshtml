@@ -21,29 +21,29 @@
             </thead>
             <tbody>
                 <form method="post" asp-controller="DietDay" asp-action="Index">
-                @foreach (DayDietDTO day in Model.Days)
+                @foreach (DayDietDto day in Model.Days)
                 {
                     <tr>
                         <td>
                             <input type="checkbox" id="diet-day-checkbox" name="SelectedDaysIds" value="@day.Id">
                         </td>
                         <td>
-                            @day.Breakfast.Name (@day.Breakfast.TotalGL)
+                            @day.Breakfast.Name (@day.Breakfast.TotalGl)
                         </td>
                         <td>
-                            @day.Lunch.Name (@day.Lunch.TotalGL)
+                            @day.Lunch.Name (@day.Lunch.TotalGl)
                         </td>
                         <td>
-                            @day.Dinner.Name (@day.Dinner.TotalGL)
+                            @day.Dinner.Name (@day.Dinner.TotalGl)
                         </td>
                         <td>
-                            @day.Snack?.Name (@day.Snack?.TotalGL)
+                            @day.Snack?.Name (@day.Snack?.TotalGl)
                         </td>
                         <td>
-                            @day.Supper.Name (@day.Supper.TotalGL)
+                            @day.Supper.Name (@day.Supper.TotalGl)
                         </td>
-                        <td class="@BaseDTO.GetDayGLRating(day.TotalGL)">
-                            @day.TotalGL
+                        <td class="@BaseDto.GetDayGlRating(day.TotalGl)">
+                            @day.TotalGl
                         </td>
                         <td class="col col-lg-3">
                             <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>

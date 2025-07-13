@@ -5,16 +5,16 @@ namespace Diabetic.Models
     public class DayToDayDiaryViewModel
     {
         public IEnumerable<Meal> Meals { get; set; }
-        public IEnumerable<MealDTO> MealsWithIngredients { get; set; } = new List<MealDTO>();
+        public IEnumerable<MealDto> MealsWithIngredients { get; set; } = new List<MealDto>();
         public DateTime GetDate { get; set; } = DateTime.Now;
         public int TotalKcalsForDay
         {
             get
             {
                 int total = 0;
-                foreach (MealDTO item in MealsWithIngredients)
+                foreach (MealDto item in MealsWithIngredients)
                 {
-                    foreach (IngredientDTO ingredient in item.Ingredients)
+                    foreach (IngredientDto ingredient in item.Ingredients)
                     {
                         total += (int)ingredient.Kcals;
                     }
@@ -23,14 +23,14 @@ namespace Diabetic.Models
             }
         }
 
-        public int TotalGLForDay
+        public int TotalGlForDay
         {
             get
             {
                 int total = 0;
-                foreach (MealDTO item in MealsWithIngredients)
+                foreach (MealDto item in MealsWithIngredients)
                 {
-                    foreach (IngredientDTO ingredient in item.Ingredients)
+                    foreach (IngredientDto ingredient in item.Ingredients)
                     {
                         total += (int)ingredient.Gl;
                     }
@@ -42,10 +42,10 @@ namespace Diabetic.Models
         public int TotalKcalsPerMeal(int id)
         {
             int total = 0;
-            List<MealDTO> items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
-            foreach (MealDTO item in items)
+            List<MealDto> items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
+            foreach (MealDto item in items)
             {
-                foreach (IngredientDTO ingredient in item.Ingredients)
+                foreach (IngredientDto ingredient in item.Ingredients)
                 {
                     total += (int)ingredient.Kcals;
                 }
@@ -53,13 +53,13 @@ namespace Diabetic.Models
             return total;
         }
 
-        public int TotalGLPerMeal(int id)
+        public int TotalGlPerMeal(int id)
         {
             int total = 0;
-            List<MealDTO> items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
-            foreach (MealDTO item in items)
+            List<MealDto> items = MealsWithIngredients.Where(a => a.MealId == id).ToList();
+            foreach (MealDto item in items)
             {
-                foreach (IngredientDTO ingredient in item.Ingredients)
+                foreach (IngredientDto ingredient in item.Ingredients)
                 {
                     total += (int)ingredient.Gl;
                 }

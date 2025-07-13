@@ -7,7 +7,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
-                <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100G)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.Gi)</th>
                 <th scope="col">@nameof(Model.Product.GramsPerPortion)</th>
                 <th scope="col" class="text-center">ŁG</th>
@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (IngredientDTO ingredient in Model.Products)
+            @foreach (IngredientDto ingredient in Model.Products)
             {
                 <tr>
                     <th scope="row">
@@ -25,21 +25,21 @@
                         @(char.ToUpper(ingredient.Product.Name[0]) + ingredient.Product.Name.Substring(1))
                     </td>
                     <td class="text-center">
-                        @ingredient.Product.KcalPer100g
+                        @ingredient.Product.KcalPer100G
                     </td>
-                    @if (Model.IsGreenGI(ingredient.Product.Gi))
+                    @if (Model.IsGreenGi(ingredient.Product.Gi))
                     {
                         <text>
                         <td class="table-success text-center"> @ingredient.Product.Gi </td>
                         </text>
                     }
-                    @if (Model.IsOrangeGI(ingredient.Product.Gi))
+                    @if (Model.IsOrangeGi(ingredient.Product.Gi))
                     {
                         <text>
                         <td class="table-warning text-center"> @ingredient.Product.Gi </td>
                         </text>
                     }
-                    @if (Model.IsRedGI(ingredient.Product.Gi))
+                    @if (Model.IsRedGi(ingredient.Product.Gi))
                     {
                         <text>
                         <td class="table-danger text-center"> @ingredient.Product.Gi </td>

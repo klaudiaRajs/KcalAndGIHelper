@@ -17,7 +17,7 @@ namespace Diabetic.Data.Repositories
 
         public IEnumerable<Category> GetAll()
         {
-            return _db.Categories.ToList();
+            return Db.Categories.ToList();
         }
     }
 }

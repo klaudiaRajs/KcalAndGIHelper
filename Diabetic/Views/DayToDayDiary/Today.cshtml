@@ -13,7 +13,7 @@
         <div class="col">
             <div>
                 <h4>Total kcal for today: @Model.TotalKcalsForDay</h4> <p> Remaining: @(1500 - Model.TotalKcalsForDay)</p>
-                <h4>Total GL for today: @Model.TotalGLForDay</h4>
+                <h4>Total GL for today: @Model.TotalGlForDay</h4>
                 <p>Date: @Model.GetDate.Date.ToShortDateString()</p>
 
 
@@ -33,11 +33,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (MealDTO mealDto in Model.MealsWithIngredients)
+                                @foreach (MealDto mealDto in Model.MealsWithIngredients)
                                 {
                                     if (meal.Id == mealDto.MealId)
                                     {
-                                        foreach (IngredientDTO ingredient in mealDto.Ingredients)
+                                        foreach (IngredientDto ingredient in mealDto.Ingredients)
                                         {
                                             <tr>
                                                 <td>
@@ -52,7 +52,7 @@
                                                 <td class="@ingredient.GetGiRating()">
                                                     @ingredient.Product.Gi
                                                 </td>
-                                                <td class="@ingredient.GetGLRating()">
+                                                <td class="@ingredient.GetGlRating()">
                                                     @ingredient.Gl
                                                 </td>
                                                 <td class="col">
@@ -70,7 +70,7 @@
                                     <td></td>
                                     <td>@Model.TotalKcalsPerMeal(meal.Id)</td>
                                     <td></td>
-                                    <td>@Model.TotalGLPerMeal(meal.Id)</td>
+                                    <td>@Model.TotalGlPerMeal(meal.Id)</td>
                                     <td></td>
 
                                 </tr>

@@ -1,5 +1,5 @@
 ﻿@using Diabetic.Models.Helpers
-@model RecipeDTO
+@model RecipeDto
 
 
 <table class="table table-dark">
@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (IngredientDTO item in Model.Ingredients)
+        @foreach (IngredientDto item in Model.Ingredients)
         {
             <tr>
                 <th scope="row">@item.Product.Id</th>
@@ -29,8 +29,8 @@
             <td class="text-bg-primary"></td>
             <td class="text-bg-primary align-middle" colspan="2">Total: </td>
             <td class="text-bg-primary align-middle">@Model.TotalKcal</td>
-            <td class="@BaseDTO.GetDayGLRating(Model.TotalGL)">
-                @Model.TotalGL
+            <td class="@BaseDto.GetDayGlRating(Model.TotalGl)">
+                @Model.TotalGl
             </td>
             <td><a asp-controller="Recipe" asp-action="ChangeIngredients" asp-route-recipeId="@Model.Id" asp-route-mealId="@Model.MealId" asp-route-recipeDayId="@Model.RecipeDayId" class="btn btn-primary">Change ingredients</a></td>
         </tr>

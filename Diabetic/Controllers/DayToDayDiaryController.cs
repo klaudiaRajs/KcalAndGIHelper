@@ -40,10 +40,10 @@ namespace Diabetic.Controllers
 
         public IActionResult AddToMeal(int mealId)
         {
-            List<IngredientsToMealDTO> addToMealViewModels = new List<IngredientsToMealDTO>();
-            IngredientsToMealDTO viewModel = new IngredientsToMealDTO();
+            List<IngredientsToMealDto> addToMealViewModels = new List<IngredientsToMealDto>();
+            IngredientsToMealDto viewModel = new IngredientsToMealDto();
             viewModel.Meals = _mealRepository.GetAll();
-            viewModel.Products = _productRepository.GetAll().ToList(); 
+            viewModel.Products = ProductRepository.GetAll().ToList(); 
             viewModel.SelectedMealId = mealId;
             addToMealViewModels.Add(viewModel);
             return View(addToMealViewModels);
@@ -55,51 +55,51 @@ namespace Diabetic.Controllers
             DateTime dateTime = DateTime.Parse(addedTo);
             _viewModel.GetDate = dateTime;
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-            List<IngredientsToMealDTO> ingredients = MapAddViewModelFromFormCollection(form, userId); 
+            List<IngredientsToMealDto> ingredients = MapAddViewModelFromFormCollection(form, userId); 
             bool result = _dayToDayDiaryRepository.InsertIngredients(ingredients, dateTime);
             return RedirectToAction("Today"); 
         }
 
-        private List<IngredientsToMealDTO> MapAddViewModelFromFormCollection(IFormCollection form, string userId)
+        private List<IngredientsToMealDto> MapAddViewModelFromFormCollection(IFormCollection form, string userId)
         {
-            List<IngredientsToMealDTO> ingredients = new List<IngredientsToMealDTO>();
+            List<IngredientsToMealDto> ingredients = new List<IngredientsToMealDto>();
             int numberOfLines = form.First().Value.Count - 1;
             for (int i = 0; i <= numberOfLines; i++)
             {
-                ingredients.Add(new IngredientsToMealDTO());
+                ingredients.Add(new IngredientsToMealDto());
             }
 
             foreach (KeyValuePair<string, StringValues> item in form)
             {
                 
-                if (nameof(IngredientsToMealDTO.SelectedMealId) == item.Key)
+                if (nameof(IngredientsToMealDto.SelectedMealId) == item.Key)
                 {
                     for (int i = 0; i < item.Value.Count; i++)
                     {
                         string? value = item.Value[i];
-                        IngredientsToMealDTO viewModel = ingredients.ElementAt(i);
+                        IngredientsToMealDto viewModel = ingredients.ElementAt(i);
                         viewModel.SelectedMealId = int.Parse(value);
                     }
                 }
-                if (nameof(IngredientsToMealDTO.Amount) == item.Key)
+                if (nameof(IngredientsToMealDto.Amount) == item.Key)
                 {
                     for (int i = 0; i < item.Value.Count; i++)
                     {
                         string? value = item.Value[i];
-                        IngredientsToMealDTO viewModel = ingredients.ElementAt(i);
+                        IngredientsToMealDto viewModel = ingredients.ElementAt(i);
                         viewModel.Amount = int.Parse(value);
                     }
                 }
-                if (nameof(IngredientsToMealDTO.SelectedProductId) == item.Key)
+                if (nameof(IngredientsToMealDto.SelectedProductId) == item.Key)
                 {
                     for (int i = 0; i < item.Value.Count; i++)
                     {
                         string? value = item.Value[i];
-                        IngredientsToMealDTO viewModel = ingredients.ElementAt(i);
+                        IngredientsToMealDto viewModel = ingredients.ElementAt(i);
                         viewModel.UserId = userId; 
                         viewModel.SelectedProductId = int.Parse(value);
-                        Product product = _productRepository.GetById(viewModel.SelectedProductId);
-                        viewModel.Products.Add(new IngredientDTO { Product = product, Amount = viewModel.Amount });
+                        Product product = ProductRepository.GetById(viewModel.SelectedProductId);
+                        viewModel.Products.Add(new IngredientDto { Product = product, Amount = viewModel.Amount });
 
                     }
                 }
@@ -111,7 +111,7 @@ namespace Diabetic.Controllers
         public IActionResult Remove(int productId, int mealId, string addedTo)
         {
             DateTime dateTime = DateTime.Parse(addedTo);
-            Ingredient_Meal_Day record = _dayToDayDiaryRepository.GetByProductMealAndDay(productId, mealId, dateTime); 
+            IngredientMealDay record = _dayToDayDiaryRepository.GetByProductMealAndDay(productId, mealId, dateTime); 
             if (record != null)
             {
                 _dayToDayDiaryRepository.Delete(record.Id); 

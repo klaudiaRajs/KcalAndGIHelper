@@ -21,8 +21,8 @@ namespace Diabetic.Data.Repositories
             try
             {
                 product.Name = product.Name.ToLower();
-                _db.Products.Add(product);
-                _db.SaveChanges();
+                Db.Products.Add(product);
+                Db.SaveChanges();
                 return true;
             } catch (Exception ex)
             {
@@ -34,9 +34,9 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                Product? product = _db.Products.FirstOrDefault(p => p.Id == id);
-                _db.Products.Remove(product);
-                _db.SaveChanges();
+                Product? product = Db.Products.FirstOrDefault(p => p.Id == id);
+                Db.Products.Remove(product);
+                Db.SaveChanges();
                 return true;
             } catch (Exception ex)
             {
@@ -44,17 +44,17 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public IEnumerable<IngredientDTO> GetAll()
+        public IEnumerable<IngredientDto> GetAll()
         {
             try
             {
-                return _db.Products.Select(product => new IngredientDTO
+                return Db.Products.Select(product => new IngredientDto
                 {
                     Product = product 
                 }).ToList();
             } catch (Exception ex)
             {
-                return Enumerable.Empty<IngredientDTO>();
+                return Enumerable.Empty<IngredientDto>();
             }
             
         }
@@ -63,7 +63,7 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                return _db.Products.FirstOrDefault(a => a.Id == id); 
+                return Db.Products.FirstOrDefault(a => a.Id == id); 
             } catch(Exception ex)
             {
                 //Add logging 
@@ -76,8 +76,8 @@ namespace Diabetic.Data.Repositories
         {
             try
             {
-                _db.Products.Update(product);
-                _db.SaveChanges();
+                Db.Products.Update(product);
+                Db.SaveChanges();
                 return true;
             } catch(Exception ex)
             {

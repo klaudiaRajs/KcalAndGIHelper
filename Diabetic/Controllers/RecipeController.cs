@@ -19,7 +19,7 @@ namespace Diabetic.Controllers
         public IActionResult Index()
         {
             RecipeViewModel viewModel = new RecipeViewModel();
-            viewModel.Recipes = _recipeRepository.GetAllRecipes().ToList();
+            viewModel.Recipes = RecipeRepository.GetAllRecipes().ToList();
 
             return View(viewModel);
         }
@@ -27,7 +27,7 @@ namespace Diabetic.Controllers
         public IActionResult Details(int id)
         {
             RecipeViewModel model = new RecipeViewModel();
-            model.Recipe = _recipeRepository.GetRecipeById(id);
+            model.Recipe = RecipeRepository.GetRecipeById(id);
 
             return View(model);
         }
@@ -35,10 +35,10 @@ namespace Diabetic.Controllers
         public IActionResult Create()
         {
             RecipeViewModel recipeViewModel = new RecipeViewModel();
-            recipeViewModel.Categories = _categoryRepository.GetAll();
-            recipeViewModel.Meals = _mealRepository.GetAll()
+            recipeViewModel.Categories = CategoryRepository.GetAll();
+            recipeViewModel.Meals = MealRepository.GetAll()
                 .Select(a => new SelectListItem { Text = a.Name, Value = a.Id.ToString() });
-            recipeViewModel.SelectedCheckboxes = _productRepository.GetAll().Select(product =>
+            recipeViewModel.SelectedCheckboxes = ProductRepository.GetAll().Select(product =>
                 new SelectedCheckboxViewModel
                 {
                     IsChecked = false,
@@ -57,43 +57,43 @@ namespace Diabetic.Controllers
             if (String.IsNullOrEmpty(model.Recipe.Name))
             {
                 ModelState.AddModelError(nameof(model.Recipe.Name), "error");
-                model.Categories = _categoryRepository.GetAll();
+                model.Categories = CategoryRepository.GetAll();
                 model = CreateSelectBoxesForIngredients(model);
                 model = SetCheckboxesForModel(model);
-                model.Meals = _mealRepository.GetAll()
+                model.Meals = MealRepository.GetAll()
                     .Select(a => new SelectListItem { Text = a.Name, Value = a.Id.ToString() });
                 return View(model);
             }
 
             Recipe newRecipe = new Recipe() { Name = model.Recipe.Name };
-            bool result = _recipeRepository.Create(newRecipe);
-            _recipeRepository.AssignRecipeToMeals(newRecipe.Id, model.SelectedMeals);
+            bool result = RecipeRepository.Create(newRecipe);
+            RecipeRepository.AssignRecipeToMeals(newRecipe.Id, model.SelectedMeals);
 
-            List<Recipe_Ingredients> ingredients = new List<Recipe_Ingredients>();
+            List<RecipeIngredients> ingredients = new List<RecipeIngredients>();
             List<SelectedCheckboxViewModel> selectedIngredients =
                 model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
             foreach (SelectedCheckboxViewModel item in selectedIngredients)
             {
-                Recipe_Ingredients ingredient = new Recipe_Ingredients
+                RecipeIngredients ingredient = new RecipeIngredients
                     { Amount = item.Grams, ProductId = (int)item.Id, RecipeId = newRecipe.Id };
                 ingredients.Add(ingredient);
             }
 
-            bool ingredientsResult = _recipeRepository.AddIngredientsToRecipe(newRecipe, ingredients);
+            bool ingredientsResult = RecipeRepository.AddIngredientsToRecipe(newRecipe, ingredients);
             SeederService.GenerateSeederForRecipeCreate(newRecipe, ingredients);
             return RedirectToAction("Index");
         }
 
         public IActionResult Remove(int id)
         {
-            RecipeDTO? recipe = _recipeRepository.GetRecipeById(id);
+            RecipeDto? recipe = RecipeRepository.GetRecipeById(id);
             if (recipe == null)
                 return NotFound();
-            bool result = _recipeRepository.Remove(recipe);
+            bool result = RecipeRepository.Remove(recipe);
             if (result)
             {
-                List<Recipe_Ingredients> ingredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
-                bool deleteResult = _recipeRepository.RemoveIngredientsForRecipe(ingredients);
+                List<RecipeIngredients> ingredients = RecipeRepository.GetIngredientsByRecipe(recipe.Id);
+                bool deleteResult = RecipeRepository.RemoveIngredientsForRecipe(ingredients);
             }
             return RedirectToAction("Index");
         }
@@ -101,9 +101,9 @@ namespace Diabetic.Controllers
         public IActionResult Edit(int id)
         {
             RecipeViewModel model = new RecipeViewModel();
-            model.Categories = _categoryRepository.GetAll();
+            model.Categories = CategoryRepository.GetAll();
 
-            RecipeDTO? recipe = _recipeRepository.GetRecipeById(id);
+            RecipeDto? recipe = RecipeRepository.GetRecipeById(id);
             if (recipe == null)
             {
                 return NotFound();
@@ -121,15 +121,15 @@ namespace Diabetic.Controllers
         {
             try
             {
-                List<Recipe_Ingredients> ingredients = _recipeRepository.GetIngredientsEntryForRecipeAndProduct(payload.RecipeId, payload.ProductId);
-                var recipe = _recipeRepository.GetRecipeById(payload.RecipeId); 
+                List<RecipeIngredients> ingredients = RecipeRepository.GetIngredientsEntryForRecipeAndProduct(payload.RecipeId, payload.ProductId);
+                var recipe = RecipeRepository.GetRecipeById(payload.RecipeId); 
                 
                 if (ingredients.Count == 0)
                 {
                     return NotFound();
                 }
 
-                bool result = _recipeRepository.RemoveIngredientsForRecipe(ingredients);
+                bool result = RecipeRepository.RemoveIngredientsForRecipe(ingredients);
                 if (!result)
                 {
                     throw new Exception("Failed to remove product from recipe");
@@ -137,9 +137,9 @@ namespace Diabetic.Controllers
                 
                 recipe.Ingredients.Remove(recipe.Ingredients.FirstOrDefault(i => i.Product.Id == payload.ProductId));
                 recipe.TotalKcal = IndexHelper.GetKcalsForRecipe(recipe);
-                recipe.TotalGL = IndexHelper.GetGlForRecipe(recipe);
+                recipe.TotalGl = IndexHelper.GetGlForRecipe(recipe);
 
-                return Ok(new { success = true, totalKcal = recipe.TotalKcal, totalGl = recipe.TotalGL });
+                return Ok(new { success = true, totalKcal = recipe.TotalKcal, totalGl = recipe.TotalGl });
             }
             catch (Exception e)
             {
@@ -154,16 +154,16 @@ namespace Diabetic.Controllers
             {
                 payload = AddNewRecipeIfDoesntExist(payload);
                 ValidatePayload(payload);
-                RecipeDTO recipe = GetRecipeWithNewIngredient(payload);
+                RecipeDto recipe = GetRecipeWithNewIngredient(payload);
  
                 recipe.TotalKcal = IndexHelper.GetKcalsForRecipe(recipe);
-                recipe.TotalGL = IndexHelper.GetGlForRecipe(recipe);
+                recipe.TotalGl = IndexHelper.GetGlForRecipe(recipe);
 
                 return Ok(new
                 {
                     success = true, 
                     totalKcal = recipe.TotalKcal, 
-                    totalGl = recipe.TotalGL,
+                    totalGl = recipe.TotalGl,
                     recipeAdded = recipe.IsNewRecipe,
                     recipeId = recipe.Id
                 });
@@ -176,7 +176,7 @@ namespace Diabetic.Controllers
 
         private RecipeViewModel CreateSelectBoxesForIngredients(RecipeViewModel model)
         {
-            model.SelectedCheckboxes = _productRepository.GetAll()
+            model.SelectedCheckboxes = ProductRepository.GetAll()
                 .Select(ingredient => new SelectedCheckboxViewModel
                 {
                     IsChecked = false,
@@ -195,7 +195,7 @@ namespace Diabetic.Controllers
             if (payload != null && payload.RecipeId == 0)
             {
                 Recipe newRecipe = new Recipe { Name = "New Recipe" };
-                bool creationResult = _recipeRepository.Create(newRecipe);
+                bool creationResult = RecipeRepository.Create(newRecipe);
                 if (!creationResult)
                 {
                     throw new Exception("Failed to create new recipe");
@@ -215,10 +215,10 @@ namespace Diabetic.Controllers
             }
         }
 
-        private RecipeDTO? GetRecipeWithNewIngredient(AddProductToRecipeDto payload)
+        private RecipeDto? GetRecipeWithNewIngredient(AddProductToRecipeDto payload)
         {
-            RecipeDTO? recipe = _recipeRepository.GetRecipeById(payload.RecipeId);
-            Product? product = _productRepository.GetById(payload.ProductId);
+            RecipeDto? recipe = RecipeRepository.GetRecipeById(payload.RecipeId);
+            Product? product = ProductRepository.GetById(payload.ProductId);
             if (product == null)
             {
                 throw new Exception("Product not found");
@@ -228,7 +228,7 @@ namespace Diabetic.Controllers
             return recipe;
         }
 
-        private RecipeDTO AddOrUpdateProduct(RecipeDTO recipe, AddProductToRecipeDto payload, Product product)
+        private RecipeDto AddOrUpdateProduct(RecipeDto recipe, AddProductToRecipeDto payload, Product product)
         {
             var productAlreadySelected = recipe.Ingredients.FirstOrDefault(i => i.Product.Id == payload.ProductId);
             if (productAlreadySelected == null)
@@ -244,16 +244,16 @@ namespace Diabetic.Controllers
             return recipe;
         }
 
-        private void SaveIngredientToRecipe(AddProductToRecipeDto payload, RecipeDTO recipe)
+        private void SaveIngredientToRecipe(AddProductToRecipeDto payload, RecipeDto recipe)
         {
-            Recipe_Ingredients ingredient = new Recipe_Ingredients
+            RecipeIngredients ingredient = new RecipeIngredients
             {
                 RecipeId = payload.RecipeId,
                 ProductId = payload.ProductId,
                 Amount = payload.Amount
             };
 
-            bool result = _recipeRepository.UpsertIngredientToRecipe(recipe, ingredient);
+            bool result = RecipeRepository.UpsertIngredientToRecipe(recipe, ingredient);
             if (!result)
             {
                 throw new Exception("Failed to add product to recipe");
@@ -263,11 +263,11 @@ namespace Diabetic.Controllers
         private RecipeViewModel SetCheckBoxBasedOnIngredients(RecipeViewModel model, int id)
         {
             
-            List<Recipe_Ingredients> ingredients = _recipeRepository.GetIngredientsByRecipe(id);
+            List<RecipeIngredients> ingredients = RecipeRepository.GetIngredientsByRecipe(id);
             for (int i = 0; i < model.SelectedCheckboxes.Count; i++)
             {
                 SelectedCheckboxViewModel? item = model.SelectedCheckboxes[i];
-                Recipe_Ingredients? ingredient = ingredients.FirstOrDefault(a => a.ProductId == item.Id);
+                RecipeIngredients? ingredient = ingredients.FirstOrDefault(a => a.ProductId == item.Id);
                 if (ingredient == null)
                 {
                     continue;
@@ -319,7 +319,7 @@ namespace Diabetic.Controllers
 
             if (ModelState.IsValid)
             {
-                RecipeDTO? recipe = _recipeRepository.GetRecipeById(model.Recipe.Id);
+                RecipeDto? recipe = RecipeRepository.GetRecipeById(model.Recipe.Id);
                 if (recipe == null)
                 {
                     return NotFound();
@@ -328,24 +328,24 @@ namespace Diabetic.Controllers
                 recipe.Name = model.Recipe.Name;
 
                 Recipe currentRecipe = new Recipe { Name = recipe.Name, Id = recipe.Id };
-                bool result = _recipeRepository.Update(currentRecipe);
+                bool result = RecipeRepository.Update(currentRecipe);
 
-                List<Recipe_Ingredients> currentIngredients = _recipeRepository.GetIngredientsByRecipe(recipe.Id);
+                List<RecipeIngredients> currentIngredients = RecipeRepository.GetIngredientsByRecipe(recipe.Id);
                 List<SelectedCheckboxViewModel> newIngredients =
                     model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
 
-                List<Recipe_Ingredients> toBeUpdated = new List<Recipe_Ingredients>();
-                List<Recipe_Ingredients> toBeAdded = new List<Recipe_Ingredients>();
-                List<Recipe_Ingredients> toBeRemoved = new List<Recipe_Ingredients>();
+                List<RecipeIngredients> toBeUpdated = new List<RecipeIngredients>();
+                List<RecipeIngredients> toBeAdded = new List<RecipeIngredients>();
+                List<RecipeIngredients> toBeRemoved = new List<RecipeIngredients>();
 
-                foreach (Recipe_Ingredients old in currentIngredients)
+                foreach (RecipeIngredients old in currentIngredients)
                 {
                     bool isToBeUpdated = false;
                     foreach (SelectedCheckboxViewModel newItem in newIngredients)
                     {
                         if (old.ProductId == newItem.Id)
                         {
-                            toBeUpdated.Add(new Recipe_Ingredients
+                            toBeUpdated.Add(new RecipeIngredients
                             {
                                 Id = old.Id, ProductId = newItem.Id, Amount = newItem.Grams, RecipeId = currentRecipe.Id
                             });
@@ -362,19 +362,19 @@ namespace Diabetic.Controllers
 
                 foreach (SelectedCheckboxViewModel item in newIngredients)
                 {
-                    List<Recipe_Ingredients> itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
-                    List<Recipe_Ingredients> itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
+                    List<RecipeIngredients> itemToBeUpdated = toBeUpdated.Where(a => a.ProductId == item.Id).ToList();
+                    List<RecipeIngredients> itemToBeRemoved = toBeRemoved.Where(a => a.ProductId == item.Id).ToList();
 
                     if (!itemToBeUpdated.Any() && !itemToBeRemoved.Any())
                     {
-                        toBeAdded.Add(new Recipe_Ingredients
+                        toBeAdded.Add(new RecipeIngredients
                             { ProductId = (int)item.Id, Amount = item.Grams, RecipeId = currentRecipe.Id });
                     }
                 }
 
-                bool addingResult = _recipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
-                bool updatingResult = _recipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
-                bool removingResult = _recipeRepository.RemoveIngredientsForRecipe(toBeRemoved);
+                bool addingResult = RecipeRepository.AddIngredientsToRecipe(currentRecipe, toBeAdded);
+                bool updatingResult = RecipeRepository.UpdateIngredientsForRecipe(currentRecipe, toBeUpdated);
+                bool removingResult = RecipeRepository.RemoveIngredientsForRecipe(toBeRemoved);
             }
 
 
@@ -383,16 +383,16 @@ namespace Diabetic.Controllers
 
         public IActionResult GetRecipeKcals(int recipeId)
         {
-            RecipeDTO recipe = _recipeRepository.GetRecipeById(recipeId);
-            return Ok(new { success = true, kcals = recipe.TotalKcal, gl = recipe.TotalGL });
+            RecipeDto recipe = RecipeRepository.GetRecipeById(recipeId);
+            return Ok(new { success = true, kcals = recipe.TotalKcal, gl = recipe.TotalGl });
         }
 
         public IActionResult ChangeIngredients(int recipeId, int mealId, int recipeDayId)
         {
             RecipeViewModel model = new RecipeViewModel();
-            model.Categories = _categoryRepository.GetAll();
+            model.Categories = CategoryRepository.GetAll();
 
-            RecipeDTO? recipe = _recipeRepository.GetRecipeById(recipeId);
+            RecipeDto? recipe = RecipeRepository.GetRecipeById(recipeId);
             if (recipe == null)
             {
                 return NotFound();
@@ -411,19 +411,19 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult ChangeIngredients(RecipeViewModel model)
         {
-            List<SelectionDTO> selections = new List<SelectionDTO>();
+            List<SelectionDto> selections = new List<SelectionDto>();
             List<SelectedCheckboxViewModel> selectedIngredients =
                 model.SelectedCheckboxes.Where(a => a.IsChecked == true).ToList();
             foreach (SelectedCheckboxViewModel itm in selectedIngredients)
             {
-                selections.Add(new SelectionDTO
+                selections.Add(new SelectionDto
                 {
                     Grams = itm.Grams, Id = (int)itm.Id, MealId = model.Recipe.MealId,
                     RecipeDayId = model.Recipe.RecipeDayId
                 });
             }
 
-            _recipeRepository.CreateRecipeIfNotExistant(selections, model.Recipe.Id, model.Recipe.Name,
+            RecipeRepository.CreateRecipeIfNotExistant(selections, model.Recipe.Id, model.Recipe.Name,
                 model.Recipe.RecipeDayId);
 
             return RedirectToAction("Index", "DietDay");

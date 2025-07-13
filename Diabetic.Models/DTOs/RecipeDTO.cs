@@ -4,20 +4,20 @@ using Diabetic.Models.Helpers;
 
 namespace Diabetic.Models.DTOs
 {
-    public class RecipeDTO : BaseDTO
+    public class RecipeDto : BaseDto
     {
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         public int MealId { get; set; }
         public int RecipeDayId { get; set; }
-        public List<IngredientDTO> Ingredients { get; set; } = new List<IngredientDTO>();
-        public IEnumerable<Recipe_Ingredients> Recipe_Ingredients { get; set; } = new List<Recipe_Ingredients>();
+        public List<IngredientDto> Ingredients { get; set; } = new List<IngredientDto>();
+        public IEnumerable<RecipeIngredients> RecipeIngredients { get; set; } = new List<RecipeIngredients>();
         public bool IsNewRecipe { get; set; } = false;
 
-        public IngredientDTO GetIngredientByProduct(Product product, int amount)
+        public IngredientDto GetIngredientByProduct(Product product, int amount)
         {
-            return new IngredientDTO
+            return new IngredientDto
             {
                 Product = product, 
                 Amount = amount, 
@@ -39,16 +39,16 @@ namespace Diabetic.Models.DTOs
             }
             set { }
         }
-        public double TotalGL
+        public double TotalGl
         {
             get
             {
-                double totalGL = 0;
+                double totalGl = 0;
                 Ingredients.ForEach(item =>
                 {
-                    totalGL += item.Gl;
+                    totalGl += item.Gl;
                 });
-                return totalGL;
+                return totalGl;
             }
             set { } 
         }
@@ -59,17 +59,17 @@ namespace Diabetic.Models.DTOs
 
         public bool IsGreen(int gI)
         {
-            return gI <= _maxGreenGI;
+            return gI <= MaxGreenGi;
         }
 
         public bool IsOrange(int gI)
         {
-            return (gI > _maxGreenGI && gI <= _maxOrangeGI);
+            return (gI > MaxGreenGi && gI <= MaxOrangeGi);
         }
 
         public bool IsRed(int gI)
         {
-            return gI > _maxOrangeGI;
+            return gI > MaxOrangeGi;
         }
     }
 }

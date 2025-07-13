@@ -10,7 +10,7 @@ namespace Diabetic.Data.Repositories.Interfaces
 {
     public interface IProductRepository
     {
-        IEnumerable<IngredientDTO> GetAll();
+        IEnumerable<IngredientDto> GetAll();
         bool Create(Product product);
         Product GetById(int id);
         bool Update(Product product);

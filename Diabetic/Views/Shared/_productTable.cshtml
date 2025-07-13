@@ -7,7 +7,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
-                <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100g)</th>
+                <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100G)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.Gi)</th>
                 <th scope="col">@nameof(Model.Product.GramsPerPortion)</th>
                 <th scope="col" class="text-center">ŁG</th>
@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (IngredientDTO ingredient in Model.Products)
+            @foreach (IngredientDto ingredient in Model.Products)
             {
                 <tr>
                     <th scope="row">
@@ -25,11 +25,11 @@
                         @(char.ToUpper(ingredient.Product.Name[0]) + ingredient.Product.Name.Substring(1))
                     </td>
                     <td class="text-center">
-                        @ingredient.Product.KcalPer100g
+                        @ingredient.Product.KcalPer100G
                     </td>
                     <td class="@ingredient.GetGiRating() text-center"> @ingredient.Product.Gi </td>
                     <td class="col col-lg-1 text-center">@ingredient.Product.GramsPerPortion</td>
-                    <td class="@ingredient.GetGLRating() text-center"> @ingredient.Gl </td>
+                    <td class="@ingredient.GetGlRating() text-center"> @ingredient.Gl </td>
                     <td class="col col-lg-3">
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Details</a>
                         <a asp-controller="Product" asp-action="Remove" asp-route-id="@ingredient.Product.Id" class="btn btn-warning">Delete</a>

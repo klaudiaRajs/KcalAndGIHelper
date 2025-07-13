@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Diabetic.Models
 {
-    public class Ingredient_Meal_Day
+    public class IngredientMealDay
     {
         public int Id { get; set; }
         public DateTime AddedAt { get; set; }

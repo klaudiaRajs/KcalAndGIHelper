@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (IngredientDTO item in Model.Recipe.Ingredients)
+        @foreach (IngredientDto item in Model.Recipe.Ingredients)
         {
             <tr>
                 <th scope="row">@item.Product.Id</th>
@@ -22,7 +22,7 @@
                 <td>@item.Amount</td>
                 <td>@item.Kcals </td>
                 <td class="@item.GetGiRating()"> @item.Product.Gi </td>
-                <td class="@item.GetGLRating()"> @item.Gl </td>
+                <td class="@item.GetGlRating()"> @item.Gl </td>
             </tr>
         }
         <tr>
@@ -30,7 +30,7 @@
             <td class="text-bg-primary" colspan="2">Total: </td>
             <td class="text-bg-primary">@Model.Recipe.TotalKcal</td>
             <td class="text-bg-primary"></td>
-            <td class="text-bg-primary">@Model.Recipe.TotalGL</td>
+            <td class="text-bg-primary">@Model.Recipe.TotalGl</td>
         </tr>
     </tbody>
 </table>
