@@ -34,9 +34,10 @@ namespace Diabetic.Data.Repositories
             {
                 foreach (int ingredient in selectedMeals)
                 {
-                    MealRecipe entity = new MealRecipe { MealsId = ingredient, RecipesId = id};
-                    _db.MealRecipes.Add(entity);                    
+                    MealRecipe entity = new MealRecipe { MealsId = ingredient, RecipesId = id };
+                    _db.MealRecipes.Add(entity);
                 }
+
                 _db.SaveChanges();
                 return true;
             }
@@ -51,13 +52,15 @@ namespace Diabetic.Data.Repositories
             try
             {
                 Recipe? recipeEntity = _db.Recipes.FirstOrDefault(a => a.Id == recipe.Id);
-                Recipe_Ingredients? recipeIngredient = _db.Recipe_Ingredients.FirstOrDefault(a => a.ProductId == ingredient.ProductId && a.RecipeId == recipe.Id);
+                Recipe_Ingredients? recipeIngredient =
+                    _db.Recipe_Ingredients.FirstOrDefault(a =>
+                        a.ProductId == ingredient.ProductId && a.RecipeId == recipe.Id);
                 if (recipeEntity != null)
                 {
                     ingredient.RecipeId = recipeEntity.Id;
                     if (recipeIngredient != null)
                     {
-                        recipeIngredient.Amount = ingredient.Amount; 
+                        recipeIngredient.Amount = ingredient.Amount;
                         _db.Recipe_Ingredients.Update(recipeIngredient);
                     }
                     else
@@ -89,20 +92,26 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        public bool CreateRecipeIfNotExistant(List<SelectionDto> ingredients, int recipeId, string title, int recipeDayId)
+        public bool CreateRecipeIfNotExistant(List<SelectionDto> ingredients, int recipeId, string title,
+            int recipeDayId)
         {
             try
             {
                 List<int> products = ingredients.Select(a => a.Id).ToList();
                 List<int> grams = ingredients.Select(a => a.Grams).ToList();
 
-                var recipeIdsWithTheSameAmountOfProducts = _db.Recipe_Ingredients.GroupBy(a => a.RecipeId, (a, b) => new { RecipeId = a, NumberOfProducts = b.Count() }).Where(x => x.NumberOfProducts == products.Count() && x.RecipeId != recipeDayId).ToList();
+                var recipeIdsWithTheSameAmountOfProducts = _db.Recipe_Ingredients
+                    .GroupBy(a => a.RecipeId, (a, b) => new { RecipeId = a, NumberOfProducts = b.Count() })
+                    .Where(x => x.NumberOfProducts == products.Count() && x.RecipeId != recipeDayId).ToList();
 
-                List<int> newRecipeIdsWithTheSameAmountOfProducts = recipeIdsWithTheSameAmountOfProducts.Select(a => a.RecipeId).ToList();
+                List<int> newRecipeIdsWithTheSameAmountOfProducts =
+                    recipeIdsWithTheSameAmountOfProducts.Select(a => a.RecipeId).ToList();
 
-                List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Where(a => products.Contains(a.ProductId) && grams.Contains(a.Amount) && a.RecipeId != recipeId).ToList();
+                List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Where(a =>
+                    products.Contains(a.ProductId) && grams.Contains(a.Amount) && a.RecipeId != recipeId).ToList();
 
-                List<Recipe_Ingredients> recipeIngredietWithTheSameAmountOfProducts = _db.Recipe_Ingredients.Where(a => newRecipeIdsWithTheSameAmountOfProducts.Contains(a.RecipeId)).ToList();
+                List<Recipe_Ingredients> recipeIngredietWithTheSameAmountOfProducts = _db.Recipe_Ingredients
+                    .Where(a => newRecipeIdsWithTheSameAmountOfProducts.Contains(a.RecipeId)).ToList();
 
                 List<RecipeDto> fullRecipes = new List<RecipeDto>();
                 foreach (Recipe_Ingredients recipe in recipeIngredietWithTheSameAmountOfProducts)
@@ -172,7 +181,8 @@ namespace Diabetic.Data.Repositories
                     List<Recipe_Ingredients> ingredientsToAdd = new List<Recipe_Ingredients>();
                     foreach (SelectionDto itm in ingredients)
                     {
-                        ingredientsToAdd.Add(new Recipe_Ingredients() { ProductId = itm.Id, Amount = itm.Grams, RecipeId = recipe.Id });
+                        ingredientsToAdd.Add(new Recipe_Ingredients()
+                            { ProductId = itm.Id, Amount = itm.Grams, RecipeId = recipe.Id });
                     }
 
                     _db.Recipe_Ingredients.AddRange(ingredientsToAdd);
@@ -215,20 +225,23 @@ namespace Diabetic.Data.Repositories
             try
             {
                 List<RecipeDto> recipes = new List<RecipeDto>();
-                List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).ToList();
+                List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product)
+                    .ToList();
 
                 foreach (Recipe_Ingredients item in result)
                 {
                     RecipeDto? recipe = recipes.FirstOrDefault(a => a.Id == item.RecipeId);
                     if (recipe != null)
                     {
-                        recipe.Ingredients.Add(new IngredientDto { Product = item.Product, Amount = item.Amount, Gl = IndexHelper.GetGlOnIngredient(item) });
+                        recipe.Ingredients.Add(new IngredientDto
+                            { Product = item.Product, Amount = item.Amount, Gl = IndexHelper.GetGlOnIngredient(item) });
                     }
                     else
                     {
                         RecipeDto newRecipe = new RecipeDto();
                         newRecipe.Id = item.RecipeId;
-                        newRecipe.Ingredients.Add(new IngredientDto { Product = item.Product, Amount = item.Amount, Gl = IndexHelper.GetGlOnIngredient(item)  });
+                        newRecipe.Ingredients.Add(new IngredientDto
+                            { Product = item.Product, Amount = item.Amount, Gl = IndexHelper.GetGlOnIngredient(item) });
                         newRecipe.Name = item.Recipe.Name;
                         recipes.Add(newRecipe);
                     }
@@ -241,19 +254,13 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        //TODO Poprawić zjebaną relacją!! 
         public IEnumerable<RecipeDto> GetByMeal(int id)
         {
-            List<RecipeDto> recipes = new List<RecipeDto>();
-            List<MealRecipe> relation = _db.MealRecipes.Where(c => c.MealsId == id).ToList();
-            foreach (MealRecipe item in relation)
+            List<int> relation = _db.MealRecipes.Where(c => c.MealsId == 3).Select(a => a.RecipesId).ToList();
+            IEnumerable<RecipeDto> recipes = GetAllRecipes().Where(a => relation.Contains(a.Id)); 
+            foreach (RecipeDto recipe in recipes)
             {
-                Recipe? result = _db.Recipes.FirstOrDefault(a => a.Id == item.RecipesId);
-                if (result == null)
-                {
-                    continue;
-                }
-                recipes.Add(new RecipeDto { Id = result.Id, Name = result.Name });
+                recipe.Name += $" ({recipe.TotalKcal}kcal, {recipe.TotalGl})";
             }
             return recipes;
         }
@@ -282,21 +289,18 @@ namespace Diabetic.Data.Repositories
             }
         }
 
-        //TODO Poprawić zjebaną relacją!! 
-
         public IEnumerable<RecipeDto> GetNonDinnerRecipes()
         {
             try
             {
                 List<int> relation = _db.MealRecipes.Where(c => c.MealsId == 3).Select(a => a.RecipesId).ToList();
-                List<RecipeDto> recipes = _db.Recipes
-                    .Where(a => !relation.Contains(a.Id))
-                    .Include(a => a.RecipeIngredients)
-                    .ThenInclude(a => a.Product)
-                    .Select(a =>
-                        new RecipeDto { Id = a.Id, Name = a.Name, RecipeIngredients = a.RecipeIngredients }
-                    )
-                    .ToList();
+                IEnumerable<RecipeDto> recipes = GetAllRecipes().Where(a => !relation.Contains(a.Id)); 
+                
+                foreach (RecipeDto recipe in recipes)
+                {
+                    recipe.Name += $" ({recipe.TotalKcal}kcal, {recipe.TotalGl})";
+                }
+
                 return recipes;
             }
             catch (Exception e)
@@ -313,13 +317,15 @@ namespace Diabetic.Data.Repositories
             }
             RecipeDto recipe = new RecipeDto();
             recipe.Id = (int)id;
-            List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product).Where(a => a.RecipeId == id).ToList();
+            List<Recipe_Ingredients> result = _db.Recipe_Ingredients.Include(a => a.Recipe).Include(a => a.Product)
+                .Where(a => a.RecipeId == id).ToList();
 
             foreach (Recipe_Ingredients item in result)
             {
                 recipe.Id = item.RecipeId;
                 recipe.Name = item.Recipe.Name;
-                recipe.Ingredients.Add(new IngredientDto { Product = item.Product, Amount = item.Amount, Gl = IndexHelper.GetGlOnIngredient(item) });
+                recipe.Ingredients.Add(new IngredientDto
+                    { Product = item.Product, Amount = item.Amount, Gl = IndexHelper.GetGlOnIngredient(item) });
             }
             return recipe;
         }
