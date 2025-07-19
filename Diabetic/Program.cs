@@ -22,6 +22,7 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IDietDayRepository, DietDayRepository>();
 builder.Services.AddTransient<IMealRepository, MealRepository>();
 builder.Services.AddTransient<IDayToDayDiaryRepository, DayToDayDiaryRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
     options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB

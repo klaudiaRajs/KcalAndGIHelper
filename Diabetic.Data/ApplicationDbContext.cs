@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Diabetic.Models;
+﻿using Diabetic.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace Diabetic.Data.Data
+namespace Diabetic.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
@@ -20,6 +20,7 @@ namespace Diabetic.Data.Data
         public DbSet<Day_Recipe> Day_Recipes { get; set; }
         public DbSet<MealRecipe> MealRecipes { get; set; }
         public DbSet<Meal> Meals { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<IngredientMealDay> IngredientMealDays { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

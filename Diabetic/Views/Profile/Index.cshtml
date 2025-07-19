@@ -1,0 +1,20 @@
+﻿@model UserProfile
+<p> To jest Twój profil </p>
+
+<div class="w-25">
+    @using (Html.BeginForm("Update", "Profile", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.UserId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.KcalTarget, "Docelowe kalorie (Kcal)")
+            @Html.EditorFor(model => model.KcalTarget, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.KcalTarget, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+    }
+</div>
