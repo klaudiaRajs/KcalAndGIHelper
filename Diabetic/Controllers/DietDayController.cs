@@ -1,13 +1,14 @@
 ﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
+using Diabetic.Models.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diabetic.Controllers
 {
     public class DietDayController : BaseController
     {
-        private IDietDayRepository DietDayRepository { get; }
+        private IDietDayRepository _dietDayRepository { get; }
         public DietDayController(
             IRecipeRepository recipeRepository, 
             IProductRepository productRepository, 
@@ -16,14 +17,14 @@ namespace Diabetic.Controllers
             IMealRepository? mealRepository = null) 
             : base(recipeRepository, productRepository, categoryRepository, mealRepository)
         {
-            DietDayRepository = dietDayRepository;
+            _dietDayRepository = dietDayRepository;
             
         }
 
         public IActionResult Index()
         {
             DayDietViewModel viewModel = new DayDietViewModel();
-            viewModel.Days = DietDayRepository.GetAll();
+            viewModel.Days = _dietDayRepository.GetAll();
             foreach (DayDietDto day in viewModel.Days)
             {
                 //TODO Refactor 
@@ -44,9 +45,9 @@ namespace Diabetic.Controllers
         public IActionResult Details(int id)
         {
             DayDietViewModel viewModel = new DayDietViewModel();
-            viewModel.RecipesForDay = DietDayRepository.GetDay(id);
+            viewModel.RecipesForDay = _dietDayRepository.GetDay(id);
 
-            LoadAllRecipesForDayByDayId(viewModel);
+            LoadAllRecipesForDayByDayId(viewModel.RecipesForDay);
             viewModel.SetTotalKcals(); 
             viewModel.SetTotalGl();
             return View(viewModel);
@@ -64,24 +65,24 @@ namespace Diabetic.Controllers
         [HttpPost]
         public IActionResult Create(DayDietViewModel model)
         {
-            bool result = DietDayRepository.Create(model.RecipesForDay);
+            bool result = _dietDayRepository.Create(model.RecipesForDay);
             return RedirectToAction("Index");
         }
 
         public IActionResult Remove(int id)
         {
-            DayDietDto day = DietDayRepository.GetDay(id);
-            bool result = DietDayRepository.Delete(day);
+            DayDietDto day = _dietDayRepository.GetDay(id);
+            bool result = _dietDayRepository.Delete(day);
             return RedirectToAction("Index");
         }
 
         public IActionResult Update(int id)
         {
-            DayDietDto day = DietDayRepository.GetDay(id);
+            DayDietDto day = _dietDayRepository.GetDay(id);
             DayDietViewModel model = new DayDietViewModel { RecipesForDay = day, Id = day.Id };
             if (model.RecipesForDay != null)
             {
-                LoadAllRecipesForDayByDayId(model);
+                LoadAllRecipesForDayByDayId(model.RecipesForDay);
                 model.SelectedKcals = model.SetTotalKcals();
                 model.SelectedGl = model.SetTotalGl();
             }
@@ -91,27 +92,48 @@ namespace Diabetic.Controllers
 
             return View("Create", model);
         }
-
-        [HttpPost]
-        public IActionResult Update(DayDietViewModel day)
+        //Make it async 
+        public IActionResult UpdateDay(int recipeId, string meal, int dayId)
         {
-            if( day == null)
+            DayDietDto day = _dietDayRepository.GetDay(dayId);
+            day = UpdateRecipes(meal, day, recipeId);
+            LoadAllRecipesForDayByDayId(day);
+            _dietDayRepository.Update(day, dayId);
+            return Ok(new { success = true, totalKcal = IndexHelper.GetKcalForDay(day), totalGl = IndexHelper.GetGlForDay(day) }); 
+        }
+
+        private DayDietDto UpdateRecipes(string meal, DayDietDto day, int recipeId)
+        {
+            switch (meal)
             {
-                return View("Error");
+                case "dinner":
+                    day.DinnerId = recipeId;
+                    break; 
+                case "breakfast":
+                    day.BreakfastId = recipeId;
+                    break;
+                case "lunch":
+                    day.LunchId = recipeId;
+                    break;
+                case "supper":
+                    day.SupperId = recipeId;
+                    break;
+                case "snack":
+                    day.SnackId = recipeId;
+                    break;
             }
 
-            bool result = DietDayRepository.Update(day.RecipesForDay, day.Id);
-            return RedirectToAction("Index"); 
-
+            return day; 
         }
+        
         public IActionResult GenerateShoppingListForMultipleDays(List<int> daysIds)
         {
             DayDietViewModel viewModel = new DayDietViewModel();
             List<IngredientDto> productsToShop = new List<IngredientDto>();
             foreach (int dayId in daysIds)
             {
-                viewModel.RecipesForDay = DietDayRepository.GetDay(dayId);
-                LoadAllRecipesForDayByDayId(viewModel);
+                viewModel.RecipesForDay = _dietDayRepository.GetDay(dayId);
+                LoadAllRecipesForDayByDayId(viewModel.RecipesForDay);
                 productsToShop.AddRange(ExtractIngredientsFromRecipesForDay(viewModel));
             }
             productsToShop = CollapseRepeatedIngredients(productsToShop);
@@ -148,29 +170,29 @@ namespace Diabetic.Controllers
                 .ToList();
         }
 
-        private void LoadAllRecipesForDayByDayId(DayDietViewModel viewModel)
+        private void LoadAllRecipesForDayByDayId(DayDietDto viewModel)
         {
-            if (viewModel.RecipesForDay != null)
+            if (viewModel != null)
             {
-                viewModel.RecipesForDay.Breakfast = _recipeRepository?.GetRecipeById(viewModel.RecipesForDay.BreakfastId ?? 0) ?? new RecipeDto();
-                viewModel.RecipesForDay.Breakfast.MealId = 1;
-                viewModel.RecipesForDay.Breakfast.RecipeDayId = viewModel.RecipesForDay.Id; 
+                viewModel.Breakfast = _recipeRepository?.GetRecipeById(viewModel.BreakfastId ?? 0) ?? new RecipeDto();
+                viewModel.Breakfast.MealId = 1;
+                viewModel.Breakfast.RecipeDayId = viewModel.Id; 
 
-                viewModel.RecipesForDay.Lunch = _recipeRepository?.GetRecipeById(viewModel.RecipesForDay.LunchId ?? 0) ?? new RecipeDto();
-                viewModel.RecipesForDay.Lunch.MealId = 2;
-                viewModel.RecipesForDay.Lunch.RecipeDayId = viewModel.RecipesForDay.Id;
+                viewModel.Lunch = _recipeRepository?.GetRecipeById(viewModel.LunchId ?? 0) ?? new RecipeDto();
+                viewModel.Lunch.MealId = 2;
+                viewModel.Lunch.RecipeDayId = viewModel.Id;
 
-                viewModel.RecipesForDay.Dinner = _recipeRepository?.GetRecipeById(viewModel.RecipesForDay.DinnerId ?? 0) ?? new RecipeDto();
-                viewModel.RecipesForDay.Dinner.MealId = 3;
-                viewModel.RecipesForDay.Dinner.RecipeDayId = viewModel.RecipesForDay.Id;
+                viewModel.Dinner = _recipeRepository?.GetRecipeById(viewModel.DinnerId ?? 0) ?? new RecipeDto();
+                viewModel.Dinner.MealId = 3;
+                viewModel.Dinner.RecipeDayId = viewModel.Id;
 
-                viewModel.RecipesForDay.Snack = _recipeRepository?.GetRecipeById(viewModel.RecipesForDay.SnackId ?? 0) ?? new RecipeDto();
-                viewModel.RecipesForDay.Snack.MealId = 4;
-                viewModel.RecipesForDay.Snack.RecipeDayId = viewModel.RecipesForDay.Id;
+                viewModel.Snack = _recipeRepository?.GetRecipeById(viewModel.SnackId ?? 0) ?? new RecipeDto();
+                viewModel.Snack.MealId = 4;
+                viewModel.Snack.RecipeDayId = viewModel.Id;
 
-                viewModel.RecipesForDay.Supper = _recipeRepository?.GetRecipeById(viewModel.RecipesForDay.SupperId ?? 0) ?? new RecipeDto();
-                viewModel.RecipesForDay.Supper.MealId = 5;
-                viewModel.RecipesForDay.Supper.RecipeDayId = viewModel.RecipesForDay.Id;
+                viewModel.Supper = _recipeRepository?.GetRecipeById(viewModel.SupperId ?? 0) ?? new RecipeDto();
+                viewModel.Supper.MealId = 5;
+                viewModel.Supper.RecipeDayId = viewModel.Id;
             }
         }
     }

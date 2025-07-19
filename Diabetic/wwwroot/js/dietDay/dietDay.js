@@ -1,4 +1,21 @@
-﻿function updateTotal(recipeId, meal, url) {
+﻿function updateDay(recipeId, meal, url, dayId) {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            recipeId: recipeId, 
+            meal: meal, 
+            dayId: dayId
+        },
+        success: function (res) {
+            $("#totalKcals")[0].innerHTML = res.totalKcal;
+            $("#totalGLs")[0].innerHTML = res.totalGl;
+            setTotalGlBackground("#totalGLs", res.totalGl);
+        }
+    });
+}
+
+function updateTotal(recipeId, meal, url) {
     $.ajax({
         url: url,
         type: 'GET',
@@ -6,8 +23,8 @@
             recipeId: recipeId
         },
         success: function (res) {
-            var idKcals = "#" + meal + "Kcals";
-            var idGls = "#" + meal + "GLs";
+            let idKcals = "#" + meal + "Kcals";
+            let idGls = "#" + meal + "GLs";
             $(idKcals)[0].value = res.kcals
             $(idGls)[0].value = res.gl
             updateSum(".kcals", "#totalKcals", " kcal, ");

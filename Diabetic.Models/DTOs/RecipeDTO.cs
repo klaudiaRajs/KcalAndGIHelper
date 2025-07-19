@@ -28,29 +28,13 @@ namespace Diabetic.Models.DTOs
         [DisplayName("Selected amount of kcals")]
         public double TotalKcal
         {
-            get
-            {
-                double totalKcal = 0;
-                Ingredients.ForEach(item => 
-                {
-                    totalKcal += item.Kcals; 
-                });
-                return totalKcal; 
-            }
-            set { }
+            get => IndexHelper.GetKcalsForRecipe(this);
+            set => IndexHelper.GetKcalsForRecipe(this);
         }
         public double TotalGl
         {
-            get
-            {
-                double totalGl = 0;
-                Ingredients.ForEach(item =>
-                {
-                    totalGl += item.Gl;
-                });
-                return totalGl;
-            }
-            set { } 
+            get => IndexHelper.GetGlForRecipe(this);
+            set => IndexHelper.GetGlForRecipe(this);
         }
 
         public bool Green { get; set; }
