@@ -32,7 +32,7 @@ namespace Diabetic.Controllers
                 day.Dinner = _recipeRepository.GetRecipeById(day.DinnerId);
                 day.Supper = _recipeRepository.GetRecipeById(day.SupperId);
                 day.Snack = _recipeRepository.GetRecipeById(day.SnackId);
-                day.SetTotalKcals();
+                day.SetTotalGl();
             }
 
             return View(viewModel);

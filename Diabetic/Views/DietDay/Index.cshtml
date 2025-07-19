@@ -16,6 +16,7 @@
                     <th scope="col">Snack</th>
                     <th scope="col">Supper</th>
                     <th scope="col">DayGL</th>
+                    <th scope="col">Day Kcal</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -44,6 +45,9 @@
                         </td>
                         <td class="@BaseDto.GetDayGlRating(day.TotalGl)">
                             @day.TotalGl
+                        </td>
+                        <td>
+                            @day.TotalKcal
                         </td>
                         <td>
                             <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>

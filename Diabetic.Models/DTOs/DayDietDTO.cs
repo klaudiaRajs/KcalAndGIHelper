@@ -12,15 +12,17 @@ namespace Diabetic.Models.DTOs
 
         public RecipeDto Dinner { get; set; } = new RecipeDto();
         public int? DinnerId { get; set; }
-        public RecipeDto Supper { get; set; } = new RecipeDto(); 
+        public RecipeDto Supper { get; set; } = new RecipeDto();
         public int? SupperId { get; set; }
         public RecipeDto Snack { get; set; } = new RecipeDto();
         public int? SnackId { get; set; }
         public double TotalGl { get; set; }
 
-        public void SetTotalKcals()
+        public double TotalKcal => IndexHelper.GetKcalForDay(this);
+
+        public void SetTotalGl()
         {
-            TotalGl = IndexHelper.GetGlForDay(this); 
+            TotalGl = IndexHelper.GetGlForDay(this);
         }
     }
 }

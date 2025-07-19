@@ -50,6 +50,17 @@ public static class IndexHelper
         return totalGl;
     }
     
+    public static int GetKcalForDay(DayDietDto dayDiet)
+    {
+        var totalKcal = 0;
+        totalKcal += GetKcalsForRecipe(dayDiet.Breakfast);
+        totalKcal += GetKcalsForRecipe(dayDiet.Lunch);
+        totalKcal += GetKcalsForRecipe(dayDiet.Dinner);
+        totalKcal += GetKcalsForRecipe(dayDiet.Snack);
+        totalKcal += GetKcalsForRecipe(dayDiet.Supper);
+        return totalKcal;
+    }
+    
     private static int RoundToInt(this double value)
     {
         return (int)Math.Round(value); 
