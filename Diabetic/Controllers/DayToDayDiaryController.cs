@@ -1,8 +1,6 @@
-﻿using Diabetic.Data.Repositories;
-using Diabetic.Data.Repositories.Interfaces;
+﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;

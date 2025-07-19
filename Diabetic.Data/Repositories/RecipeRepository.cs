@@ -1,5 +1,4 @@
-﻿using Diabetic.Data.Data;
-using Diabetic.Data.Repositories.Interfaces;
+﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Microsoft.EntityFrameworkCore;

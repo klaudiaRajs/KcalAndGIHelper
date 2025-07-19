@@ -1,5 +1,4 @@
 ﻿using Diabetic.Models.DTOs;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Diabetic.Models
 {

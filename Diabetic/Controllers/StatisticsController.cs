@@ -1,5 +1,4 @@
 ﻿using Diabetic.Data.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Diabetic.Controllers
 {

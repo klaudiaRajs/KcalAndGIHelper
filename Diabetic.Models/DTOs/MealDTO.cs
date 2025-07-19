@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Diabetic.Models.DTOs
+﻿namespace Diabetic.Models.DTOs
 {
     public class MealDto
     {

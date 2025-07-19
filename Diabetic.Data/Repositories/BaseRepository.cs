@@ -1,10 +1,4 @@
-﻿using Diabetic.Data.Data;
-using Diabetic.Data.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Diabetic.Data.Repositories.Interfaces;
 
 namespace Diabetic.Data.Repositories
 {

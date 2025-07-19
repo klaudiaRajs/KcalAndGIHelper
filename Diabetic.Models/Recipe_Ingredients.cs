@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Diabetic.Models.DTOs.Interfaces;
+﻿using Diabetic.Models.DTOs.Interfaces;
 
 namespace Diabetic.Models
 {

@@ -1,7 +1,6 @@
 ﻿using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
-using Diabetic.Models.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diabetic.Controllers

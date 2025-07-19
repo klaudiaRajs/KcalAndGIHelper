@@ -1,11 +1,10 @@
-using Diabetic.Data.Data;
+using Diabetic.Data;
 using Diabetic.Data.Repositories;
 using Diabetic.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
