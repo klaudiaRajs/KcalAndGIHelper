@@ -4,6 +4,7 @@ namespace Diabetic.Models.DTOs
 {
     public class DayDietDto
     {
+        //TODO change mealObjects withId to ONE dictionary 
         public int Id { get; set; }
         public RecipeDto Breakfast { get; set; } = new RecipeDto();
         public int? BreakfastId { get; set; }
@@ -17,9 +18,8 @@ namespace Diabetic.Models.DTOs
         public RecipeDto Snack { get; set; } = new RecipeDto();
         public int? SnackId { get; set; }
         public double TotalGl { get; set; }
-
         public double TotalKcal => IndexHelper.GetKcalForDay(this);
-
+        public int RemainingKcals { get; set; } = 0;
         public void SetTotalGl()
         {
             TotalGl = IndexHelper.GetGlForDay(this);

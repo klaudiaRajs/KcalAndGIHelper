@@ -11,6 +11,7 @@
     <div class="input-group input-group-sm m-2">
         <h4> Selected: <span id="totalKcals">@Model.SelectedKcals</span>kcal, <span id="totalGLs" class="p-2">@Model.SelectedGl</span> </h4>
     </div>
+    <div class="input-group input-group-sm m-2"><h5>Remaining: <span id="remainingKcals"> @Model.RecipesForDay.RemainingKcals </span></h5></div>
     <div class="input-group input-group-sm m-2">
         <label class="form-check-inline m-2 col-2" for="Model.RecipesForDay.BreakfastId">Select Breakfast: </label>
         @Html.DropDownListFor(m => m.RecipesForDay.BreakfastId,

@@ -1,4 +1,5 @@
-﻿using Diabetic.Data.Repositories.Interfaces;
+﻿using System.Security.Claims;
+using Diabetic.Data.Repositories.Interfaces;
 using Diabetic.Models;
 using Diabetic.Models.DTOs;
 using Diabetic.Models.Helpers;
@@ -9,22 +10,26 @@ namespace Diabetic.Controllers
     public class DietDayController : BaseController
     {
         private IDietDayRepository _dietDayRepository { get; }
+        private IUserRepository _userRepository { get; }
         public DietDayController(
             IRecipeRepository recipeRepository, 
             IProductRepository productRepository, 
             ICategoryRepository categoryRepository, 
             IDietDayRepository dietDayRepository, 
+            IUserRepository userRepository,
             IMealRepository? mealRepository = null) 
             : base(recipeRepository, productRepository, categoryRepository, mealRepository)
         {
             _dietDayRepository = dietDayRepository;
-            
+            _userRepository = userRepository;
         }
 
         public IActionResult Index()
         {
             DayDietViewModel viewModel = new DayDietViewModel();
             viewModel.Days = _dietDayRepository.GetAll();
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            UserProfile? userProfile = userId != null ? _userRepository.Get(userId) : null;
             foreach (DayDietDto day in viewModel.Days)
             {
                 //TODO Refactor 
@@ -34,6 +39,7 @@ namespace Diabetic.Controllers
                 day.Supper = _recipeRepository.GetRecipeById(day.SupperId);
                 day.Snack = _recipeRepository.GetRecipeById(day.SnackId);
                 day.SetTotalGl();
+                day.RemainingKcals = IndexHelper.GetRemainingUserKcals(day, userProfile?.KcalTarget ?? 0);
             }
 
             return View(viewModel);
@@ -44,12 +50,16 @@ namespace Diabetic.Controllers
         
         public IActionResult Details(int id)
         {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            UserProfile? userProfile = userId != null ? _userRepository.Get(userId) : null;
+            
             DayDietViewModel viewModel = new DayDietViewModel();
             viewModel.RecipesForDay = _dietDayRepository.GetDay(id);
 
             LoadAllRecipesForDayByDayId(viewModel.RecipesForDay);
             viewModel.SetTotalKcals(); 
             viewModel.SetTotalGl();
+            viewModel.RecipesForDay.RemainingKcals = IndexHelper.GetRemainingUserKcals(viewModel.RecipesForDay, userProfile?.KcalTarget ?? 0);
             return View(viewModel);
         }
 
@@ -89,7 +99,9 @@ namespace Diabetic.Controllers
 
             model.Dinners = _recipeRepository.GetByMeal(3);
             model.Recipes = _recipeRepository.GetNonDinnerRecipes();
-
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            UserProfile? userProfile = userId != null ? _userRepository.Get(userId) : null;
+            day.RemainingKcals = IndexHelper.GetRemainingUserKcals(day, userProfile.KcalTarget);
             return View("Create", model);
         }
         //Make it async 
@@ -99,7 +111,10 @@ namespace Diabetic.Controllers
             day = UpdateRecipes(meal, day, recipeId);
             LoadAllRecipesForDayByDayId(day);
             _dietDayRepository.Update(day, dayId);
-            return Ok(new { success = true, totalKcal = IndexHelper.GetKcalForDay(day), totalGl = IndexHelper.GetGlForDay(day) }); 
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            UserProfile? userProfile = userId != null ? _userRepository.Get(userId) : null;
+            day.RemainingKcals = IndexHelper.GetRemainingUserKcals(day, userProfile.KcalTarget);
+            return Ok(new { success = true, totalKcal = IndexHelper.GetKcalForDay(day), totalGl = IndexHelper.GetGlForDay(day), remainingKcal = day.RemainingKcals }); 
         }
 
         private DayDietDto UpdateRecipes(string meal, DayDietDto day, int recipeId)

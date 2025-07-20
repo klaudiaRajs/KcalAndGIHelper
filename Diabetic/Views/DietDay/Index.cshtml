@@ -17,6 +17,7 @@
                     <th scope="col">Supper</th>
                     <th scope="col">DayGL</th>
                     <th scope="col">Day Kcal</th>
+                    <th scope="col">Remaining kcal</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -37,7 +38,7 @@
                         <td class="col col-lg-3">
                             @day.Dinner.Name (@day.Dinner.TotalGl)
                         </td>
-                        <td class="col col-lg-2">
+                        <td class="col col-lg-1">
                             @day.Snack?.Name (@day.Snack?.TotalGl)
                         </td>
                         <td>
@@ -46,10 +47,13 @@
                         <td class="@BaseDto.GetDayGlRating(day.TotalGl)">
                             @day.TotalGl
                         </td>
-                        <td>
+                        <td class="col col-lg-1">
                             @day.TotalKcal
                         </td>
-                        <td>
+                        <td class="col col-lg-1">
+                            @day.RemainingKcals
+                        </td>
+                        <td class="col col-lg-2">
                             <a asp-controller="DietDay" asp-action="Details" asp-route-id="@day.Id" class="btn btn-warning">Details</a>
                             <a asp-controller="DietDay" asp-action="Update" asp-route-id="@day.Id" class="btn btn-warning">Edit</a>
                             <a asp-controller="DietDay" asp-action="Remove" asp-route-id="@day.Id" class="btn btn-warning">Delete</a>

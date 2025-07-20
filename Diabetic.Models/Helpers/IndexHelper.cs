@@ -65,4 +65,9 @@ public static class IndexHelper
     {
         return (int)Math.Round(value); 
     }
+    
+    public static int GetRemainingUserKcals(DayDietDto dayDiet, int targetKcals)
+    {
+        return targetKcals - GetKcalForDay(dayDiet);
+    }
 }

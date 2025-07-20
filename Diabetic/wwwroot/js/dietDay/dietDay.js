@@ -10,6 +10,7 @@
         success: function (res) {
             $("#totalKcals")[0].innerHTML = res.totalKcal;
             $("#totalGLs")[0].innerHTML = res.totalGl;
+            $("#remainingKcals")[0].innerHTML = res.remainingKcal;
             setTotalGlBackground("#totalGLs", res.totalGl);
         }
     });

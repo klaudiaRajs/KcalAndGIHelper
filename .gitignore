@@ -365,3 +365,6 @@ FodyWeavers.xsd
 /product-seeder.txt
 /Diabetic/Properties/launchSettings.json
 /Diabetic/appsettings.json
+
+.idea/
+/Diabetic/@path
