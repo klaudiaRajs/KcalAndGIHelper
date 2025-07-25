@@ -17,6 +17,8 @@ namespace Diabetic.Models.DTOs
         public string ProductName { get { return Product.Name; } }
         public int ProductId { get { return Product.Id; } }
 
+        public bool IsComplete => Product.CarbsPer100G > 0 || Product.Protein > 0 || Product.Fat > 0 || Product.Sugar > 0;
+
         public double Gl { get; set; }
 
         public string GetGiRating()

@@ -6,6 +6,7 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Complete</th>
                 <th scope="col">@nameof(Model.Product.Name)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.KcalPer100G)</th>
                 <th scope="col" class="text-center">@nameof(Model.Product.Gi)</th>
@@ -21,6 +22,7 @@
                     <th scope="row">
                         @ingredient.Product.Id
                     </th>
+                    <th> @(ingredient.IsComplete ? Html.Raw("<i class=\"bi bi-patch-check text-success\"></i>") : Html.Raw("<i class=\"bi bi-x-circle text-danger\"></i>"))  </th>
                     <td>
                         @(char.ToUpper(ingredient.Product.Name[0]) + ingredient.Product.Name.Substring(1))
                     </td>
