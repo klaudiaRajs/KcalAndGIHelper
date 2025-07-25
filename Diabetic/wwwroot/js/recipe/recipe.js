@@ -11,7 +11,7 @@
 
 function addItemToSummaryBelowGroup(categoryId, productName, kcal, amount, gl) {
     let summary = document.getElementById("summary-" + categoryId);
-    let messageToAdd = "<p>" + productName + ": " + amount + "gr (" + kcal + "kcal, GL: " + gl + ") </p>"; 
+    let messageToAdd = "<p>" + productName + ": " + amount + "gr (" + kcal + "kcal, GL: " + gl + ") </p>";
     let children = summary.children;
     for (let i = 0; i < children.length; i++) {
         if (children[i].innerHTML.includes(productName)) {
@@ -28,6 +28,29 @@ function toggleAmount(element) {
     } else {
         element.style.display = "none";
     }
+}
+
+function showNutritionInfo(labelElement, productName, kcalPer100g, fat, protein, sugar) {
+    const tooltip = document.getElementById("nutritionTooltip");
+
+    tooltip.innerHTML = `
+                <strong>${productName}</strong><br />
+                ${kcalPer100g} kcal / 100g<br />
+                Tłuszcz: ${fat}g<br />
+                Białko: ${protein}g<br />
+                Cukry: ${sugar}g
+            `;
+
+  const rect = document.getElementsByClassName('modal-content')[0].getBoundingClientRect();
+  const labelRect = labelElement.getBoundingClientRect();
+    tooltip.style.left = (rect.left - 80) + "px";
+    tooltip.style.top = (labelRect.top + window.scrollY) + "px";
+    tooltip.style.display = "block";
+}
+
+function hideNutritionInfo() {
+    const tooltip = document.getElementById("nutritionTooltip");
+    tooltip.style.display = "none";
 }
 
 $(function () {

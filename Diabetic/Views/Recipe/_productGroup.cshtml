@@ -27,7 +27,7 @@
                     <input class="form-number-input" asp-for="@item.IsChecked" type="checkbox" id="@checkBoxId"
                            onclick="toggleAmount(@boxId)">
                     <input hidden asp-for="@item.Id"/>
-                    <label class="form-check-label"
+                    <label class="form-check-label" style="cursor: pointer;" onmouseleave="hideNutritionInfo()" onmouseover="showNutritionInfo(this, '@item.Product.Name', @item.Product.KcalPer100G, @item.Product.Fat, @item.Product.Protein, @item.Product.Sugar)"
                            asp-for="@item.IsChecked">@item.Name (@item.Product.CarbsPer100G /100g)</label>
                 </div>
                 <div id="@boxId" style="display: @isDisplayed">
@@ -44,5 +44,7 @@
         </text>
     }
 }
+<div id="nutritionTooltip" class="custom-tooltip"></div>
+
 
 
